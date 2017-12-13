@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        body div{
+            border: 1px solid #6cffa7;
+        }
+    </style>
+</head>
+<body>
+<div>
+    <h1>I am source page</h1>
+    <iframe id="child" src="http://localhost:3000/index.html"></iframe>
+</div>
+</body>
+<script>
+    window.onload=function(){
+        //ws 非加密
+        //wss 加密
+        var ws = new WebSocket("wss://服务端url");
+        console.log("Connection open ...");
+        //建立webSocket时回调
+        ws.open = function () {
+            ws.send('this is a message from page1');
+        };
+
+        //关闭webSocket时回调
+        ws.onclose = function(event) {
+            console.log(event.code);
+            console.log(event.reason);
+            console.log(event.wasClean);
+        };
+        //接收信息时回调
+        ws.onmessage = function(event) {
+            var data = event.data;
+            console.log(data);
+        };
+    }
+</script>
+</html>

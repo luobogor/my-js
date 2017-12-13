@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Page2</title>
+    <style>
+        body{
+            border: 1px solid #000;
+        }
+    </style>
+</head>
+<body>
+<h1>I am Page 2</h1>
+<div id="message"></div>
+</body>
+<script>
+    //监听url的hash值变化
+    window.onhashchange = function () {
+        var data =  window.location.hash;
+        document.getElementById('message').textContent = data;
+    }
+</script>
+</html>
