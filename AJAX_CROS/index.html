@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div>
+    <div>我是get请求结果: <span id="getRes"></span>
+    </div>
+    <div>我是post请求结果: <span id="postRes"></span>
+    </div>
+</div>
+</body>
+<script>
+    var url = 'http://www.w3school.com.cn/ajax/demo_get.asp';
+
+    function ajaxGet() {
+        var request;
+        //兼容IE6,IE5
+        if (window.XMLHttpRequest) {
+            request = new XMLHttpRequest();//IE 7+
+        } else {
+            request = new ActiveXObject("Microsoft.XMLHTTP");//IE6,IE5
+        }
+        var parma1 = "Hello";
+        var parma2 = "World";
+        //method,url,async：true（异步）或 false（同步）
+        request.open('GET', 'http://www.w3school.com.cn/ajax/test1.txt' + '?param1=' + parma1 + '&parma2=' + parma2, true);
+        //参数 string：仅用于 POST 请求
+        request.send();
+        //onreadystatechange 事件被触发 5 次（0 - 4），对应着 readyState 的每个变化。
+        request.onreadystatechange = function() {
+//            0: 请求未初始化
+//            1: 服务器连接已建立
+//            2: 请求已接收
+//            3: 请求处理中
+//            4: 请求已完成，且响应已就绪
+            // 200 请求成功
+            if (request.readyState === 4 && request.status === 200) {
+                document.getElementById('postRes').innerHTML = request.responseText;
+            }
+        };
+    }
+
+    ajaxGet();
+
+
+    function ajaxPost() {
+        var request;
+        //兼容IE6,IE5
+        if (window.XMLHttpRequest) {
+            request = new XMLHttpRequest();//IE 7+
+        } else {
+            request = new ActiveXObject("Microsoft.XMLHTTP");//IE6,IE5
+        }
+        //method,url,async：true（异步）或 false（同步）
+        request.open('POST', url, true);
+        //***************************发送表单数据
+        //向请求添加 HTTP 头
+        //header: 规定头的名称,value: 规定头的值
+        //request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");//表单类型数据
+        //参数 string：仅用于 POST 请求
+        //request.send("Hello&World");
+
+        //************************************发送json数据
+        request.setRequestHeader("Content-Type", "application/json");
+        request.send(JSON.stringify({name:"John Rambo", time:"2pm"}));
+
+
+        //当请求为异步时,监听状态变化执行回调
+        request.onreadystatechange = function() {
+            //1,2,3,4已完成
+            //200 请求成功
+            if (request.readyState === 4 && request.status === 200) {
+                document.getElementById('postRes').innerHTML = request.responseText;
+            }
+        };
+
+        //当请求为同步方法时，代码按编写顺序执行，无需设置回调方法
+        //document.getElementById("postRes").innerHTML=request.responseText;
+    }
+
+    ajaxPost();
+
+
+</script>
+</html>

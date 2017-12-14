@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>运行时异常</title>
+    <!--2.window.onerror处理-->
+    <script>
+        // onerror 事件句柄是 JavaScript 中添加的第一个为了方便错误处理的特性。
+        // 无论任何时候在网页中产生了运行时异常，窗口对象就会触发 error 事件。(资源加载异常是不会触发window.onerror的)
+        window.onerror = function (msg, url, line) {
+            console.log('window捕捉到异常:' + msg);
+        }
+    </script>
+</head>
+<body>
+</body>
+<script>
+
+    //    1.try,catch处理
+    try {
+        new Array(-1);
+    } catch (e) {
+        console.log("try,catch捕捉到异常:" + e);
+    }
+    throw new Error("出错了！");
+</script>
+</html>

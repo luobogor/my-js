@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+</body>
+<script>
+    (function () {
+        var util = {};
+        //浅拷贝************************************************
+        util.extend = function (dst, obj) {
+            for (var i in obj) {
+               //所有继承了 Object 的对象都会继承到 hasOwnProperty 方法。这个方法可以用来检测一个对象是否含有特定的自身属性；和 in 运算符不同，该方法会忽略掉那些从原型链上继承到的属性。
+                if (obj.hasOwnProperty(i)) {
+                    //注意dst.i这种写法会声名一个i属性，这并不是我们想要的
+                    //dst.i = obj.i;
+                    dst[i] = obj[i];
+                }
+            }
+        };
+
+        var Obj = function (a, b) {
+            this.a = a;
+            this.b = b;
+        };
+
+        Obj.prototype.prototypeField = 'i_am_prototypeField';
+        var ins1 = new Obj(1, 2);
+        var ins2 = {};
+        util.extend(ins2, ins1);
+        console.log(ins2);//ins2不会继承prototypeField这个属性
+        // ************************************************
+
+        util.json = function ajax(options) {
+            //默认配置
+            var opt = {
+                url: '',
+                type: 'GET',//默认为get请求
+                data: {},
+                success: function () {
+                },
+                error: function () {
+                }
+            };
+
+            util.extend(opt, options);
+
+            //             UNSENT
+            //             XMLHttpRequest 代理已被创建， 但尚未调用 open() 方法。
+
+            //             OPENED
+            //             open() 方法已经被触发。在这个状态中，可以通过  setRequestHeader() 方法来设置请求的头部， 可以调用 send() 方法来发起请求。
+
+            //              HEADERS_RECEIVED
+            //             send() 方法已经被调用，响应头也已经被接收。(注意这里一定是收到响应头readyState才会变成2)
+
+            //             LOADING
+            //             响应体部分正在被接收。如果 responseType 属性是“text”或空字符串， responseText 将会在载入的过程中拥有部分响应数据。
+
+            //              DONE
+            //             请求操作已经完成。这意味着数据传输已经彻底完成或失败。
+            //0:请求未初始化
+            //1:服务器连接已建立,所谓已连接是tcp连接？？？
+            //2:请求已接收,所谓已接收是?? (实验情况是，1之后服务器会开始执行处理，处理完后，客户端变为2。接下来3(下载中； responseText 属性已经包含部分数据),4的变化都没有涉及到服务器端)
+            //3:请求处理中 xhr.onprogress监听
+            //4:请求已完成，且响应已就绪 xhr.onload监听
+            //也可以用request.onreadystatechange监听状态变化
+            if (opt.url) {
+                var xhr = XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
+                xhr.onreadystatechange = function () {
+                    console.log(xhr.readyState);
+                    // debugger;
+                };
+
+                //0:请求未初始化
+                console.log('UNSENT', 'readyStatuds' + xhr.readyState, 'readyStatuds:' + xhr.status);
+                var data = opt.data;
+                var type = opt.type;
+                var url = opt.url;
+                var dataArr = [];
+                for (var k in data) {
+                    dataArr.push(k + '=' + data[k]);
+                }
+
+                //HTTP Method是区分大小写的，而Header是不区分的。 所以GET/POST/PUT等需要大写，
+                if (type === 'GET') {
+                    url = url + '?' + dataArr.join('&');
+                    //  \?表示在url中的问号 \是转义字符,$即结尾
+                    //当前replace有什么作用？？？？
+                    //1:服务器连接已建立
+                    //2:请求已接收
+                    xhr.withCredentials = true;
+
+                    xhr.open(type, url.replace(/\?$/g, ''), true);
+                    console.log('OPENED:', 'readyStatuds' + xhr.readyState, 'readyStatuds:' + xhr.status);
+                    xhr.send();
+                    // debugger;
+                    console.log('SEND:', 'readyStatuds' + xhr.readyState, 'readyStatuds:' + xhr.status);
+                }
+
+                if (type === 'POST') {
+                    xhr.open(type, url, true);
+                    // 发送表单数据
+                    xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+                    xhr.send(dataArr.join('&'));
+                    xhr.send(JSON.stringify(opt.data));
+                }
+
+                if (type === 'PUT') {
+                    xhr.open(type, url, true);
+                    //发送json格式数据
+                    xhr.setRequestHeader('Content-type', 'application/json');
+                    xhr.send(JSON.stringify(opt.data));
+                }
+
+                xhr.onprogress = function () {
+                    //3:请求处理中
+                    console.log('LOADING:', 'readyStatuds' + xhr.readyState, 'readyStatuds:' + xhr.status);
+                };
+                xhr.onload = function () {
+                    console.log('DONE:', 'readyStatuds' + xhr.readyState, 'readyStatuds:' + xhr.status);
+                    var res;
+                    res = xhr.responseText;
+                    //304：服务器告诉浏览器资源未修改过，可以用缓存
+                    if (xhr.status === 200 || xhr.status === 304) {
+                        if (opt.success && opt.success instanceof Function) {
+                            //call绑定xhr作用域方便回调方法操作xhr对象
+                            opt.success.call(xhr, res);
+                            if (typeof res === 'string') {
+                                res = JSON.parse(res);
+                            }
+                        }
+                    } else {
+                        if (opt.error && opt.error instanceof Function) {
+                            opt.error.call(xhr, res);
+                        }
+                    }
+                };
+                xhr.onerror = function () {
+                    console.log('xhr onerror');
+                }
+            }
+        };
+
+
+        util.json({
+            type: 'GET',
+            url: 'http://localhost:8081/user/testGet',
+            data: {sendData: 'jinzhan.ye@uworks-gd.cc'},
+            success: function (res) {
+                //如果回调写的是opt.success.call(xhr, res)，那么this是xhr对象
+                //如果回调写的是opt.success(res)，那么this是当前对象
+                getResponseHeader(this);
+                console.log('successCallback:' + res);
+            },
+            error: function (res) {
+                console.log(this);
+                console.log('errorCallback:' + res);
+            }
+        });
+
+        function getResponseHeader(xhr) {
+            console.log('Cache-Control:' + xhr.getResponseHeader('Cache-Control'));
+            console.log('Content-Type:' + xhr.getResponseHeader('Content-Type'));
+            console.log('Content-Language:' + xhr.getResponseHeader('Content-Language'));
+            console.log(('Expires:') + xhr.getResponseHeader('Expires'));
+            console.log('Last-Modified:' + xhr.getResponseHeader('Last-Modified'));
+            console.log('Pragma:' + xhr.getResponseHeader('Pragma'));
+            console.log('cookie:' + document.cookie);
+        }
+
+//
+//         util.json({
+//             type: 'POST',
+//             url: 'http://localhost:8081/user/testPost',
+//             data: {userId: 'jinzhan.ye@uworks-gd.cc', password: '123456'},
+//             success: function (res) {
+//                 //如果回调写的是opt.success.call(xhr, res)，那么this是xhr对象
+//                 //如果回调写的是opt.success(res)，那么this是当前对象
+//                 console.log(this);
+//                 console.log('successCallback:' + res);
+//             },
+//             error: function (res) {
+//                 console.log(this);
+//                 console.log('errorCallback:' + res);
+//             }
+//         });
+//        util.json({
+//             type: 'PUT',
+//             url: 'http://localhost:8081/user/testPut',
+//             data: {userId: 'jinzhan.ye@uworks-gd.cc', password: '123456'},
+//             success: function (res) {
+//                 getResponseHeader(this);
+//                 console.log('successCallback:' + res);
+//             },
+//             error: function (res) {
+//                 console.log('errorCallback:' + res);
+//             }
+//         });
+    })();
+</script>
+</html>

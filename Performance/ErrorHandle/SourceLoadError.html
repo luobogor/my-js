@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>资源加载异常</title>
+</head>
+<body>
+<script>
+    //3.事件捕获
+    //Error事件在事件捕获阶段进行捕获,注意下面设置成true，如果设置成false该方法不生效
+    window.addEventListener('error', function (e) {
+        console.log('捕获', e);
+    }, true);
+
+</script>
+</body>
+<!--1.object.onerror-->
+
+<!--img错误在此捕获一次，但也会被window.addEventListener('error')捕获-->
+<img src="myimage.gif"
+     onerror="console.log('为自img的onerror回调')"/>
+<script src="//badu.com/test.js" charset="utf-8"></script>
+<script>
+    //错误上报
+    //AJAX
+    //图片方式上报，这是一个特殊用法
+    //    (new Image()).src = 'http://baidu.com/tesjk?r=tksjk';
+    throw new Error("出错了！");
+</script>
+</html>

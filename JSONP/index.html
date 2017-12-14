@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>JSONP</title>
+</head>
+<body>
+</body>
+<script>
+    (function () {
+        function addScriptTag(src) {
+            var script = document.createElement('script');
+            script.setAttribute('type', 'text/javascript');
+            script.src = src;
+            document.body.appendChild(script);
+        }
+
+        window.onload = function () {
+            addScriptTag('http://localhost:8081/user/testJSONP?callback=foo');
+        };
+    })();
+
+    function foo(data) {
+        console.log(data);
+    }
+</script>
+</html>
