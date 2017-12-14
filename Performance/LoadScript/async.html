@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>async</title>
+    <script src="TestScript/script1.js" async></script>
+    <script src="TestScript/script2.js" async></script>
+    <script src="TestScript/script3.js" async></script>
+    <script src="TestScript/underscore.js" async></script>
+    <script src="TestScript/script4.js" async></script>
+    <script src="TestScript/script5.js" async></script>
+    <script src="TestScript/script6.js" async></script>
+    <!--加上async后脚本会在页面加载完成之后执行，但不确保执行顺序,可以看到underscore可能是最后才执行-->
+</head>
+<body>
+<div>
+    I am defer page <br>
+    <script>
+        var data = 'I am body inner script';
+        console.log(data);
+        document.write(data);
+    </script>
+    <script>
+        for (var i = 0; i < 200000; i++) {
+            if (i % 20000 === 0) {
+                console.log(i);
+            }
+        }
+    </script>
+</div>
+</body>
+</html>

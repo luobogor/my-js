@@ -17,7 +17,7 @@
    - jsonp(只能处理get请求) 
    - Hash 
    - postMessage
-   - CORS
+   - CORS(Fetch对象是对CORS规范的一种实现)
    - 客户端使用XHR2对象,然后服务器端做点小改动
    > Access-Control-Allow-Origin: *
    > Access-Control-Allow-Methods: GET, POST, PUT

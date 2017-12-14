@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>动态创建脚本-async</title>
+</head>
+<body>
+<div>
+    I am 动态创建脚本-async page <br>
+    <script>
+        var data = 'I am body inner script';
+        console.log(data);
+        document.write(data);
+    </script>
+    <script>
+        for (var i = 0; i < 200000; i++) {
+            if (i % 20000 === 0) {
+                console.log(i);
+            }
+        }
+    </script>
+</div>
+</body>
+<script>
+    //对于支持async属性的浏览器，动态插入的外链脚本, 相当于默认具有async=true,控制台可以看到underscore是最后执行；
+    //如果需要让动态插入的脚本按插入顺序执行，可以显式设置 async = false;(见dynamic2.html)
+    var dynamic1 = document.createElement('script');
+    dynamic1.src = "TestScript/script1.js";
+
+    var dynamic2 = document.createElement('script');
+    dynamic2.src = "TestScript/script2.js";
+
+    var dynamic3 = document.createElement('script');
+    dynamic3.src = "TestScript/script3.js";
+
+    var dynamicUnder = document.createElement('script');
+    dynamicUnder.src = "TestScript/underscore.js";
+
+    var dynamic4 = document.createElement('script');
+    dynamic4.src = "TestScript/script4.js";
+
+    var dynamic5 = document.createElement('script');
+    dynamic5.src = "TestScript/script5.js";
+
+    var dynamic6 = document.createElement('script');
+    dynamic6.src = "TestScript/script6.js";
+
+    document.head.appendChild(dynamic1);
+    document.head.appendChild(dynamic2);
+    document.head.appendChild(dynamic3);
+    document.head.appendChild(dynamicUnder);
+    document.head.appendChild(dynamic4);
+    document.head.appendChild(dynamic5);
+    document.head.appendChild(dynamic6);
+</script>
+</html>
