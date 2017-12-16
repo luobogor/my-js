@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+</body>
+<script>
+    function getURL(URL) {
+        return new Promise(function (resolve, reject) {
+            var req = new XMLHttpRequest();
+            req.open('GET', URL, true);
+            req.onload = function () {
+                if (req.status === 200) {
+                    resolve(req.responseText);
+                } else {
+                    //statusText???
+                    reject(new Error(req.statusText));
+                }
+            };
+            //经实验发送请求失败时会触发onerror
+            // 或接收失败？？
+            req.onerror = function () {
+//                Error对象会被catch捕获
+                reject(new Error(req.statusText));
+            };
+            req.send();
+        });
+    }
+
+    //example
+    var URL = "http://httpbin.org/get";
+    //reject的值可以被 then 方法的第二个参数或者 catch 方法中使用
+//    getURL(URL).then(function onFulfilled() {
+//
+//    },function () {
+//
+//    });
+    getURL(URL).then(function onFulfilled(value) {
+        console.log(value);
+    }).catch(function onRejected(error) {
+        console.error(error);
+    });
+</script>
+</html>

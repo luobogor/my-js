@@ -147,7 +147,7 @@
 
         util.json({
             type: 'GET',
-            url: 'http://localhost:8081/user/testGet',
+            url: 'http://localhost:8081/user/test',
             data: {sendData: 'jinzhan.ye@uworks-gd.cc'},
             success: function (res) {
                 //如果回调写的是opt.success.call(xhr, res)，那么this是xhr对象
@@ -170,6 +170,7 @@
             console.log('Pragma:' + xhr.getResponseHeader('Pragma'));
             console.log('cookie:' + document.cookie);
         }
+
 
 //
 //         util.json({
