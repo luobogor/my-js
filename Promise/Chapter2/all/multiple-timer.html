@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+</body>
+<script>
+    function timerPromise(delay) {
+        return new Promise(function (resolve) {
+            setTimeout(function () {
+                console.log(delay);
+                resolve(delay);
+            }, delay);
+        });
+    }
+
+    var request = {
+        delay1: function () {
+            return timerPromise(1);
+        },
+        delay32: function () {
+            return timerPromise(32);
+        },
+        delay64: function () {
+            return timerPromise(64);
+        },
+        delay128: function () {
+            return timerPromise(128);
+        },
+    };
+
+
+    function main() {
+        return request.delay1()
+            .then(request.delay32)
+            .then(request.delay64)
+            .then(request.delay128);
+    }
+
+    var startDate = Date.now();
+
+    main().then(function () {
+        //串行处理 1+32+64+128 = 365s
+        console.log(Date.now() - startDate + 'ms');
+    })
+</script>
+</html>

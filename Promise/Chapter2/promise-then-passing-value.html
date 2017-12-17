@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+</body>
+<script>
+    function doubleUp(value) {
+        return value * 2;
+    }
+
+    function increment(value) {
+        return value + 1;
+    }
+    function output(value) {
+        console.log(value);
+    }
+
+    var promise = Promise.resolve(1);
+    // Promise#then 不仅仅是注册一个回调函数那么简单，它还会将回调函数的返回值进行变换，创建并返回一个promise对象。
+    promise
+        .then(increment)
+        .then(doubleUp)
+        .then(output)
+        .catch(function (error) {
+            console.error(error);
+        });
+
+</script>
+</html>

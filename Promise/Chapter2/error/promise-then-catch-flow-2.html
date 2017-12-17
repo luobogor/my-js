@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body></body>
+<script>
+    function taskA() {
+        console.log("Task A");
+        throw new Error("throw Error @ Task A");
+    }
+
+    function taskB() {
+        console.log("Task B");
+        throw new Error("throw Error @ Task B");
+//        用rejected的方式处理传递异常
+//        var retPromise = new Promise(function (resolve, reject) {
+//            // resolve or reject 的状态决定 onFulfilled or onRejected 的哪个方法会被调用
+//        });
+//        return retPromise;
+    }
+    function onRejected(error) {
+        console.log("Catch Error:A or B", error);
+    }
+    function finalTask() {
+        console.log("Final Task");
+    }
+    var promise = Promise.resolve();
+    promise
+        .then(taskA)
+        .then(taskB)
+        .catch(onRejected)
+        .then(finalTask);
+</script>
+</html>

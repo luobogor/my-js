@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+</body>
+<script>
+    function timerPromise(delay) {
+        return new Promise(function (resolve) {
+            setTimeout(function () {
+                console.log(delay);
+                resolve(delay);
+            }, delay);
+        });
+    }
+
+    var startDate = Date.now();
+
+    Promise.race([
+        timerPromise(1),
+        timerPromise(32),
+        timerPromise(64),
+        timerPromise(128),
+    ]).then(function (values) {
+        console.log(Date.now() - startDate + 'ms');
+        // 约128ms
+        // Promise.race 在第一个promise对象变为Fulfilled之后，并不会取消其他promise对象的执行。
+        console.log(values);    // 1
+    })
+</script>
+</html>
