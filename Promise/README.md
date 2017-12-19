@@ -4,7 +4,7 @@
 
 
 ### 任务
-- xhr.onerror什么时候触发
+- xhr.onerror什么时候触发,请求url无效时
 - Error对象
 - xhr.statusText
 - deffered不懂

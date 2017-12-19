@@ -47,35 +47,37 @@
 
             util.extend(opt, options);
 
-            //             UNSENT
-            //             XMLHttpRequest 代理已被创建， 但尚未调用 open() 方法。
-
-            //             OPENED
-            //             open() 方法已经被触发。在这个状态中，可以通过  setRequestHeader() 方法来设置请求的头部， 可以调用 send() 方法来发起请求。
-
-            //              HEADERS_RECEIVED
-            //             send() 方法已经被调用，响应头也已经被接收。(注意这里一定是收到响应头readyState才会变成2)
-
-            //             LOADING
-            //             响应体部分正在被接收。如果 responseType 属性是“text”或空字符串， responseText 将会在载入的过程中拥有部分响应数据。
-
-            //              DONE
-            //             请求操作已经完成。这意味着数据传输已经彻底完成或失败。
-            //0:请求未初始化
-            //1:服务器连接已建立,所谓已连接是tcp连接？？？
-            //2:请求已接收,所谓已接收是?? (实验情况是，1之后服务器会开始执行处理，处理完后，客户端变为2。接下来3(下载中； responseText 属性已经包含部分数据),4的变化都没有涉及到服务器端)
-            //3:请求处理中 xhr.onprogress监听
-            //4:请求已完成，且响应已就绪 xhr.onload监听
-            //也可以用request.onreadystatechange监听状态变化
             if (opt.url) {
-                var xhr = XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
+                //*******************xhr.readyState状态
+                //UNSENT 0
+                //XMLHttpRequest 代理已被创建， 但尚未调用 open() 方法。
+
+                //OPENED  1
+                //open() 方法已经被触发。在这个状态中，可以通过  setRequestHeader() 方法来设置请求的头部， 可以调用 send() 方法来发起请求。
+
+                //HEADERS_RECEIVED 2
+                //send() 方法已经被调用，响应头也已经被接收。(注意这里一定是收到响应头readyState才会变成2)
+
+                //LOADING  3  触发xhr.onprogress
+                //响应体部分正在被接收。如果 responseType 属性是“text”或空字符串， responseText 将会在载入的过程中拥有部分响应数据。
+
+                //DONE  4   触发xhr.onload
+                //请求操作已经完成。这意味着数据传输已经彻底完成或失败。
+
+                //实验情况是，1之后服务器会开始执行处理，处理完后，客户端变为2。接下来3(下载中； responseText 属性已经包含部分数据),4的变化都没有涉及到服务器端
+                //onreadystatechange 事件被触发 5 次（0 - 4），对应着 readyState 的每个变化。
+
+                var xhr = XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');//兼容IE6,IE5；XHR IE7+,XHR2 IE 10+
+
+                //readyState UNSENT 0:请求未初始化
+                console.log('UNSENT', 'readyStatuds' + xhr.readyState, 'readyStatuds:' + xhr.status);
+
                 xhr.onreadystatechange = function () {
-                    console.log(xhr.readyState);
                     // debugger;
+                    console.log(xhr.readyState);
                 };
 
-                //0:请求未初始化
-                console.log('UNSENT', 'readyStatuds' + xhr.readyState, 'readyStatuds:' + xhr.status);
+
                 var data = opt.data;
                 var type = opt.type;
                 var url = opt.url;
@@ -87,12 +89,13 @@
                 //HTTP Method是区分大小写的，而Header是不区分的。 所以GET/POST/PUT等需要大写，
                 if (type === 'GET') {
                     url = url + '?' + dataArr.join('&');
+
+                    //xhr.withCredentials = true表示跨域时允许发送cookie
+                    xhr.withCredentials = true;
                     //  \?表示在url中的问号 \是转义字符,$即结尾
                     //当前replace有什么作用？？？？
-                    //1:服务器连接已建立
-                    //2:请求已接收
-                    xhr.withCredentials = true;
 
+                    //参数说明(requestMethod,url,true异步或false同步)
                     xhr.open(type, url.replace(/\?$/g, ''), true);
                     console.log('OPENED:', 'readyStatuds' + xhr.readyState, 'readyStatuds:' + xhr.status);
                     xhr.send();
@@ -102,7 +105,9 @@
 
                 if (type === 'POST') {
                     xhr.open(type, url, true);
-                    // 发送表单数据
+                    //xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");//表单类型数据
+                    //xhr.setRequestHeader('Content-type', 'application/json');发送json格式数据
+                    //xhr.setRequestHeader('Content-type', 'application/json');发送文件数据
                     xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
                     xhr.send(dataArr.join('&'));
                     xhr.send(JSON.stringify(opt.data));
@@ -110,16 +115,18 @@
 
                 if (type === 'PUT') {
                     xhr.open(type, url, true);
-                    //发送json格式数据
                     xhr.setRequestHeader('Content-type', 'application/json');
                     xhr.send(JSON.stringify(opt.data));
                 }
 
                 xhr.onprogress = function () {
-                    //3:请求处理中
+                    //readyState LOADING  3
                     console.log('LOADING:', 'readyStatuds' + xhr.readyState, 'readyStatuds:' + xhr.status);
                 };
+
+
                 xhr.onload = function () {
+                    //readyState LOADING  4
                     console.log('DONE:', 'readyStatuds' + xhr.readyState, 'readyStatuds:' + xhr.status);
                     var res;
                     res = xhr.responseText;
@@ -138,6 +145,12 @@
                         }
                     }
                 };
+                //也可以用request.onreadystatechange监听状态变化
+                //request.onreadystatechange = function() {
+                //    if (request.readyState === 4 && request.status === 200) {
+                //    }
+                //};
+
                 xhr.onerror = function () {
                     console.log('xhr onerror');
                 }
@@ -145,6 +158,8 @@
         };
 
 
+
+//**************************GET请求
         util.json({
             type: 'GET',
             url: 'http://localhost:8081/user/test',
@@ -161,18 +176,21 @@
             }
         });
 
+        //获取响应头信息
         function getResponseHeader(xhr) {
+            //默认情况下只能获取下面6个响应头信息，除非服务器response设置了Access-Control-Expose-Headers
             console.log('Cache-Control:' + xhr.getResponseHeader('Cache-Control'));
             console.log('Content-Type:' + xhr.getResponseHeader('Content-Type'));
             console.log('Content-Language:' + xhr.getResponseHeader('Content-Language'));
             console.log(('Expires:') + xhr.getResponseHeader('Expires'));
             console.log('Last-Modified:' + xhr.getResponseHeader('Last-Modified'));
             console.log('Pragma:' + xhr.getResponseHeader('Pragma'));
+
             console.log('cookie:' + document.cookie);
         }
 
 
-//
+//**************************POST请求
 //         util.json({
 //             type: 'POST',
 //             url: 'http://localhost:8081/user/testPost',
@@ -188,6 +206,9 @@
 //                 console.log('errorCallback:' + res);
 //             }
 //         });
+
+
+//**************************PUT请求可以观察预检options请求
 //        util.json({
 //             type: 'PUT',
 //             url: 'http://localhost:8081/user/testPut',
