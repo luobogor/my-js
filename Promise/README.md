@@ -6,3 +6,5 @@
 ### 任务
 - xhr.onerror什么时候触发
 - Error对象
+- xhr.statusText
+- deffered不懂

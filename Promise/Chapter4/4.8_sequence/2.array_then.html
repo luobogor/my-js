@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>使用数组关联多个promise作处理</title>
+</head>
+<body></body>
+<script>
+    function getURL(URL) {
+        return new Promise(function (resolve, reject) {
+            var req = new XMLHttpRequest();
+            req.open('GET', URL, true);
+            req.onload = function () {
+                if (req.status === 200) {
+                    resolve(req.responseText);
+                } else {
+                    reject(new Error(req.statusText));
+                }
+            };
+            req.onerror = function () {
+                reject(new Error(req.statusText));
+            };
+            req.send();
+        });
+    }
+    var request = {
+        comment: function getComment() {
+            return getURL('http://azu.github.io/promises-book/json/comment.json').then(JSON.parse);
+        },
+        people: function getPeople() {
+            return getURL('http://azu.github.io/promises-book/json/people.json').then(JSON.parse);
+        }
+    };
+
+    //*******************************这种方法需要 promise 这个临时变量，从代码质量上来说显得不那么简洁。
+    function main() {
+        function recordValue(results, value) {
+            results.push(value);
+            return results;
+        }
+
+        var pushValue = recordValue.bind(null, []);
+
+        var tasks = [request.comment, request.people];
+        var promise = Promise.resolve();
+
+        for(var i =0;i< tasks.length;i++){
+            var task = tasks[i];
+            promise = promise.then(task).then(pushValue);
+        }
+
+        return promise;
+    }
+
+    main().then(function (value) {
+        console.log(value);
+    }).catch(function (error) {
+        console.error(error);
+    });
+</script>
+</html>

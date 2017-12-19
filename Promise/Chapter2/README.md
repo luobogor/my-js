@@ -1,3 +1,5 @@
+# 淡谈Promise
+
 #### Promise.resolve
 1. 将传递给它的参数填充（Fulfilled）到promise对象后并返回这个promise对象
 ````
