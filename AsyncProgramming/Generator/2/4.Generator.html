@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body></body>
+<script>
+    let draw = function (count) {
+        //具体抽奖逻辑
+        console.log(`剩余${count}次`);
+    };
+
+//    residue:剩余
+    let residue = function* (count) {
+        while (count > 0) {
+            count--;
+            yield draw(count);
+        }
+    };
+
+    //假设抽奖5次
+    let start = residue(5);
+    let btn = document.createElement('button');
+    btn.id = 'start';
+    btn.textContent = '抽奖';
+    document.body.appendChild(btn);
+    btn.addEventListener('click', function () {
+        start.next();
+    }, false);
+</script>
+</html>
