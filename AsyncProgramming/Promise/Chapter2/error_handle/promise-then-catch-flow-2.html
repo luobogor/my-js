@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body></body>
+<script>
+    function taskA() {
+        console.log("Task A");
+        throw new Error("throw Error @ Task A");
+    }
+
+    function taskB() {
+        console.log("Task B");
+        //1.throw抛出异常
+        throw new Error("throw Error @ Task B");
+//        2.用rejected的方式传递异常
+//        var retPromise = new Promise(function (resolve, reject) {
+//            // resolve or reject 的状态决定 onFulfilled or onRejected 的哪个方法会被调用
+//        });
+//        return retPromise;
+    }
+    function onRejected(error) {
+        console.log("Catch Error:A or B", error);
+    }
+    function finalTask() {
+        console.log("Final Task");
+    }
+    var promise = Promise.resolve();
+    promise
+        .then(taskA)
+        .then(taskB)
+        .catch(onRejected)
+        .then(finalTask);
+//    无论回调函数的执行的是resolve还是reject。链式调用都会继续执行下去，因为then方法返回的是一个Promise对象
+</script>
+</html>

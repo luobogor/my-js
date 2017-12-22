@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>jQueryPromise</title>
+    <script type="text/javascript" src="//cdn.bootcss.com/jquery/2.2.3/jquery.js"></script>
+</head>
+<body></body>
+<script>
+
+    //声明
+    function waitHandle() {
+        var dtd = $.Deferred();
+
+        var wait = function () {
+            var task = function () {
+                console.log('执行完成');
+                dtd.resolve();
+            };
+            setTimeout(task, 1000);
+            return dtd.promise()// 注意，这里返回的是 primise 而不是直接返回 deferred 对象;
+        };
+
+        return wait(dtd);
+    }
+
+    //调用
+    var w = waitHandle();//经过上面的改动，w 接收的就是一个 promise 对象
+    $.when(w)
+        .then(function () {
+        console.log('ok 1');
+    }, function () {
+        console.log('error 1');
+    }).then(function () {
+        console.log('ok 2');
+    }, function () {
+        console.log('error 2');
+    });
+
+    //    w.reject();返回的是promise对象，promise对象没有reject属性，不能这样在外部调用了。
+
+
+
+/*    返回promise的好处
+    上一节提到deferred对象有两组属性函数，而且提到应该把这两组彻底分开。现在通过上面一行代码的改动，就分开了。
+        - waitHandle函数内部，使用dtd.resolve()来该表状态，做主动的修改操作
+        - waitHandle最终返回promise对象，只能去被动监听变化（then函数），而不能去主动修改操作
+    一个“主动”一个“被动”，完全分开了。*/
+</script>
+</html>

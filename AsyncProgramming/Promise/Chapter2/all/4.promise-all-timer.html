@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>timerPromise并行</title>
+</head>
+<body>
+</body>
+<script>
+    function timerPromise(delay) {
+        return new Promise(function (resolve) {
+            setTimeout(function () {
+                console.log(delay);
+                resolve(delay);
+            }, delay);
+        });
+    }
+
+    var startDate = Date.now();
+
+    Promise.all([
+        timerPromise(1),
+        timerPromise(32),
+        timerPromise(64),
+        timerPromise(128),
+    ]).then(function (values) {
+        console.log(Date.now() - startDate + 'ms');
+        // 约128ms
+        console.log(values);    // [1,32,64,128]
+    })
+</script>
+</html>

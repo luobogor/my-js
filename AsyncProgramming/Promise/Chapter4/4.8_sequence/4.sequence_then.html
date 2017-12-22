@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>封装</title>
+</head>
+<body></body>
+<script src="./request.js"></script>
+<script>
+    //*******************************对上一节的功能进行封装
+    function sequenceTasks(tasks) {
+        function recordValue(results, value) {
+            results.push(value);
+            return results;
+        }
+        var pushValue = recordValue.bind(null, []);
+        return tasks.reduce(function (promise, task) {
+            return promise.then(task).then(pushValue);
+        },Promise.resolve());
+    }
+
+    function main() {
+        return sequenceTasks([request.comment,request.people]);
+    }
+
+    main().then(function (value) {
+        console.log(value);
+    }).catch(function (error) {
+        console.error(error);
+    });
+</script>
+</html>

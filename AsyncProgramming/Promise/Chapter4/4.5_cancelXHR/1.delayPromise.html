@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>使用Promise进行超时检验</title>
+</head>
+<body></body>
+<script>
+    //超时检验
+    //原理：利用Promise.race对比已经设置超时的Promise对象和当前执行的Promise对象。
+    //如果当前任务的执行时间比已经设置超时的Promise执行时间长，那么已经设置超时的Promise先执行，然后抛出超时异常
+    function delayPromise(ms) {
+        return new Promise(function (resolve) {
+            setTimeout(resolve, ms);
+        });
+    }
+
+    function timeoutPromise(promise, ms) {
+        var timeout = delayPromise(ms).then(function () {
+            throw new Error('Operation timed out after ' + ms + ' ms');
+        });
+        return Promise.race([promise, timeout]);
+    }
+
+    // 运行示例
+    var taskPromise = new Promise(function (resolve) {
+        // 随便一些什么处理
+        var delay = Math.random() * 2000;
+        //如果delay < 1000 最后会打印 "taskPromise在规定时间内结束 : " + value
+        //否则打印 "发生超时", error
+        setTimeout(function () {
+            resolve(delay + "ms");
+        }, delay);
+    });
+    timeoutPromise(taskPromise, 1000).then(function (value) {
+        console.log("taskPromise在规定时间内结束 : " + value);
+    }).catch(function (error) {
+        console.log("发生超时", error);
+    });
+</script>
+</html>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>使用多个then模仿Promise#all操作</title>
+</head>
+<body>
+</body>
+<script>
+    function getURL(URL) {
+        return new Promise(function (resolve, reject) {
+            var req = new XMLHttpRequest();
+            req.open('GET', URL, true);
+            req.onload = function () {
+                if (req.status === 200) {
+                    resolve(req.responseText);
+                } else {
+                    reject(new Error(req.statusText));
+                }
+            };
+            req.onerror = function () {
+                reject(new Error(req.statusText));
+            };
+            req.send();
+        });
+    }
+
+    var request = {
+        comment: function getComment() {
+            return getURL('http://azu.github.io/promises-book/json/comment.json').then(JSON.parse);
+        },
+        people: function getPeople() {
+            return getURL('http://azu.github.io/promises-book/json/people.json').then(JSON.parse);
+        }
+    };
+
+    function main() {
+        function recordValue(results, value) {
+            results.push(value);
+            return results;
+        }
+
+        //初始化results = []
+        var pushValue = recordValue.bind(null, []);
+        // 可以认为这种写法能转换为以下的写法
+        // var results = [];
+        //        function recordValue(value){
+        //            results.push(value);
+        //            return results;
+        //        }
+        return request.comment().then(pushValue).then(request.people).then(pushValue);
+    }
+
+    var startDate = Date.now();
+    main().then(function (value) {
+        console.log(Date.now() - startDate + 'ms');
+        console.log(value);
+    }).catch(function (error) {
+        console.error(error);
+    })
+</script>
+</html>

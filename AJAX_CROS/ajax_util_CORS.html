@@ -30,7 +30,7 @@
         var ins1 = new Obj(1, 2);
         var ins2 = {};
         util.extend(ins2, ins1);
-        console.log(ins2);//ins2不会继承prototypeField这个属性
+//        console.log(ins2);//ins2不会继承prototypeField这个属性
         // ************************************************
 
         util.json = function ajax(options) {
@@ -53,7 +53,7 @@
                 //XMLHttpRequest 代理已被创建， 但尚未调用 open() 方法。
 
                 //OPENED  1
-                //open() 方法已经被触发。在这个状态中，可以通过  setRequestHeader() 方法来设置请求的头部， 可以调用 send() 方法来发起请求。
+                //open() 方法已经被触发。在这个状态中，可以通过 setRequestHeader() 方法来设置请求的头部， 可以调用 send() 方法来发起请求。
 
                 //HEADERS_RECEIVED 2
                 //send() 方法已经被调用，响应头也已经被接收。(注意这里一定是收到响应头readyState才会变成2)
@@ -67,10 +67,16 @@
                 //实验情况是，1之后服务器会开始执行处理，处理完后，客户端变为2。接下来3(下载中； responseText 属性已经包含部分数据),4的变化都没有涉及到服务器端
                 //onreadystatechange 事件被触发 5 次（0 - 4），对应着 readyState 的每个变化。
 
+
+                //*******************xhr.status状态
+                // 0
+                //200
+
+
                 var xhr = XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');//兼容IE6,IE5；XHR IE7+,XHR2 IE 10+
 
                 //readyState UNSENT 0:请求未初始化
-                console.log('UNSENT', 'readyStatuds' + xhr.readyState, 'readyStatuds:' + xhr.status);
+                console.log('UNSENT', 'readyStatuds' + xhr.readyState, 'status:' + xhr.status);
 
                 xhr.onreadystatechange = function () {
                     // debugger;
@@ -97,10 +103,10 @@
 
                     //参数说明(requestMethod,url,true异步或false同步)
                     xhr.open(type, url.replace(/\?$/g, ''), true);
-                    console.log('OPENED:', 'readyStatuds' + xhr.readyState, 'readyStatuds:' + xhr.status);
+                    console.log('OPENED:', 'readyStatuds' + xhr.readyState, 'status:' + xhr.status);
                     xhr.send();
                     // debugger;
-                    console.log('SEND:', 'readyStatuds' + xhr.readyState, 'readyStatuds:' + xhr.status);
+                    console.log('SEND:', 'readyStatuds' + xhr.readyState, 'status:' + xhr.status);
                 }
 
                 if (type === 'POST') {
@@ -121,13 +127,12 @@
 
                 xhr.onprogress = function () {
                     //readyState LOADING  3
-                    console.log('LOADING:', 'readyStatuds' + xhr.readyState, 'readyStatuds:' + xhr.status);
+                    console.log('LOADING:', 'readyStatuds' + xhr.readyState, 'status:' + xhr.status);
                 };
-
 
                 xhr.onload = function () {
                     //readyState LOADING  4
-                    console.log('DONE:', 'readyStatuds' + xhr.readyState, 'readyStatuds:' + xhr.status);
+                    console.log('DONE:', 'readyStatuds' + xhr.readyState, 'status:' + xhr.status);
                     var res;
                     res = xhr.responseText;
                     //304：服务器告诉浏览器资源未修改过，可以用缓存
@@ -151,9 +156,12 @@
                 //    }
                 //};
 
+                //触发onerror的情况
+                //请求一个无效url比如
                 xhr.onerror = function () {
-                    console.log('xhr onerror');
+                    console.error('xhr onerror');
                 }
+
             }
         };
 
@@ -163,11 +171,11 @@
         util.json({
             type: 'GET',
             url: 'http://localhost:8081/user/test',
-            data: {sendData: 'jinzhan.ye@uworks-gd.cc'},
+            data: {sendData: 'I am send data'},
             success: function (res) {
                 //如果回调写的是opt.success.call(xhr, res)，那么this是xhr对象
                 //如果回调写的是opt.success(res)，那么this是当前对象
-                getResponseHeader(this);
+//                getResponseHeader(this);
                 console.log('successCallback:' + res);
             },
             error: function (res) {

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>统一返回异步调用</title>
+</head>
+<body></body>
+</html>
+<script>
+    //1.原始版，将同步方法与异步方法混写。bdy style
+    //    function onReady(fn) {
+    //        var readyState = document.readyState;
+    //        if(readyState === 'interactive' || readyState=== 'complete'){
+    //            fn();
+    //        }else {
+    //            window.addEventListener('DOMContentLoaded', fn);
+    //        }
+    //    }
+    //
+    //    onReady(function () {
+    //        console.log('DOM fully loaded and parsed');
+    //    });
+    //
+    //    console.log('==Starting==');
+
+//    原始版的功能：
+//    如果在调用onReady之前DOM已经载入的话
+//    对回调函数进行同步调用
+//
+//    如果在调用onReady之前DOM还没有载入的话
+//    通过注册 DOMContentLoaded 事件监听器来对回调函数进行异步调用
+//
+//    因此，如果这段代码在源文件中出现的位置不同，在控制台上打印的log消息顺序也会不同。
+//
+//    为了解决这个问题，我们可以选择统一使用异步调用的方式。
+
+    //*****以下onReady方法返回的都是异步调用，而不像原始版的既返回异步调用又返回同步调用。
+    //2.一次改进,利用setTimeout改进
+    //    function onReady(fn) {
+    //        var readyState = document.readyState;
+    //        if (readyState === 'interactive' || readyState === 'complete') {
+    //            setTimeout(fn, 0);
+    //        } else {
+    //            window.addEventListener('DOMContentLoaded', fn);
+    //        }
+    //    }
+    //    onReady(function () {
+    //        console.log('DOM fully loaded and parsed');
+    //    });
+    //    console.log('==Starting==');
+
+    //3.二次改进，利用Promise改进
+    function onReadyPromise() {
+        return new Promise(function (resolve, reject) {
+            var readyState = document.readyState;
+           if (readyState === 'interactive' || readyState === 'complete') {
+               resolve();
+           }else {
+               window.addEventListener('DOMContentLoaded', resolve);
+           }
+        })
+
+    }
+
+    onReadyPromise().then(function () {
+        console.log('DOM fully loaded and parsed');
+    });
+    console.log('==Starting==');
+</script>

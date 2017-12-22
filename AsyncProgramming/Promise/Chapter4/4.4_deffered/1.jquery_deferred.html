@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>jQueryDeferred</title>
+    <script type="text/javascript" src="//cdn.bootcss.com/jquery/2.2.3/jquery.js"></script>
+</head>
+<body></body>
+<script>
+    //    var wait = function () {
+    //        var task = function () {
+    //            console.log('执行完成');
+    //        };
+    //        setTimeout(task, 2000);
+    //    };
+    //    wait();
+
+    //声明
+    function waitHandle() {
+        var dtd = $.Deferred();
+
+        var wait = function () {
+            var task = function () {
+                console.log('执行完成');
+                dtd.resolve();
+            };
+            setTimeout(task, 1000);
+            return dtd;
+        };
+
+        return wait(dtd);
+    }
+
+    //调用
+    var w = waitHandle();//waitHandle函数最终返回一个deferred对象,不是promise对象
+    w.then(function () {
+        console.log('ok 1');
+    }, function () {
+        console.log('error 1');
+    }).then(function () {
+        console.log('ok 2');
+    }, function () {
+        console.log('error 2');
+    });
+
+//    w.reject();
+</script>
+</html>
