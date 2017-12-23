@@ -33,6 +33,7 @@
             ]);
             console.log(myFirstRouter);
 
+            //路由改变化进行替换DOM操作
             function changePage(currentHash) {
                 let view = document.getElementById('view');
                 if (currentHash === '/') {
@@ -55,7 +56,6 @@
                 let currentHash = window.location.hash.substr(1);
                 changePage(currentHash);
             };
-
 
             //首次加载手动触发#root
             window.history.pushState(null, '', '#root');
