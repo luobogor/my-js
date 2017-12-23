@@ -39,3 +39,7 @@
         console.log('ownKeys:', item, obj[item]);
     });
 }
+
+{
+
+}

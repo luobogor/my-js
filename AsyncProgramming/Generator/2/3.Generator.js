@@ -70,6 +70,24 @@
     // console.log(status.next());
 }
 
+{
+    console.log("*****************************part5:yield*进行Generator嵌套");
+
+    function* G1() {
+        yield 'a';
+        yield* G2();
+        yield 'b';
+    }
+
+    function* G2() {
+        yield 'x';
+        yield 'y';
+    }
+
+    for (let item of G1()) {
+        console.log(item);
+    }
+}
 
 {
     console.log("*****************************part5:Generator作长轮询使用");
@@ -80,7 +98,8 @@
         yield new Promise(function (resolve, reject) {
             setTimeout(function () {
                 //模拟服务器返回数据
-                resolve({code: 1});
+                // resolve({code: 1});
+                resolve({code: 0});
             }, 200);
         });
         // yield 1;

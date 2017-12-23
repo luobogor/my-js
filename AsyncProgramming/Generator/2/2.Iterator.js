@@ -2,7 +2,7 @@
 {
     console.log("*****************************part1");
     let arr = ['helloGIt', 'helloWorld'];
-    let map = arr[Symbol.iterator]();
+    let map = arr[Symbol.iterator]();// 通过执行 [Symbol.iterator] 的属性值（函数）来返回一个 iterator 对象
     console.log(map.next());
     console.log(map.next());
     console.log(map.next());
@@ -15,7 +15,6 @@
         console.log(key);
     }
 }
-
 
 {
     console.log("*****************************part3:自定义Iterator,按顺序遍历对象里的数组");
