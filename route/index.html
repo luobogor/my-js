@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Router</title>
+    <style>
+        #view {
+
+        }
+    </style>
+    <script>
+        window.onload = function () {
+            let Router = function (name, routes) {
+                return {
+                    name,
+                    routes
+                };
+            };
+
+            let myFirstRouter = new Router('myFirstRouter', [
+                {
+                    path: 'root',
+                    name: 'Root'
+                },
+                {
+                    path: 'contact',
+                    name: '/Contact'
+                },
+                {
+                    path: 'about',
+                    name: 'About'
+                },
+            ]);
+            console.log(myFirstRouter);
+
+            function changePage(currentHash) {
+                let view = document.getElementById('view');
+                if (currentHash === '/') {
+                    view.innerHTML = 'You are in the root page';
+                } else {
+                    let route = myFirstRouter.routes.filter((r) => {
+                        return r.path === currentHash;
+                    })[0];
+                    if (route) {
+                        view.innerHTML = 'You are in the ' + route.name + ' path';
+                    } else {
+                        view.innerHTML = '404!';
+                    }
+                }
+            }
+            // add event listeners
+            //页面首次加载不会触发hashChange
+            window.onhashchange= function () {
+                //判断当前路由
+                let currentHash = window.location.hash.substr(1);
+                changePage(currentHash);
+            };
+
+
+            //首次加载手动触发#root
+            window.history.pushState(null, '', '#root');
+            changePage('root');
+        }
+    </script>
+</head>
+<body>
+<h3>Simple router</h3>
+<div id="view"></div>
+<a href="/#root">Root</a>
+<a href="/#about">About</a>
+<a href="/#contact">Contact</a>
+</body>
+</html>
