@@ -19,5 +19,5 @@
  ````
  
 - 常用content-type
-
+- statusText字段，比如status 200对应statusText:"OK"
 - 推荐https://segmentfault.com/a/1190000004322487

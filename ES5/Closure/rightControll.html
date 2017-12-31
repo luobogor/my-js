@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>闭包实际应用中主要用于封闭变量，收敛权限</title>
+</head>
+<body>
+</body>
+<script>
+    function isFirstLoad() {
+        var _list = [];
+        return function (id) {
+            if (_list.indexOf(id) >= 0) {
+                return false;
+            }else {
+                _list.push(id);
+                return true;
+            }
+        }
+    }
+
+    var firstLoad = isFirstLoad();//firstLoad无法访问_list变量
+    console.log(firstLoad(10));//true
+    console.log(firstLoad(10));//false
+    console.log(firstLoad(20));//true
+</script>
+</html>

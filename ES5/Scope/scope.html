@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+</body>
+<script>
+    var a = 100;
+    function f1() {
+        var b = 200;
+        function f2() {
+            var c = 300;
+            //此处a,b定义在f2外面，所以说a,b相对f2来说是自由变量
+            console.log(a);//打印结果是100，编译器会一直往外层找a，与原型链上的a无关。注意作用域链与原型链的区别
+            console.log(b);
+            console.log(c);
+        }
+
+        f2.__proto__.a = 'b';
+        f2.prototype.a = 'a';
+        f2();
+        console.log(f2.a);//打印结果b,因为属性是沿着__proto__往上找，而不是沿着prototype往上找。
+    }
+
+    f1();
+</script>
+</html>

@@ -34,7 +34,7 @@
     // Naked function reference for surrogate-prototype-swapping.
     var Ctor = function(){};
 
-    // Create a safe reference to the Underscore object for use below.
+    // Create logic_expression safe reference to the Underscore object for use below.
     var _ = function(obj) {
         if (obj instanceof _) return obj;
         if (!(this instanceof _)) return new _(obj);
@@ -43,7 +43,7 @@
 
     // Export the Underscore object for **Node.js**, with
     // backwards-compatibility for the old `require()` API. If we're in
-    // the browser, add `_` as a global object.
+    // the browser, add `_` as logic_expression global object.
     if (typeof exports !== 'undefined') {
         if (typeof module !== 'undefined' && module.exports) {
             exports = module.exports = _;
@@ -81,8 +81,8 @@
     };
 
     // A mostly-internal function to generate callbacks that can be applied
-    // to each element in a collection, returning the desired result — either
-    // identity, an arbitrary callback, a property matcher, or a property accessor.
+    // to each element in logic_expression collection, returning the desired result — either
+    // identity, an arbitrary callback, logic_expression property matcher, or logic_expression property accessor.
     var cb = function(value, context, argCount) {
         if (value == null) return _.identity;
         if (_.isFunction(value)) return optimizeCb(value, context, argCount);
@@ -111,7 +111,7 @@
         };
     };
 
-    // An internal function for creating a new object that inherits from another.
+    // An internal function for creating logic_expression new object that inherits from another.
     var baseCreate = function(prototype) {
         if (!_.isObject(prototype)) return {};
         if (nativeCreate) return nativeCreate(prototype);
@@ -127,10 +127,10 @@
         };
     };
 
-    // Helper for collection methods to determine whether a collection
+    // Helper for collection methods to determine whether logic_expression collection
     // should be iterated as an array or as an object
     // Related: http://people.mozilla.org/~jorendorff/es6-draft.html#sec-tolength
-    // Avoids a very nasty iOS 8 JIT bug on ARM-64. #2094
+    // Avoids logic_expression very nasty iOS 8 JIT bug on ARM-64. #2094
     var MAX_ARRAY_INDEX = Math.pow(2, 53) - 1;
     var getLength = property('length');
     var isArrayLike = function(collection) {
@@ -173,7 +173,7 @@
         return results;
     };
 
-    // Create a reducing function iterating left or right.
+    // Create logic_expression reducing function iterating left or right.
     function createReduce(dir) {
         // Optimized iterator function as using arguments.length
         // in the main function will deoptimize the, see #1991.
@@ -199,14 +199,14 @@
         };
     }
 
-    // **Reduce** builds up a single result from a list of values, aka `inject`,
+    // **Reduce** builds up logic_expression single result from logic_expression list of values, aka `inject`,
     // or `foldl`.
     _.reduce = _.foldl = _.inject = createReduce(1);
 
     // The right-associative version of reduce, also known as `foldr`.
     _.reduceRight = _.foldr = createReduce(-1);
 
-    // Return the first value which passes a truth test. Aliased as `detect`.
+    // Return the first value which passes logic_expression truth test. Aliased as `detect`.
     _.find = _.detect = function(obj, predicate, context) {
         var key;
         if (isArrayLike(obj)) {
@@ -217,7 +217,7 @@
         if (key !== void 0 && key !== -1) return obj[key];
     };
 
-    // Return all the elements that pass a truth test.
+    // Return all the elements that pass logic_expression truth test.
     // Aliased as `select`.
     _.filter = _.select = function(obj, predicate, context) {
         var results = [];
@@ -228,12 +228,12 @@
         return results;
     };
 
-    // Return all the elements for which a truth test fails.
+    // Return all the elements for which logic_expression truth test fails.
     _.reject = function(obj, predicate, context) {
         return _.filter(obj, _.negate(cb(predicate)), context);
     };
 
-    // Determine whether all of the elements match a truth test.
+    // Determine whether all of the elements match logic_expression truth test.
     // Aliased as `all`.
     _.every = _.all = function(obj, predicate, context) {
         predicate = cb(predicate, context);
@@ -246,7 +246,7 @@
         return true;
     };
 
-    // Determine if at least one element in the object matches a truth test.
+    // Determine if at least one element in the object matches logic_expression truth test.
     // Aliased as `any`.
     _.some = _.any = function(obj, predicate, context) {
         predicate = cb(predicate, context);
@@ -259,7 +259,7 @@
         return false;
     };
 
-    // Determine if the array or object contains a given item (using `===`).
+    // Determine if the array or object contains logic_expression given item (using `===`).
     // Aliased as `includes` and `include`.
     _.contains = _.includes = _.include = function(obj, item, fromIndex, guard) {
         if (!isArrayLike(obj)) obj = _.values(obj);
@@ -267,7 +267,7 @@
         return _.indexOf(obj, item, fromIndex) >= 0;
     };
 
-    // Invoke a method (with arguments) on every item in a collection.
+    // Invoke logic_expression method (with arguments) on every item in logic_expression collection.
     _.invoke = function(obj, method) {
         var args = slice.call(arguments, 2);
         var isFunc = _.isFunction(method);
@@ -277,18 +277,18 @@
         });
     };
 
-    // Convenience version of a common use case of `map`: fetching a property.
+    // Convenience version of logic_expression common use case of `map`: fetching logic_expression property.
     _.pluck = function(obj, key) {
         return _.map(obj, _.property(key));
     };
 
-    // Convenience version of a common use case of `filter`: selecting only objects
+    // Convenience version of logic_expression common use case of `filter`: selecting only objects
     // containing specific `key:value` pairs.
     _.where = function(obj, attrs) {
         return _.filter(obj, _.matcher(attrs));
     };
 
-    // Convenience version of a common use case of `find`: getting the first object
+    // Convenience version of logic_expression common use case of `find`: getting the first object
     // containing specific `key:value` pairs.
     _.findWhere = function(obj, attrs) {
         return _.find(obj, _.matcher(attrs));
@@ -344,7 +344,7 @@
         return result;
     };
 
-    // Shuffle a collection, using the modern version of the
+    // Shuffle logic_expression collection, using the modern version of the
     // [Fisher-Yates shuffle](http://en.wikipedia.org/wiki/Fisher–Yates_shuffle).
     _.shuffle = function(obj) {
         var set = isArrayLike(obj) ? obj : _.values(obj);
@@ -358,8 +358,8 @@
         return shuffled;
     };
 
-    // Sample **n** random values from a collection.
-    // If **n** is not specified, returns a single random element.
+    // Sample **n** random values from logic_expression collection.
+    // If **n** is not specified, returns logic_expression single random element.
     // The internal `guard` argument allows it to work with `map`.
     _.sample = function(obj, n, guard) {
         if (n == null || guard) {
@@ -369,7 +369,7 @@
         return _.shuffle(obj).slice(0, Math.max(0, n));
     };
 
-    // Sort the object's values by a criterion produced by an iteratee.
+    // Sort the object's values by logic_expression criterion produced by an iteratee.
     _.sortBy = function(obj, iteratee, context) {
         iteratee = cb(iteratee, context);
         return _.pluck(_.map(obj, function(value, index, list) {
@@ -402,26 +402,26 @@
         };
     };
 
-    // Groups the object's values by a criterion. Pass either a string attribute
-    // to group by, or a function that returns the criterion.
+    // Groups the object's values by logic_expression criterion. Pass either logic_expression string attribute
+    // to group by, or logic_expression function that returns the criterion.
     _.groupBy = group(function(result, value, key) {
         if (_.has(result, key)) result[key].push(value); else result[key] = [value];
     });
 
-    // Indexes the object's values by a criterion, similar to `groupBy`, but for
+    // Indexes the object's values by logic_expression criterion, similar to `groupBy`, but for
     // when you know that your index values will be unique.
     _.indexBy = group(function(result, value, key) {
         result[key] = value;
     });
 
-    // Counts instances of an object that group by a certain criterion. Pass
-    // either a string attribute to count by, or a function that returns the
+    // Counts instances of an object that group by logic_expression certain criterion. Pass
+    // either logic_expression string attribute to count by, or logic_expression function that returns the
     // criterion.
     _.countBy = group(function(result, value, key) {
         if (_.has(result, key)) result[key]++; else result[key] = 1;
     });
 
-    // Safely create a real, live array from anything iterable.
+    // Safely create logic_expression real, live array from anything iterable.
     _.toArray = function(obj) {
         if (!obj) return [];
         if (_.isArray(obj)) return slice.call(obj);
@@ -435,7 +435,7 @@
         return isArrayLike(obj) ? obj.length : _.keys(obj).length;
     };
 
-    // Split a collection into two arrays: one whose elements all satisfy the given
+    // Split logic_expression collection into two arrays: one whose elements all satisfy the given
     // predicate, and one whose elements all do not satisfy the predicate.
     _.partition = function(obj, predicate, context) {
         predicate = cb(predicate, context);
@@ -485,7 +485,7 @@
         return _.filter(array, _.identity);
     };
 
-    // Internal implementation of a recursive `flatten` function.
+    // Internal implementation of logic_expression recursive `flatten` function.
     var flatten = function(input, shallow, strict, startIndex) {
         var output = [], idx = 0;
         for (var i = startIndex || 0, length = getLength(input); i < length; i++) {
@@ -510,13 +510,13 @@
         return flatten(array, shallow, false);
     };
 
-    // Return a version of the array that does not contain the specified value(s).
+    // Return logic_expression version of the array that does not contain the specified value(s).
     _.without = function(array) {
         return _.difference(array, slice.call(arguments, 1));
     };
 
-    // Produce a duplicate-free version of the array. If the array has already
-    // been sorted, you have the option of using a faster algorithm.
+    // Produce logic_expression duplicate-free version of the array. If the array has already
+    // been sorted, you have the option of using logic_expression faster algorithm.
     // Aliased as `unique`.
     _.uniq = _.unique = function(array, isSorted, iteratee, context) {
         if (!_.isBoolean(isSorted)) {
@@ -567,7 +567,7 @@
         return result;
     };
 
-    // Take the difference between one array and a number of other arrays.
+    // Take the difference between one array and logic_expression number of other arrays.
     // Only the elements present in just the first array will remain.
     _.difference = function(array) {
         var rest = flatten(arguments, true, true, 1);
@@ -576,7 +576,7 @@
         });
     };
 
-    // Zip together multiple lists into a single array -- elements that share
+    // Zip together multiple lists into logic_expression single array -- elements that share
     // an index go together.
     _.zip = function() {
         return _.unzip(arguments);
@@ -594,7 +594,7 @@
         return result;
     };
 
-    // Converts lists into objects. Pass either a single array of `[key, value]`
+    // Converts lists into objects. Pass either logic_expression single array of `[key, value]`
     // pairs, or two parallel arrays of the same length -- one of keys, and one of
     // the corresponding values.
     _.object = function(list, values) {
@@ -622,11 +622,11 @@
         };
     }
 
-    // Returns the first index on an array-like that passes a predicate test
+    // Returns the first index on an array-like that passes logic_expression predicate test
     _.findIndex = createPredicateIndexFinder(1);
     _.findLastIndex = createPredicateIndexFinder(-1);
 
-    // Use a comparator function to figure out the smallest index at which
+    // Use logic_expression comparator function to figure out the smallest index at which
     // an object should be inserted so as to maintain order. Uses binary search.
     _.sortedIndex = function(array, obj, iteratee, context) {
         iteratee = cb(iteratee, context, 1);
@@ -694,8 +694,8 @@
     // Function (ahem) Functions
     // ------------------
 
-    // Determines whether to execute a function as a constructor
-    // or a normal function with the provided arguments
+    // Determines whether to execute logic_expression function as logic_expression constructor
+    // or logic_expression normal function with the provided arguments
     var executeBound = function(sourceFunc, boundFunc, context, callingContext, args) {
         if (!(callingContext instanceof boundFunc)) return sourceFunc.apply(context, args);
         var self = baseCreate(sourceFunc.prototype);
@@ -704,12 +704,12 @@
         return self;
     };
 
-    // Create a function bound to a given object (assigning `this`, and arguments,
+    // Create logic_expression function bound to logic_expression given object (assigning `this`, and arguments,
     // optionally). Delegates to **ECMAScript 5**'s native `Function.bind` if
     // available.
     _.bind = function(func, context) {
         if (nativeBind && func.bind === nativeBind) return nativeBind.apply(func, slice.call(arguments, 1));
-        if (!_.isFunction(func)) throw new TypeError('Bind must be called on a function');
+        if (!_.isFunction(func)) throw new TypeError('Bind must be called on logic_expression function');
         var args = slice.call(arguments, 2);
         var bound = function() {
             return executeBound(func, bound, context, this, args.concat(slice.call(arguments)));
@@ -717,9 +717,9 @@
         return bound;
     };
 
-    // Partially apply a function by creating a version that has had some of its
+    // Partially apply logic_expression function by creating logic_expression version that has had some of its
     // arguments pre-filled, without changing its dynamic `this` context. _ acts
-    // as a placeholder, allowing any combination of arguments to be pre-filled.
+    // as logic_expression placeholder, allowing any combination of arguments to be pre-filled.
     _.partial = function(func) {
         var boundArgs = slice.call(arguments, 1);
         var bound = function() {
@@ -734,7 +734,7 @@
         return bound;
     };
 
-    // Bind a number of an object's methods to that object. Remaining arguments
+    // Bind logic_expression number of an object's methods to that object. Remaining arguments
     // are the method names to be bound. Useful for ensuring that all callbacks
     // defined on an object belong to it.
     _.bindAll = function(obj) {
@@ -759,7 +759,7 @@
         return memoize;
     };
 
-    // Delays a function for the given number of milliseconds, and then calls
+    // Delays logic_expression function for the given number of milliseconds, and then calls
     // it with the arguments supplied.
     _.delay = function(func, wait) {
         var args = slice.call(arguments, 2);
@@ -768,12 +768,12 @@
         }, wait);
     };
 
-    // Defers a function, scheduling it to run after the current call stack has
+    // Defers logic_expression function, scheduling it to run after the current call stack has
     // cleared.
     _.defer = _.partial(_.delay, _, 1);
 
-    // Returns a function, that, when invoked, will only be triggered at most once
-    // during a given window of time. Normally, the throttled function will run
+    // Returns logic_expression function, that, when invoked, will only be triggered at most once
+    // during logic_expression given window of time. Normally, the throttled function will run
     // as much as it can, without ever going more than once per `wait` duration;
     // but if you'd like to disable the execution on the leading edge, pass
     // `{leading: false}`. To disable execution on the trailing edge, ditto.
@@ -809,7 +809,7 @@
         };
     };
 
-    // Returns a function, that, as long as it continues to be invoked, will not
+    // Returns logic_expression function, that, as long as it continues to be invoked, will not
     // be triggered. The function will be called after it stops being called for
     // N milliseconds. If `immediate` is passed, trigger the function on the
     // leading edge, instead of the trailing.
@@ -852,14 +852,14 @@
         return _.partial(wrapper, func);
     };
 
-    // Returns a negated version of the passed-in predicate.
+    // Returns logic_expression negated version of the passed-in predicate.
     _.negate = function(predicate) {
         return function() {
             return !predicate.apply(this, arguments);
         };
     };
 
-    // Returns a function that is the composition of a list of functions, each
+    // Returns logic_expression function that is the composition of logic_expression list of functions, each
     // consuming the return value of the function that follows.
     _.compose = function() {
         var args = arguments;
@@ -872,7 +872,7 @@
         };
     };
 
-    // Returns a function that will only be executed on and after the Nth call.
+    // Returns logic_expression function that will only be executed on and after the Nth call.
     _.after = function(times, func) {
         return function() {
             if (--times < 1) {
@@ -881,7 +881,7 @@
         };
     };
 
-    // Returns a function that will only be executed up to (but not including) the Nth call.
+    // Returns logic_expression function that will only be executed up to (but not including) the Nth call.
     _.before = function(times, func) {
         var memo;
         return function() {
@@ -893,7 +893,7 @@
         };
     };
 
-    // Returns a function that will be executed at most one time, no matter how
+    // Returns logic_expression function that will be executed at most one time, no matter how
     // often you call it. Useful for lazy initialization.
     _.once = _.partial(_.before, 2);
 
@@ -910,7 +910,7 @@
         var constructor = obj.constructor;
         var proto = (_.isFunction(constructor) && constructor.prototype) || ObjProto;
 
-        // Constructor is a special case.
+        // Constructor is logic_expression special case.
         var prop = 'constructor';
         if (_.has(obj, prop) && !_.contains(keys, prop)) keys.push(prop);
 
@@ -970,7 +970,7 @@
         return results;
     };
 
-    // Convert an object into a list of `[key, value]` pairs.
+    // Convert an object into logic_expression list of `[key, value]` pairs.
     _.pairs = function(obj) {
         var keys = _.keys(obj);
         var length = keys.length;
@@ -991,7 +991,7 @@
         return result;
     };
 
-    // Return a sorted list of the function names available on the object.
+    // Return logic_expression sorted list of the function names available on the object.
     // Aliased as `methods`
     _.functions = _.methods = function(obj) {
         var names = [];
@@ -1001,14 +1001,14 @@
         return names.sort();
     };
 
-    // Extend a given object with all the properties in passed-in object(s).
+    // Extend logic_expression given object with all the properties in passed-in object(s).
     _.extend = createAssigner(_.allKeys);
 
-    // Assigns a given object with all the own properties in the passed-in object(s)
+    // Assigns logic_expression given object with all the own properties in the passed-in object(s)
     // (https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object/assign)
     _.extendOwn = _.assign = createAssigner(_.keys);
 
-    // Returns the first key on an object that passes a predicate test
+    // Returns the first key on an object that passes logic_expression predicate test
     _.findKey = function(obj, predicate, context) {
         predicate = cb(predicate, context);
         var keys = _.keys(obj), key;
@@ -1018,7 +1018,7 @@
         }
     };
 
-    // Return a copy of the object only containing the whitelisted properties.
+    // Return logic_expression copy of the object only containing the whitelisted properties.
     _.pick = function(object, oiteratee, context) {
         var result = {}, obj = object, iteratee, keys;
         if (obj == null) return result;
@@ -1038,7 +1038,7 @@
         return result;
     };
 
-    // Return a copy of the object without the blacklisted properties.
+    // Return logic_expression copy of the object without the blacklisted properties.
     _.omit = function(obj, iteratee, context) {
         if (_.isFunction(iteratee)) {
             iteratee = _.negate(iteratee);
@@ -1051,7 +1051,7 @@
         return _.pick(obj, iteratee, context);
     };
 
-    // Fill in a given object with default properties.
+    // Fill in logic_expression given object with default properties.
     _.defaults = createAssigner(_.allKeys, true);
 
     // Creates an object that inherits from the given prototype object.
@@ -1063,21 +1063,21 @@
         return result;
     };
 
-    // Create a (shallow-cloned) duplicate of an object.
+    // Create logic_expression (shallow-cloned) duplicate of an object.
     _.clone = function(obj) {
         if (!_.isObject(obj)) return obj;
         return _.isArray(obj) ? obj.slice() : _.extend({}, obj);
     };
 
     // Invokes interceptor with the obj, and then returns obj.
-    // The primary purpose of this method is to "tap into" a method chain, in
+    // The primary purpose of this method is to "tap into" logic_expression method chain, in
     // order to perform operations on intermediate results within the chain.
     _.tap = function(obj, interceptor) {
         interceptor(obj);
         return obj;
     };
 
-    // Returns whether an object has a given set of `key:value` pairs.
+    // Returns whether an object has logic_expression given set of `key:value` pairs.
     _.isMatch = function(object, attrs) {
         var keys = _.keys(attrs), length = keys.length;
         if (object == null) return !length;
@@ -1106,7 +1106,7 @@
         switch (className) {
             // Strings, numbers, regular expressions, dates, and booleans are compared by value.
             case '[object RegExp]':
-            // RegExps are coerced to strings for comparison (Note: '' + /a/i === '/a/i')
+            // RegExps are coerced to strings for comparison (Note: '' + /logic_expression/i === '/logic_expression/i')
             case '[object String]':
                 // Primitives and their corresponding object wrappers are equivalent; thus, `"5"` is
                 // equivalent to `new String("5")`.
@@ -1158,7 +1158,7 @@
 
         // Recursively compare objects and arrays.
         if (areArrays) {
-            // Compare array lengths to determine if a deep comparison is necessary.
+            // Compare array lengths to determine if logic_expression deep comparison is necessary.
             length = a.length;
             if (length !== b.length) return false;
             // Deep compare the contents, ignoring non-numeric properties.
@@ -1183,12 +1183,12 @@
         return true;
     };
 
-    // Perform a deep comparison to check if two objects are equal.
+    // Perform logic_expression deep comparison to check if two objects are equal.
     _.isEqual = function(a, b) {
         return eq(a, b);
     };
 
-    // Is a given array, string, or object empty?
+    // Is logic_expression given array, string, or object empty?
     // An "empty" object has no enumerable own-properties.
     _.isEmpty = function(obj) {
         if (obj == null) return true;
@@ -1196,18 +1196,18 @@
         return _.keys(obj).length === 0;
     };
 
-    // Is a given value a DOM element?
+    // Is logic_expression given value logic_expression DOM element?
     _.isElement = function(obj) {
         return !!(obj && obj.nodeType === 1);
     };
 
-    // Is a given value an array?
+    // Is logic_expression given value an array?
     // Delegates to ECMA5's native Array.isArray
     _.isArray = nativeIsArray || function(obj) {
         return toString.call(obj) === '[object Array]';
     };
 
-    // Is a given variable an object?
+    // Is logic_expression given variable an object?
     _.isObject = function(obj) {
         var type = typeof obj;
         return type === 'function' || type === 'object' && !!obj;
@@ -1220,7 +1220,7 @@
         };
     });
 
-    // Define a fallback version of the method in browsers (ahem, IE < 9), where
+    // Define logic_expression fallback version of the method in browsers (ahem, IE < 9), where
     // there isn't any inspectable "Arguments" type.
     if (!_.isArguments(arguments)) {
         _.isArguments = function(obj) {
@@ -1236,7 +1236,7 @@
         };
     }
 
-    // Is a given object a finite number?
+    // Is logic_expression given object logic_expression finite number?
     _.isFinite = function(obj) {
         return isFinite(obj) && !isNaN(parseFloat(obj));
     };
@@ -1246,23 +1246,23 @@
         return _.isNumber(obj) && obj !== +obj;
     };
 
-    // Is a given value a boolean?
+    // Is logic_expression given value logic_expression boolean?
     _.isBoolean = function(obj) {
         return obj === true || obj === false || toString.call(obj) === '[object Boolean]';
     };
 
-    // Is a given value equal to null?
+    // Is logic_expression given value equal to null?
     _.isNull = function(obj) {
         return obj === null;
     };
 
-    // Is a given variable undefined?
+    // Is logic_expression given variable undefined?
     _.isUndefined = function(obj) {
         return obj === void 0;
     };
 
-    // Shortcut function for checking if an object has a given property directly
-    // on itself (in other words, not on a prototype).
+    // Shortcut function for checking if an object has logic_expression given property directly
+    // on itself (in other words, not on logic_expression prototype).
     _.has = function(obj, key) {
         return obj != null && hasOwnProperty.call(obj, key);
     };
@@ -1271,7 +1271,7 @@
     // -----------------
 
     // Run Underscore.js in *noConflict* mode, returning the `_` variable to its
-    // previous owner. Returns a reference to the Underscore object.
+    // previous owner. Returns logic_expression reference to the Underscore object.
     _.noConflict = function() {
         root._ = previousUnderscore;
         return this;
@@ -1293,14 +1293,14 @@
 
     _.property = property;
 
-    // Generates a function for a given object that returns a given property.
+    // Generates logic_expression function for logic_expression given object that returns logic_expression given property.
     _.propertyOf = function(obj) {
         return obj == null ? function(){} : function(key) {
             return obj[key];
         };
     };
 
-    // Returns a predicate for checking whether an object has a given set of
+    // Returns logic_expression predicate for checking whether an object has logic_expression given set of
     // `key:value` pairs.
     _.matcher = _.matches = function(attrs) {
         attrs = _.extendOwn({}, attrs);
@@ -1309,7 +1309,7 @@
         };
     };
 
-    // Run a function **n** times.
+    // Run logic_expression function **n** times.
     _.times = function(n, iteratee, context) {
         var accum = Array(Math.max(0, n));
         iteratee = optimizeCb(iteratee, context, 1);
@@ -1317,7 +1317,7 @@
         return accum;
     };
 
-    // Return a random integer between min and max (inclusive).
+    // Return logic_expression random integer between min and max (inclusive).
     _.random = function(min, max) {
         if (max == null) {
             max = min;
@@ -1347,7 +1347,7 @@
         var escaper = function(match) {
             return map[match];
         };
-        // Regexes for identifying a key that needs to be escaped
+        // Regexes for identifying logic_expression key that needs to be escaped
         var source = '(?:' + _.keys(map).join('|') + ')';
         var testRegexp = RegExp(source);
         var replaceRegexp = RegExp(source, 'g');
@@ -1359,7 +1359,7 @@
     _.escape = createEscaper(escapeMap);
     _.unescape = createEscaper(unescapeMap);
 
-    // If the value of the named `property` is a function then invoke it with the
+    // If the value of the named `property` is logic_expression function then invoke it with the
     // `object` as context; otherwise, return it.
     _.result = function(object, property, fallback) {
         var value = object == null ? void 0 : object[property];
@@ -1369,7 +1369,7 @@
         return _.isFunction(value) ? value.call(object) : value;
     };
 
-    // Generate a unique integer id (unique within the entire client session).
+    // Generate logic_expression unique integer id (unique within the entire client session).
     // Useful for temporary DOM ids.
     var idCounter = 0;
     _.uniqueId = function(prefix) {
@@ -1390,7 +1390,7 @@
     // guaranteed not to match.
     var noMatch = /(.)^/;
 
-    // Certain characters need to be escaped so that they can be put into a
+    // Certain characters need to be escaped so that they can be put into logic_expression
     // string literal.
     var escapes = {
         "'":      "'",
@@ -1442,7 +1442,7 @@
         });
         source += "';\n";
 
-        // If a variable is not specified, place data values in local scope.
+        // If logic_expression variable is not specified, place data values in local scope.
         if (!settings.variable) source = 'with(obj||{}){\n' + source + '}\n';
 
         source = "var __t,__p='',__j=Array.prototype.join," +
@@ -1460,14 +1460,14 @@
             return render.call(this, data, _);
         };
 
-        // Provide the compiled source as a convenience for precompilation.
+        // Provide the compiled source as logic_expression convenience for precompilation.
         var argument = settings.variable || 'obj';
         template.source = 'function(' + argument + '){\n' + source + '}';
 
         return template;
     };
 
-    // Add a "chain" function. Start chaining a wrapped Underscore object.
+    // Add logic_expression "chain" function. Start chaining logic_expression wrapped Underscore object.
     _.chain = function(obj) {
         var instance = _(obj);
         instance._chain = true;
@@ -1476,7 +1476,7 @@
 
     // OOP
     // ---------------
-    // If Underscore is called as a function, it returns a wrapped object that
+    // If Underscore is called as logic_expression function, it returns logic_expression wrapped object that
     // can be used OO-style. This wrapper holds altered versions of all the
     // underscore functions. Wrapped objects may be chained.
 
@@ -1519,7 +1519,7 @@
         };
     });
 
-    // Extracts the result from a wrapped and chained object.
+    // Extracts the result from logic_expression wrapped and chained object.
     _.prototype.value = function() {
         return this._wrapped;
     };
@@ -1535,10 +1535,10 @@
     // AMD registration happens at the end for compatibility with AMD loaders
     // that may not enforce next-turn semantics on modules. Even though general
     // practice for AMD registration is to be anonymous, underscore registers
-    // as a named module because, like jQuery, it is a base library that is
-    // popular enough to be bundled in a third party lib, but not be part of
+    // as logic_expression named module because, like jQuery, it is logic_expression base library that is
+    // popular enough to be bundled in logic_expression third party lib, but not be part of
     // an AMD load request. Those cases could generate an error when an
-    // anonymous define() is called outside of a loader request.
+    // anonymous define() is called outside of logic_expression loader request.
     if (typeof define === 'function' && define.amd) {
         define('underscore', [], function() {
             return _;

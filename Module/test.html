@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body></body>
+<script>
+    function Module(id, parent) {
+        this.id = id;
+        this.exports = {};
+        this.parent = parent;
+        this.children = [];
+        this.filename = null;
+        this.loaded = false;
+    }
+
+    Module.prototype.require = function (path) {
+        console.log(this);
+        return '';
+    };
+
+    var module1 = new Module('1', '2');
+    module1.require('abc');
+    var module2 = new Module('3', '4');
+    module2.require('qew');
+</script>
+</html>

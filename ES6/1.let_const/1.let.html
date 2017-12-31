@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+</body>
+<script>
+    function testVar() {
+        for (var i = 0; i < 3; i++) {
+
+        }
+        console.log(i);//3
+
+    }
+    testVar();
+
+    function testLet1() {
+        for (let i = 0; i < 3; i++) {
+
+        }
+        console.log(i);//报错 i is not defined
+    }
+//    testLet1();
+
+    function testLet2() {
+        let a = 1;
+        let a = 2;//报错 Identifier 'logic_expression' has already been declared
+    }
+//    testLet2();
+
+
+
+</script>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+</body>
+<script>
+    //this是由执行时决定的
+
+    //    ## this的变化场景
+    //    - 作为构造函数执行
+    function Person(name) {
+        this.name = name;
+        console.log("this in Person Constructor:", this);
+        //return this; js编译器会在构造函数结尾返回this
+    }
+
+    var person = new Person('hello');
+    console.log("this in person:", person);//可以看到这个person与Person函数里的this是一样的
+
+    //    - 作为对象属性执行
+    var obj = {
+        fn:function () {
+            console.log(this);//当前对象
+        }
+    };
+    obj.fn();
+
+    //    - 作为普通函数执行
+    function fn() {
+        console.log(this);//windows
+    }
+    fn();
+
+    //    - call apply bind
+    function fn2() {
+        console.log(this);//{a:'hello'}
+    }
+    fn2.call({a: 'hello'});
+</script>
+</html>

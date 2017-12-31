@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>逻辑表达式</title>
+</head>
+<body>
+</body>
+<script>
+    //****&&运算符
+    //1.操作数不一定是布尔值
+    //2.返回结果不一定是布尔值，如果左右两边的操作数都不是布尔值的情况下是不会返回布尔值的
+    //3.从左向右计算，如果左值为假，则结果依赖于右值。
+    console.log('undefined && 1', undefined && 1);//undefined
+    console.log('null && 1', null && 1);//null
+    console.log('true && 1', true && 1);//1
+    console.log('3 > 2 && 1', 3 > 2 && 1);//1
+
+    //****&&与||的异同
+    //********&&优先级大于||
+    console.log('&&优先级大于||');
+    console.log(1 && 2 || 0); //2
+    console.log(0 || 2 && 1); //1
+    console.log(0 && 2 || 1); //1
+    //********&&依赖右值，||依赖左值
+    console.log('&&依赖右值');
+    console.log("0 && 1 = " + (0 && 1));
+    //为什么是输出 0 && 1 = 0，而不是0 && 1 = false
+    //因为如果左右两边的操作数都不是布尔值的情况下是不会返回布尔值的
+
+    console.log("1 && 2 = " + (1 && 2));
+    //输出 1 && 2 = 2
+
+    console.log('其他例子');
+    //    console.log(1 && 2 && 0);  //0
+    //    console.log(1 && 0 && 1);  //0
+    //    console.log(1 && 2 && 3);  //3
+
+    console.log('||依赖左值');
+    console.log("0 || 1=" + (0 || 1));
+    // console.log("0 || 1=" + 1);
+    // 输出 0 || 1= 1
+
+    console.log("1 || 2 = " + (1 || 2));
+    // 输出 1 || 2= 1
+
+    console.log('其他例子');
+    //    console.log(1 || 2 || 0); //1
+    //    console.log(0 || 2 || 1); //2
+    //    console.log(0 || 0 || false); //false
+</script>
+</html>

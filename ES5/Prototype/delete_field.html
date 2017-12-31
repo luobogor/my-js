@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>delete关键字不会触及到原型链中的任何对象</title>
+</head>
+<body>
+</body>
+<script>
+//    var Obj = function (name) {
+//        this.name = name;
+//    };
+    var stooge = {
+        "first-name":"hello",
+        "last-name":"world"
+    };
+    //Object.create(参数：已实例化的对象)
+    //创建一个使用原对象作为原型的新对象（该对象内容为空）
+    var anotherStooge = Object.create(stooge);
+    console.log('anotherStooge:',anotherStooge);
+    console.log('anotherStooge.__proto__:',anotherStooge.__proto__);//
+    anotherStooge.nickname = 'helloKitty';
+    stooge.nickname = 'helloGit';
+
+    console.log('anotherStooge.nickname:', anotherStooge.nickname);//helloKitty
+    delete anotherStooge.nickname;
+    console.log('after delete anotherStooge.nickname:', anotherStooge.nickname);//helloGit
+    //delete关键字不会触及到原型链中的任何对象，即使再使用delete关键字，也是无法删除原型链上的属性的
+    delete anotherStooge.nickname;
+    console.log('after twice delete anotherStooge.nickname:', anotherStooge.nickname);//helloGit
+</script>
+</html>

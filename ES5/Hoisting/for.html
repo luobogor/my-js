@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>创建10个a标签点击的时候弹出对应的序号</title>
+</head>
+<body>
+</body>
+<script>
+    //***********错误的写法，当执行回调时，因为js没有块级作用域，i没有被回收，i是11，所以10个a标签点击时提示的都是11
+    //    for (var i = 0; i < 10; i++) {
+//        var a = document.createElement('a');
+//        a.innerHTML = i + '<br>';
+//        a.addEventListener('click', function (e) {
+//            e.preventDefault();
+//            alert(i);
+//        });
+//        document.body.appendChild(a);
+//    }
+
+    //正确的写法
+    for (var i = 0; i < 10; i++) {
+        (function (i) {
+            //此时的i是属性匿名函数的作用域里的参数。所以不会受到外面i的影响
+            var a = document.createElement('a');
+            a.innerHTML = i + '<br>';
+            a.addEventListener('click', function (e) {
+                e.preventDefault();
+                alert(i);
+            });
+            document.body.appendChild(a);
+        })(i);
+    }
+</script>
+</html>

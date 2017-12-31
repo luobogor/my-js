@@ -2,18 +2,106 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Fetch API</title>
+    <h1>Fetch API</h1>
 </head>
 <body>
 </body>
 <script>
-//    let myImage = document.querySelector('img');
-//    fetch('https://ss2.baidu.com/6ONYsjip0QIZ8tyhnq/it/u=4030755530,3823715575&fm=58')
-//        .then(function (response) {
-//            return response.blob();
-//        }).then(function (myBlob) {
-//            var objURL = URL.createObjectURL(myBlob);
-//            myImage.src = objURL;
-//        });
+    //**************************GET
+    //test
+    var test = fetch('./jsonData.json');//fetch()立刻发送请求
+    console.log(test);//resolved
+
+    //    request json data
+    fetch('./jsonData.json').then((response) => {
+        //json() - 生成JSON.parse(responseText)的结果
+        //控制台可以看到response.json()返回的是一个Promise对象
+        //console.log(response.json());
+        return response.json();
+    }).then((data) => {
+        var jsonDom = document.createElement('div');
+        jsonDom.innerHTML = "This is json data:" + JSON.stringify(data);
+        document.body.appendChild(jsonDom);
+    }).catch((e) => {
+        console.error(e.message);
+    });
+
+    //request textFile
+    fetch('./textData.txt').then((response) => {
+        //text() - 以string的形式生成请求text
+        return response.text();
+    }).then((data) => {
+        var jsonDom = document.createElement('div');
+        jsonDom.innerHTML = "This is text data:" + JSON.stringify(data);
+        document.body.appendChild(jsonDom);
+    }).catch((e) => {
+        console.error(e.message);
+    });
+
+    //request image
+    fetch('./luck.jpeg')
+        .then(function (response) {
+            return response.blob();
+        }).then(function (myBlob) {
+        var objURL = URL.createObjectURL(myBlob);
+        var myImage = new Image();
+        myImage.src = objURL;
+        document.body.appendChild(myImage);
+    });
+
+    //server request data
+    //    fetch('http://localhost:8081/report/oneReport/56').then((response) => {
+    //        return response.json();
+    //    }).then((data) => {
+    //        var jsonDom = document.createElement('div');
+    //        jsonDom.innerHTML = "This is json data:" + JSON.stringify(data.data);
+    //        document.body.appendChild(jsonDom);
+    //    }).catch((e) => {
+    //        console.error(e.message);
+    //    });
+
+    //**************************POST
+    //fetch默认是GET请求，POST
+    fetch('http://localhost:8081/user/testPost', {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            userId: 'jinzhan',
+            password: '123456'
+        })
+    }).then((res) => {
+        return res.json();
+    }).then((data) => {
+        console.log('res of post:', data);
+    });
+
+    //**************************检查请求状态
+    function checkStatus(response) {
+        if (response.status >= 200 && response.status < 300) {
+            return response;
+        } else {
+            var error = new Error(response.statusText);
+            error.response = response;
+            throw  error;
+        }
+    }
+
+    function parseJSON(response) {
+        return response.json();
+    }
+
+    fetch('./jsonData.json')
+        .then(checkStatus)
+        .then(parseJSON)
+        .then((data) => {
+            console.log('检查请求状态data:', data);
+        }).catch((e) => {
+            console.error(e.message);
+        });
+
 </script>
 </html>

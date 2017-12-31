@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>一个原型链应用的例子</title>
+</head>
+<body>
+<div id="test">一个原型链应用的例子</div>
+</body>
+<script>
+    function Elem(id) {
+        this.elem = document.getElementById(id);
+    }
+
+    Elem.prototype.html = function (val) {
+        var elem = this.elem;
+        if (val) {
+            elem.innerHTML = val;
+            return this; //链式操作
+        } else {
+            return elem.innerHTML;
+        }
+    };
+
+    Elem.prototype.on = function (type, fn) {
+        var elem = this.elem;
+        elem.addEventListener(type, fn);
+        return this;
+    };
+
+    var test = new Elem('test');
+
+    test.html('helloGit').on('click', function () {
+        alert('helloGit');
+    }).html('<p>javascript</p>');
+</script>
+</html>

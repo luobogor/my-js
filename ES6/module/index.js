@@ -7,5 +7,8 @@ import * as ComponentA from './ComponentA';
 //由于ComponentB使用export default的方式导出，所以导入的时候可以取任意名称
 import HelloB from './ComponentB';
 
-console.log(A,test,Hello);
+//这种形式??
+// import from './ComponentC';
+
+console.log(A, test, Hello);
 console.log(ComponentA.A, ComponentA.test, ComponentA.Hello);

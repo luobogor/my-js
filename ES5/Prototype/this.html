@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body></body>
+<script>
+    function Foo(name) {
+        this.name = name;
+    }
+
+    Foo.prototype.consoleName = function () {
+        console.log('f:',this);
+        console.log(this.name);
+    };
+
+    var f = new Foo('hello git');
+
+    f.consoleName();
+</script>
+</html>
