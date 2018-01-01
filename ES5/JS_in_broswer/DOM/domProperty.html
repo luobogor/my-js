@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>DOM对象属性操作</title>
+</head>
+<body>
+<p class="hello">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab cupiditate debitis, eos esse fugiat iste minima
+    molestias nemo, numquam optio pariatur perspiciatis placeat praesentium quam vel voluptas, voluptatem. Aut,
+    vero.</p>
+</body>
+<script>
+    var pList = document.querySelectorAll('p');
+    var p = pList[0];
+    console.log(p.style.width);//这里获取元素style样式里的属性是不对的
+    console.log(window.getComputedStyle(p).getPropertyValue('width'));//正确写法
+    p.style.width = '100px';
+
+    console.log(p.className);//这里获取class属性写法是对的
+    p.className = 'p1';
+    console.log(p.nodeName);
+    console.log(p.nodeType);
+</script>
+</html>

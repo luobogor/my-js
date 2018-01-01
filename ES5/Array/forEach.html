@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>自定义能遍历对象和数组的forEach</title>
+</head>
+<body>
+</body>
+<script>
+    function forEach(obj, fn) {
+        var key;
+        if(obj instanceof Array){
+            obj.forEach(function (item, index) {
+                //注意这里参数顺序换了，为了和对象的遍历格式一致
+                fn(index,item);
+            });
+        }else {
+            for (key in obj) {
+                fn(key, obj[key]);
+            }
+        }
+    }
+
+    var arr = [1, 2, 3];
+    var obj = {x: 100, y: 100};
+    //注意这里参数顺序换了，为了和对象的遍历格式一致
+    forEach(arr, function (index, item) {
+        console.log(index, item);
+    });
+    forEach(obj, function (key, value) {
+        console.log(key, value);
+    });
+</script>
+</html>

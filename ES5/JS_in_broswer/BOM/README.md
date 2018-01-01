@@ -1,0 +1,2 @@
+- 如何检测浏览器的类型(见navigator.html)
+- 拆解url的各部分(见location.html)

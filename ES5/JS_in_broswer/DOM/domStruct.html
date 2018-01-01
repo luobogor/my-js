@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>DOM结构操作</title>
+</head>
+<body>
+<div id="test">Hello
+    <p>I am the p</p>
+    <p id="myP">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Assumenda, eligendi?</p>
+</div>
+<dvi id="test2"></dvi>
+</body>
+<script>
+    //***新增节点,createElement,appendChild
+    var div1 = document.getElementById('test');
+    var p1 = document.createElement('p');
+    p1.innerHTML = "hahahahaha";
+    div1.appendChild(p1);
+
+    //***移动已有节点
+    //注意myP已经从test移动到test2，myP并不会复制一个新的作为移动。
+    var myP = document.getElementById('myP');
+    document.getElementById('test2').appendChild(myP);
+
+    //***获取父元素
+    console.log(p1.parentElement);//注意这是个属性，不是个函数。
+
+    //***获取子元素
+    var childs = div1.childNodes;//注意这是个属性，不是个函数。
+    console.log('子节点：', childs);
+
+
+    //***删除节点
+    //方法1 dom.removeChild
+//    div1.removeChild(childs[0]);
+
+    //方法2 dom.remove
+    //    childs[0].remove();
+</script>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>日期API</title>
+</head>
+<body>
+</body>
+<script>
+    var dt = new Date();
+    console.log(dt.getTime());//获取毫秒数
+    console.log(Date.now());//获取当前时间毫秒数
+    console.log('年:',dt.getFullYear());//年
+    console.log('月:',dt.getMonth());//月(0-11)
+    console.log('日',dt.getDate());//日(1-31)
+    console.log(dt.getHours());//小时(0-23)
+    console.log(dt.getMinutes());//分(0-59)
+    console.log(dt.getSeconds());//秒(0-59)
+
+    //获取格式化字符串日期
+    function formatDate(dt) {
+        if(!dt){
+            dt = new Date();
+        }
+        var year = dt.getFullYear();
+        var month = dt.getMonth()+1;
+        var date = dt.getDate();
+
+        if(month<10) {
+            month = '0' + month;
+        }
+
+        if(date<10){
+            date = '0' + date;
+        }
+
+        return year + '-' + month + '-' + date;
+    }
+
+    var now = new Date();
+    var formatDateStr = formatDate(now);
+    console.log(formatDateStr);
+</script>
+</html>

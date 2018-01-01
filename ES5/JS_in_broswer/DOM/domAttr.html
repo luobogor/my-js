@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>标签属性操作</title>
+    <style>
+        .classA{
+            background-color: deepskyblue;
+        }
+    </style>
+</head>
+<body>
+<p class="hello">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab cupiditate debitis, eos esse fugiat iste
+    minima
+    molestias nemo, numquam optio pariatur perspiciatis placeat praesentium quam vel voluptas, voluptatem. Aut,
+    vero.</p>
+</body>
+<script>
+    var pList = document.querySelectorAll('p');
+    var p = pList[0];
+    p.setAttribute('class', 'classA');
+    console.log(p.getAttribute('class'));//classA
+</script>
+</html>

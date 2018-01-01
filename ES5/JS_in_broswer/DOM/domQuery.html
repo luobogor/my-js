@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>DOM常用操作</title>
+</head>
+<body>
+    <div id="test" class="classA">Hello Git</div>
+    <div class="classA classB">Hello World</div>
+</body>
+<script>
+    var a = document.getElementById('test');//元素
+    var b=  document.getElementsByTagName('div');//对象数组,length===2
+    var c = document.getElementsByClassName('classA');//对象数组,length===2
+    var d = document.querySelectorAll('.classA');//对象数组,length===2,注意这里一定要按照css选择器规则来写，如果classA前不加'.'写成querySelectorAll('classA'),结果为空的对象数组
+    var e = document.querySelector('.classA');//元素
+    console.log(a);
+    console.log(a instanceof Object);//true
+
+    console.log(b);
+    console.log(b instanceof Object);//true
+
+    console.log(c);
+    console.log(c instanceof Object);//true
+
+    console.log(d);
+    console.log(d instanceof Object);//true
+
+    console.log(e);
+    console.log(e instanceof Object);//true
+</script>
+</html>

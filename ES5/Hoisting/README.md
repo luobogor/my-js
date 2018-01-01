@@ -7,3 +7,4 @@ var fn1 = function(){
 //函数声明
 function fn2(){}
 ````
+- index.html在函数内不定义变量可直接使用,会被当成全局变量

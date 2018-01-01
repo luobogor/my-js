@@ -69,3 +69,15 @@
     console.log('outerTitle', outerTitle);
     console.log('innerTitle', innerTitle);
 }
+
+{
+    console.log('6.对象解构参数传递是不行的');
+    function fn(id,name) {
+        console.log(id, name);
+    }
+
+    // let obj = {id: 123, name: 'hello'};
+    let arr = [1, 2, 3];
+    fn(...arr);
+    // fn(...obj);报错
+}

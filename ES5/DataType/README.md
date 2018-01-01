@@ -21,6 +21,7 @@ typeof null // "object"
 typeof console.log // "function"
 ````
 - typeof 只能区分值类型，不能区分引用类型中的对象和数组，但是可以区分出function,这是因为function在js中是"头等公民""
+- 特别注意 null instanceof Object => false
 
 ## 类型转换
 1. 字符串拼接

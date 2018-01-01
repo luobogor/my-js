@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Math API</title>
+</head>
+<body>
+</body>
+<script>
+//Math.random() 函数返回一个浮点,  伪随机数在范围[0，1)，也就是说，从0（包括0）往上，但是不包括1（排除1）
+//获取随机数，要求是长度一致的字符串格式
+var random = Math.random();
+random = random + '0000000000';//后面加10个0,如果Math.random()返回为空(实际上是不会返回为空的)，那么后面的10个0就刚好补上10位让下一句slice截取
+random = random.slice(0, 10);//截取前10位
+console.log(random);
+</script>
+</html>
