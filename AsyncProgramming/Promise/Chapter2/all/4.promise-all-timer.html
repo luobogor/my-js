@@ -7,26 +7,31 @@
 <body>
 </body>
 <script>
-    function timerPromise(delay) {
-        return new Promise(function (resolve) {
-            setTimeout(function () {
-                console.log(delay);
-                resolve(delay);
-            }, delay);
+    function test() {
+        function timerPromise(delay) {
+            return new Promise(function (resolve) {
+                setTimeout(function () {
+                    console.log(delay);
+                    resolve(delay);
+                }, delay);
+            });
+        }
+
+        var startDate = Date.now();
+
+        return Promise.all([
+            timerPromise(1),
+            timerPromise(64),
+            timerPromise(32),
+            timerPromise(128),
+        ]).then(function (values) {
+            console.log(Date.now() - startDate + 'ms');
+            // 约128ms
+            console.log(values);    //按输入的顺序排列结果[1,64,32,128]
         });
     }
 
-    var startDate = Date.now();
-
-    Promise.all([
-        timerPromise(1),
-        timerPromise(32),
-        timerPromise(64),
-        timerPromise(128),
-    ]).then(function (values) {
-        console.log(Date.now() - startDate + 'ms');
-        // 约128ms
-        console.log(values);    // [1,32,64,128]
-    })
+    var promiseAll = test();
+    console.log(promiseAll);
 </script>
 </html>

@@ -6,7 +6,7 @@
 
     var basePath = '';
     var init = false;
-    var colorbase = 0;
+    var depFlagBase = 0;
 
     const State = {
         LOADING: 0,
@@ -68,7 +68,7 @@
                 depsPath,//模块的依赖关系
                 callback,//模块的回调函数
                 exports: null,//保存执行callback的返回值
-                color: 0
+                depFlag: 0
             };
             //这里为main入口函数，需要将它的id也加入loadings列表，以便触发回调
             loadingIds.unshift(currentJSPath);
@@ -105,22 +105,21 @@
         })
     };
 
-    feRequireJs.checkCycle = function (depsPath, id, color) {
-        // if (modules[id].state === State.LOADING) {
-        depsPath.forEach((path, idx) => {
+    feRequireJs.checkCycle = function (depsPath, id, depFlag) {
+        depsPath.forEach((path) => {
             let currentModule = modules[path];
             if (currentModule == null) return;
 
-            if (currentModule.color >= color) {
+            if (currentModule.depFlag === depFlag) {
                 throw Error('检测到循环依赖');
             } else {
-                currentModule.color = color;
+                currentModule.depFlag = depFlag;
             }
+
             if (currentModule.state === State.LOADING) {
-                feRequireJs.checkCycle(currentModule.depsPath, id, color);
+                feRequireJs.checkCycle(currentModule.depsPath, id, depFlag);
             }
         });
-        // }
     };
 
 
@@ -130,7 +129,7 @@
             let allLoaded = true;
 
             //检测循环依赖
-            feRequireJs.checkCycle(obj.depsPath, id, colorbase++);
+            feRequireJs.checkCycle(obj.depsPath, id, depFlagBase++);
 
             obj.depsPath.some((path) => {
                 if (!modules[path] || modules[path].state !== State.LOAD_DONE) {
