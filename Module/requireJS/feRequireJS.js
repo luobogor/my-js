@@ -143,7 +143,7 @@
             if (allLoaded) {
                 loadingIds.splice(idx, 1);
                 feRequireJs.fireDepsCallback(obj);
-                //***********!!!该模块执行完成后可能使其他模块也满足执行条件了，继续检查，直到没有模块满足allloaded条件
+                //***********!!!该模块执行完成后可能使其他模块也满足执行条件了，继续检查，直到没有模块满足allLoaded条件
                 feRequireJs.checkDeps();
             }
         });
