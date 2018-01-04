@@ -9,7 +9,7 @@
  4. 将main模块加入loadingsIds队列中，表示main加载中。
  5. 调用loadDepsModule先加载main模块依赖的其他模块。
  -------------------loadDepsModule函数执行中
- 6. forEach调用loadJS加载main模块依赖的其他模块,并注册回调函数，在回调函数在执行checkDeps。
+ 6. forEach调用loadJS加载main模块依赖的其他模块,并注册checkDeps为回调函数。
  -------------------checkDeps回调执行中
  7.遍历加载队列的所有节点 
  8.比如当前遍历到节点A,依赖B,C。那么遍历A的依赖列表，如果发现B,C都加载完成，就执行A的回调函数。
@@ -22,5 +22,3 @@
  1. 执行loadJs加载某模块.js文件后执行了一次回调
    - 该次回调主要工作是检测loadingsIds队列，然后判断每个已注册模块是否可以更新加载状态。
  2. 某模块require或者define完成后执行了一次回调
- 
- ## CheckDeps是整个算法是关键

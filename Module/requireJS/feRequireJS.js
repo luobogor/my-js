@@ -1,10 +1,11 @@
 /**
  * @file feRequire
- * 以'_'开头的都是内部方法
+ * @author jinzhanye 20180104
+ * 注：以'_'开头的都是内部方法
  */
 (function (global) {
     /**
-     * @type {Array} loadingIds:存放加载中的模块id，加载完成后需要移除
+     * @type {Array} 模块等待队列:存放加载中的模块id，加载完成后需要移除
      */
     var loadingIds = [],
         /**
@@ -12,7 +13,7 @@
          */
         requestedLoadIds = {},
         /**
-         * @type {{}}  modules:存放所有开始加载的模块信息，包括已经处理完成后的模块
+         * @type {{}}  存放模块
          */
         modules = {};
 
@@ -20,7 +21,6 @@
      * @type {string} main.js所在目录
      */
     var baseDir = '';
-    var init = false;
     var depFlagBase = 0;
 
     /**
@@ -40,20 +40,17 @@
      *内部方法,初始化:加载main.js
      */
     feRequireJs._init = function () {
-        if (!init) {
-            var currentFile = feRequireJs._getCurrentJSPath();
-            // currentfile.replace将最后部分的js去掉，例如
-            // /a/b/c.js =>  /a/b/
-            baseDir = currentFile.replace(/[^\/]+\.js/i, '');
-            init = true;
+        var currentFile = feRequireJs._getCurrentJSPath();
+        // currentfile.replace将最后部分的js去掉，例如
+        // /a/b/c.js =>  /a/b/
+        baseDir = currentFile.replace(/[^\/]+\.js/i, '');
 
-            var node = document.getElementsByTagName('script')[0];
-            //获取main.js路径
-            var mainJs = node.getAttribute('data-main');
-            //动态(异步)加载main.js
-            feRequireJs._loadJS(mainJs, null);
-            console.log('load main.js have called');
-        }
+        var node = document.getElementsByTagName('script')[0];
+        //获取main.js路径
+        var mainJs = node.getAttribute('data-main');
+        //动态(异步)加载main.js
+        feRequireJs._loadJS(mainJs, null);
+        console.log('load main.js have called');
     };
 
     /**
@@ -68,16 +65,13 @@
 
         //脚本加载完成事件(准确来说是执行完成)
         node.onload = function () {
-            // console.log('script ', url, ' execute finished');
-            if (callback) {
-                callback();
-            }
+            callback && callback();//相当于 if(callback) callback();
         };
+
         node.onerror = function () {
             throw Error('load script:' + url + 'failed!');
         };
         node.src = url;
-
 
         let head = document.getElementsByTagName('head')[0];
         head.appendChild(node);
@@ -100,7 +94,7 @@
     };
 
     /**
-     * 外部方法,引入/定义模块
+     * 外部方法,feRequireJS主入口，功能：引入/定义模块
      * @param depsFileName {Array} 当前模块的依赖模块的文件名列表
      * @param callback {function} 模块加载完成回调函数
      */
@@ -138,7 +132,7 @@
     feRequireJs._loadDepsModuleScript = function (currentJSPath) {
         // depPath 指的是依赖js文件的路径
         let depsPath = modules[currentJSPath].depsPath;
-        depsPath.forEach(function (path) {
+        depsPath.forEach((path) => {
             // requestedLoadIds防止多个模块共同引入一个模块时发送多次加载脚本请求
             if (requestedLoadIds[path] == null) {
                 requestedLoadIds[path] = path;
@@ -160,16 +154,14 @@
             //检测循环依赖
             feRequireJs._checkCycle(obj.depsPath, id, depFlagBase++);
 
-            allLoaded = obj.depsPath.every((depPath) => {
-                //当前模块所依赖的模块已经注册到modules 并且 该依赖已经加载完成
-                return modules[depPath] && modules[depPath].state === STATE.LOAD_DONE;
-            });
+            //*************************************当前模块所依赖的模块已经注册到modules 并且 该依赖已经加载完成
+            allLoaded = obj.depsPath.every(depPath => modules[depPath] && modules[depPath].state === STATE.LOAD_DONE);
 
             if (allLoaded) {
                 loadingIds.splice(idx, 1);//在等待队列中踢除当前模块
                 feRequireJs._fireDepsCallback(obj);//执行当前模块的回调方法
                 //***********!!!该模块执行完成后可能使其他模块也满足执行条件了，继续检查，直到没有模块满足allLoaded条件
-                feRequireJs._recursiveUpdateModuleState();
+                feRequireJs._recursiveUpdateModuleState();//尾递归调用
             }
         });
     };
@@ -180,15 +172,12 @@
      */
     feRequireJs._fireDepsCallback = function (currentModule) {
         let {id, depsPath, callback} = currentModule;
-
+        //由于在_recursiveUpdateModuleState中已经确定当前模块的依赖模块已经加载完成，所以可以获取他们的exports值
         //遍历id模块的依赖，为calllback准备参数
-        let params = depsPath.map(dep => modules[dep].exports);
-
+        let params = depsPath.map(depPath => modules[depPath].exports);
+        //注入依赖模块，执行模块回调函数
         let returnValue = callback.apply(global, params);
-        if (returnValue) {
-            //******保存当前模块的导出，供其他模块使用
-            modules[id].exports = returnValue;
-        }
+        returnValue && (modules[id].exports = returnValue);
         modules[id].state = STATE.LOAD_DONE; //标志模块已经加载并执行完成
     };
 
@@ -209,7 +198,7 @@
                 currentModule.depFlag = depFlag;
             }
 
-            if (currentModule.state === STATE.LOADING) feRequireJs._checkCycle(currentModule.depsPath, id, depFlag);
+            if (currentModule.state === STATE.LOADING) feRequireJs._checkCycle(currentModule.depsPath, id, depFlag);//尾递归调用
         });
     };
 
