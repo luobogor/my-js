@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+</body>
+<script>
+    var z = 10;
+
+    function foo() {
+        console.log(z);//10
+    }
+
+    foo();
+
+    (function () {
+        var z = 20;
+        foo();//10
+    })();
+
+    (function (funArg) {
+        var z = 30;
+        funArg();
+    })(foo);
+</script>
+</html>
