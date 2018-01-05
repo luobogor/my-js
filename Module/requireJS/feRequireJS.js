@@ -21,6 +21,7 @@
      * @type {string} main.js所在目录
      */
     var baseDir = '';
+
     var depFlagBase = 0;
 
     /**
@@ -182,13 +183,19 @@
     };
 
     /**
-     * 循环依赖检测
-     * @param depsPath
-     * @param id
-     * @param depFlag
+     * 递归检测循环依赖
+     *
+     * 检测原理：从当前模块出发遍历依赖树，所到达的节点，如果没有被标记则打上标记，表示该节点已经访问过，
+     *                                          如果检测到当前节点已经被打过标记，也就是说在树的遍历中访问了同一个节点两次，则证明被访问两次的节点与第二次他的父亲之间存在循环依赖。
+     *
+     * 函数递归的终止条件：如果当前模块没有依赖，不会进入depsPath.forEach，自然也不会递，归执行_checkCycle，然后逐层返回。
+     * @param depsPath {Array} 当前模块的依赖模块的路径
+     * @param id {string} 当前模块的js文件路径
+     * @param depFlag {number} 每次_checkCycle被调用前，caller都会生成一个新一depFlag，然后传递给_checkCycle
      */
     feRequireJs._checkCycle = function (depsPath, id, depFlag) {
         depsPath.forEach((path) => {
+            //当前模块的依赖模块还没注册就直接返回
             let currentModule = modules[path];
             if (currentModule == null) return;
 
@@ -197,8 +204,8 @@
             } else {
                 currentModule.depFlag = depFlag;
             }
-
-            if (currentModule.state === STATE.LOADING) feRequireJs._checkCycle(currentModule.depsPath, id, depFlag);//尾递归调用
+            //如果当前遍历模块已经加载完成了，说明这个模块之前已经通过了测循环依赖检测，所以不再递归调用。
+            if (currentModule.state === STATE.LOADING) feRequireJs._checkCycle(currentModule.depsPath, id, depFlag);
         });
     };
 
