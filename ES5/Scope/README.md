@@ -20,3 +20,27 @@
 1. 自由变量
 2. 作用域链，即自由变量的查找
 3. 闭包的两个场景
+
+## 自由变量查找过程
+执行函数在哪里定义在哪里开始查找，与this无关，比如sayHello是在fn1里面定义的，那么查找自由变量hello时是fn1->window，虽然sayHello
+内打印this结果是window但并不会直接从外部开始查找hello,所以console.log('sayHello:',hello)结果是'inner hello'
+````
+   var hello = 'outer hello';
+    var obj = {
+        fn1: function () {
+            var hello = 'inner hello';
+            function sayHello() {
+                console.log('sayHello:',hello);
+                console.log('sayHello:',this);
+            }
+
+            console.log('obj.fn scope:',this);
+            sayHello();
+        },
+        fn2:function () {
+            console.log('fn2');
+        }
+    };
+
+    obj.fn1();
+````

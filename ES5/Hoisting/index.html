@@ -7,13 +7,24 @@
 <body>
 </body>
 <script>
+    //"use strict";
     function fn() {
         var a = 60;
+        //非严格模式下直接使用没有用var声明的变量会默认为全局变量.在严格模式下全报错
         b = a;
-        console.log('innerB:',b);
+        console.log('innerB:', b);
     }
 
     fn();
     console.log('outerB:', b);
+    
+    //b为不使用var声明的变量，他的configurable值为true，可以用delete运算符删除
+    //而用var声明的变量configurable值为false，不可以用delete运算符删除
+    var testDelete = 'hello';
+    delete testDelete;
+    console.log(testDelete);//变量没有被删除，打印hello
+
+    delete b;
+    console.log(b);//error:b is not define
 </script>
 </html>
