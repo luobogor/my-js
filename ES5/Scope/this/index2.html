@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+</body>
+<script>
+
+    //    调用一个对象的某个方法的时候，this的值也有可能不是该对象的：
+    var foo = {
+        bar: function () {
+            console.log('bar execute');
+            console.log(this);
+            console.log(this === foo);
+        }
+    };
+
+    foo.bar(); // foo, true
+
+    var exampleFunc = foo.bar;
+
+    console.log(exampleFunc === foo.bar); // true
+
+    // 同样地，相同的函数以不同的调用方式，this的值也就不同了
+
+    exampleFunc(); // global, false
+</script>
+</html>

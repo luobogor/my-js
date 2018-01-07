@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+    var x = 10;
+    function foo() {
+        var y = 20;
+        
+        function barFD() {
+            console.log(x);
+            console.log(y);
+        }
+
+
+        var barFE = function () {
+            console.log(x);
+            console.log(y);
+        };
+
+        var barFn = Function('console.log(x);console.log(y);');
+        barFD();//10,20
+        barFE();//10,20
+        barFn();//10,"y" is not defined
+    }
+
+    foo();
+//    特例：函数通过Function构造器来创建的时候，
+    // 其[[Scope]]属性永远都只包含全局对象。 哪怕在上层上下文中（非全局上下文）创建一个闭包都是无济于事的。
+</script>
+</body>
+</html>

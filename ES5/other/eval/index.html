@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>eval</title>
+</head>
+<body>
+</body>
+<script>
+    eval('var x = 10');
+    (function foo(){
+        eval('var y = 20');
+    })();
+    alert(x); // 10
+    alert(y); // ”y” is not defined
+
+
+    //函数栈变化过程，注意调用上下文
+//    ECStack = [
+//        globalContext
+//    ];
+//    //eval(‘var x = 10’);
+//    callingContext：调用上下文
+//    ECStack.push(evalContext,callingContext: globalContext);
+//
+//    // eval exited context
+//    ECStack.pop();
+//
+//    //foo function call
+//    ECStack.push( functionContext);
+//
+//    //eval(‘ var y = 20’);
+//    ECStack.push(
+//        evalContext,
+//        callingContext:  functionContext
+//    );
+//
+//    //return from eval
+//    ECStack.pop();
+//
+//    //return from foo
+//    ECStack.pop();
+</script>
+</html>
