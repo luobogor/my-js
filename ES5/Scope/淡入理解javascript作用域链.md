@@ -43,7 +43,9 @@
       ]
   };
   ````
-  - 如果在该函数在内部定义了函数，则 innerFn.[[scope]] = outerFnContext.AO + outerFn.\[[scope]] (闭包的实现原理)
+  - 如果在该函数在内部定义了函数，并且内部函数引用了外部函数的变量或函数，则 innerFn.[[scope]] = outerFnContext.AO + outerFn.\[[scope]] (闭包的实现原理)。
+  内部函数引用了外部函数的变量或函数，则innerFn.[[scope]] = globalContext.VO
+  如果是多层嵌套，则只会将引用的层的活跃对象加入到内部函数的[[scope]]中(Chrome是这样实现，FireFox则是所有层都加进[[scope]])
   
   ````
   var x = 10;

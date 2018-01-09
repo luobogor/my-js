@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<div id="test">点我</div>
+</body>
+<script>
+//    'use strict';
+    document.getElementById('test').addEventListener('click',function () {
+        //this为dom节点
+        //可以推荐
+        console.log(this);
+    });
+
+    setTimeout(function () {
+        console.log('setTimeout',this);//可以推断出浏览器内部是这样进行回调的window.xxx = 我们写的回调方法
+    });
+
+    function fn() {
+        console.log('fn',this);//开启严格模式后，this为null
+    }
+
+    fn();
+
+
+    var a = 20;
+    var x = function () {
+        this.y = 10;
+    };
+
+    var y ={
+        a:10,
+        get: function(){ return 'from y  a= ' + this.a}
+    };
+
+
+
+
+</script>
+</html>
