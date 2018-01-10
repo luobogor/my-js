@@ -1,0 +1,25 @@
+{
+  "name": "tiny-commonjs-pack",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "build": "babel FeCommonJS.js -o index.js --presets es2015 --",
+    "test": "node index.js test/index.js",
+    "start":"npm run build && npm run test"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bluebird": "^3.3.4",
+    "commander": "^2.9.0",
+    "js-beautify": "^1.6.2",
+    "lodash": "^4.10.0"
+  },
+  "devDependencies": {
+    "babel-preset-es2015": "^6.6.0"
+  }
+}

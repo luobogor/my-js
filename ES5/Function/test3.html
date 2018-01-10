@@ -16,8 +16,21 @@
             console.log('inner');
         };
 
-        _foo();
+        _foo();//outer
     }
-    a();//hello
+    a();
+
+//
+//_foo();// _foo is not defined
+//
+//(function _foo(n) {
+//    if(n >= 0){
+//        console.log(n);
+//        _foo(--n);
+//    }
+//    return;
+//})(10);
+//
+//_foo();// _foo is not defined
 </script>
 </html>

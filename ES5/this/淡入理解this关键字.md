@@ -1,6 +1,6 @@
-This与上下文的可执行代码类型有关，其值在进入上下文阶段就确定了，并且在执行代码阶段是不能改变的。以下讨论都是基于非严格模式下this的值，严格模块下this的值，文章最后会提到。
+this与上下文的可执行代码类型有关，其值在进入上下文阶段就确定了，并且在执行代码阶段是不能改变的。以下讨论都是基于非严格模式下this的值，严格模块下this的值，文章最后会提到。
 
-## 全局代码中This的值
+## 全局代码中this的值
 浏览器中，全局环境下非函数体内，this一定全局对象
 
 - 显式定义属性
@@ -8,7 +8,7 @@ This与上下文的可执行代码类型有关，其值在进入上下文阶段�
 	````
 	// 显式定义全局对象的属性
 	this.a = 10; // global.a = 10
-	alert(a); // 10
+	console.log(a); // 10
 	````
 
 - 隐式定义属性
@@ -16,29 +16,29 @@ This与上下文的可执行代码类型有关，其值在进入上下文阶段�
 
   ````
 	b = 20;
-	alert(this.b); // 20
+	console.log(this.b); // 20
 	
 	var c = 30;
-	alert(this.c); // 30
+	console.log(this.c); // 30
   ````
  
-## 函数代码中的This的值
+## 函数代码中的this的值
 不考虑call、apply、bind, **影响调用上下文中的this的值的只有可能是调用表达式的形式**，this的调用方式可分下如下3大类:
 
-- 通过标识符()调用
+- 通过标识符(identifier)调用
  	- 全局环境下通过标识符调用
 	- 函数执行环境下通过标识符调用
-- 通过属性访问( access)调用
+- 通过属性访问(access)调用
 - 以上调用方式以外的调用方式
 
 ````
 function foo() {
-  alert(this);
+  console.log(this);
 }
  
 foo(); // 打印结果：window, 调用方式：全局环境下通过标识符调用
  
-alert(foo === foo.prototype.constructor); // true
+console.log(foo === foo.prototype.constructor); // true
  
 // 然而，同样的函数，以另外一种调用方式的话，this的值就不同了
 foo.prototype.constructor(); // 打印结果：foo.prototype, 调用方式：通过属性访问调用
@@ -46,8 +46,8 @@ foo.prototype.constructor(); // 打印结果：foo.prototype, 调用方式：通
 
 var foo1 = {
   bar1: function () {
-    alert(this);
-    alert(this === foo1);
+    console.log(this);
+    console.log(this === foo1);
   }
 };
  
@@ -55,7 +55,7 @@ foo1.bar1(); // 打印结果：foo1, true，调用方式：通过属性访问调
  
 var exampleFunc = foo1.bar1;
  
-alert(exampleFunc === foo1.bar1); // true
+console.log(exampleFunc === foo1.bar1); // true
  
 // 同样地，相同的函数以不同的调用方式，this的值也就不同了 
 exampleFunc(); //打印结果：global, false ，调用方式：全局环境下通过标识符调用
@@ -69,7 +69,7 @@ exampleFunc(); //打印结果：global, false ，调用方式：全局环境下�
 1. 求值一个标识符的时候
 2. 进行属性访问的时候
 
-解释器会在作用域中查找需要的标识符/对象，然后返回一个**引用类型的值**,也就是保存着引用类型的内存地址的一个变量，而不是返回一个引用类型。用伪代码表示为一个拥有两个属性的对象。
+解释器会在作用域中查找需要的标识符/对象，然后返回一个**引用类型的值**,也就是返回一个保存着引用类型的内存地址的变量，而不是返回一个引用类型。用伪代码表示为一个拥有两个属性的对象。
 
 ````
 var valueOfReferenceType = {
@@ -77,7 +77,7 @@ var valueOfReferenceType = {
   propertyName: <property name of base object> //propertyName是上面base对象里的一个属性的名字
 };
 ````
-下面我们来举个栗子看看VRT是具体长什么样子。(以下内容都用'VRT'代替'引用类型的值',因为'引用类型的值'这几个字念起来实在太拗口)
+下面我们来举个栗子看看VRT是具体长什么样子。(以下内容都用”VRT“代替”引用类型的值“)
 
 ````
 //***************我是全局执行环境
@@ -89,7 +89,7 @@ function bar() {}
 console.log(foo);
 console.log(bar);
 
-//在求值过程可以得到对应引用类型的值(注意上面已经提过，这不是JS对象，不是JS对象，是JS解释器语言C++的引用类型)
+//在求值过程可以得到对应的VRT
 var fooReference = {
   base: global,
   propertyName: 'foo'
@@ -131,12 +131,12 @@ GetValue(barReference); // function object "bar"
 ## this的值的规则及函数调用表达式的形式
 
 决定函数上下文中this的值的规则如下：
-> 函数上下文中this的值是函数调用者提供并且由当前调用表达式的形式而定的。 如果在调用括号()的左边，有引用类型的值，那么this的值就会设置为该引用类型值的base对象。 所有其他情况下（非引用类型），this的值总是null。然而，由于null对于this来说没有任何意义，因此会隐式转换为全局对象。
+> 函数上下文中this的值是函数调用者提供并且由当前调用表达式的形式而定的。 如果在调用括号()的左边，有引用类型的值，那么this的值就会设置为该引用类型值的base对象。 所有其他情况下（非引用类型），this的值总是null。然而，**由于null对于this来说没有任何意义，因此会隐式转换为全局对象**。
 
 简化一下就是下以两条规则：
 
-1. 如果在调用括号()的左边，有VRT，那么this的值就会设置为该**VRT的base对象**
-2. 所有其他情况下（非引用类型），this的值总是null。然而，由于null对于this来说没有任何意义，因此会**隐式转换为全局对象**
+1. 如果调用括号()左边为VRT，那么this的值就会设置为该**VRT的base对象**
+2. 如果调用括号()左边为非VRT，this的值先是null，然后**隐式转换为全局对象**
 
 从上面this的值的规则可以总结出，在不考虑call、apply、bind的情况下, **影响调用上下文中的this的值的只有可能是函数调用表达式的形式**，理解并谨记这一点非常重要，this的调用方式可分下如下3大类:
 
@@ -155,7 +155,7 @@ GetValue(barReference); // function object "bar"
 
 ````
 function foo() {
-  alert(this);
+  console.log(this);
 }
  
 foo(); // global
@@ -172,7 +172,7 @@ var fooReference = {
 ````
 function foo() {
   function bar() {
-    alert(this); //global
+    console.log(this); //global
   }
   bar(); // 和AO.bar()是一样的 => null.bar() => window.bar()
 }
@@ -187,7 +187,7 @@ foo() -> AO.foo() -> null.foo() -> foo.call(globalObject).
 
 //可以通过以下代码更加明显地检验
 function a() {
-    alert(this);//global
+    console.log(this);//global
 }
 a.call(null);
 
@@ -200,28 +200,138 @@ ES3 spec:
 ES7+ spec.
 > The caller provides the this value. If the this value provided by the caller is not an object (including the case where it is null), then the this value is the global object.
 
+
+### 通过属性访问调用
+````
+var foo1 = {
+  bar1: function () {
+    console.log(this);
+    console.log(this === foo1);
+  }
+};
+ 
+foo1.bar1(); // 打印结果：foo1, true，调用方式：通过属性访问调用
+
+//因为VRT的base对象为foo1
+var bar1Reference = {
+  base: foo1,
+  propertyName: 'bar1'
+};
+````
+以上例子使用调用方式2，取值规则1。再来看看更复杂的例子
+
+
+````
+//************************case1*********************************
+function foo() {
+  console.log(this);
+}
+ 
+foo(); // 打印结果：window, 调用方式1：全局环境下通过标识符调用，取值规则1
+ 
+console.log(foo === foo.prototype.constructor); // true
+ 
+// 然而，同样的函数，以另外一种调用方式的话，this的值就不同了
+foo.prototype.constructor(); // 打印结果：foo.prototype, 调用方式2：通过属性访问调用，取值规则1
+
+//因为VRT的base对象为foo.prototype
+var bar1Reference = {
+  base: foo.prototype,
+  propertyName: 'constructor'
+};
+
+//************************case2*********************************
+var foo1 = {
+  bar1: function () {
+    console.log(this);
+    console.log(this === foo1);
+  }
+};
+ 
+foo1.bar1(); // 打印结果：foo1, true，调用方式：通过属性访问调用
+ 
+var exampleFunc = foo1.bar1;
+ 
+console.log(exampleFunc === foo1.bar1); // true
+ 
+// 同样地，相同的函数以不同的调用方式，this的值也就不同了 
+exampleFunc(); //打印结果：global, false ，调用方式：全局环境下通过标识符调用
+````
+
 ### 以上调用方式以外的调用方式
+- 立即执行函数
+
 ````
 //调用方式：3 ，取值规则2
 (function () {
-  alert(this); //global
+  console.log(this); //global
 })();
-
 ````
-上述例子属性第3种调用方式，有函数对象，但非引用类型对象（因为它不既不是标识符也不属于属性访问），因此，在调用时函数，本来应该传递给this的值是null,此时应用取值规则2，null变为全局对象再作为参数传递给函数，所以最后this的值是global。
+上述例子属性第3种调用方式，有函数对象，但非引用类型对象（因为它不既不是标识符也不属于属性访问），因此，在调用时函数，本来应该传递给this的值是null，此时应用取值规则2，null变为全局对象再作为参数传递给函数，所以最后this的值是global。
 
-
+## new运算符与this的值
 ````
 function A() {
-  alert(this); // newly created object, below - "a" object
+  console.log(this); // newly created object, below - "a" object
   this.x = 10;
 }
  
 var a = new A();
-alert(a.x); // 10
-
-//在这种情况下，new操作符会调用“A”函数的内部[[Construct]]。 
+console.log(a.x); // 10
+````
+这种调用方式与上述的调用方式有些差别，new操作符会调用“A”函数的内部[[Construct]]。 
 在对象创建之后，会调用内部的[[Call]]函数，然后所有“A”函数中this设置成新创建的对象。
 
-VS java：先进入构造函数内部，再分配一块内存，返回内存块的首地址存储在this中
+
+## 严格模式下的this
+严格模式下的this，只要不显式地写出base对象，那么this为null。
+
+````
+'use strict';
+function fn() {
+    console.log('fn',this);
+}
+
+fn();//开启严格模式后，this为null，非严格模式下this为global
+window.fn();//开启严格模式后，this为global，非严格模式下this为global
+````
+基于这一点我们探讨以下一些让人疑惑的调用方式
+
+
+- setTimeout回调
+- DOM事件回调
+
+````
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<input type="button" id="test" value="click">
+</body>
+<script>
+    'use strict';
+    document.getElementById('test').addEventListener('click',function () {
+        console.log('click',this);//DOM节点
+        //可以推断出回调函数是DOM节点的一个属性，然后这样进行显式回调 DOM('test').xxx()
+    });
+
+    setTimeout(function () {
+        console.log('setTimeout',this);//global
+        //可以推断出在声名回调函数的时候，回调函数的引用值保存在window对象里。
+        //然后这样进行显式回调 window.xxx = 我们写的回调方法，base对象为window
+    });
+</script>
+</html>
+````
+## this与作用域链
+this是在运行时确定的，作用域链是在函数声明时确定的。
+
+## JavaScript VS Java in this
+
+````
+new 运算符
+//VS java：先进入构造函数内部，再分配一块内存，返回内存块的首地址存储在this中
 ````

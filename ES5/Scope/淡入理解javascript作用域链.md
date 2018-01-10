@@ -37,7 +37,7 @@
   activeExecutionContext = {
       VO: {...}, // 或者 AO
       this: thisValue,
-      Scope: [ // 所用域链
+      Scope: [ // 作用域链
         // 所有变量对象的列表
         // 用于标识符查询
       ]
