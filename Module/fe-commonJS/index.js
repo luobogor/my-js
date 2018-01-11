@@ -21,6 +21,7 @@ var fs = _bluebird2.default.promisifyAll(_fs2.default);
 var __MODULES = [];
 
 if (process.argv[2]) {
+    //获取命令行第3个参数
     console.log("start bundle ", process.argv[2]);
 } else {
     console.log("No File Input");
@@ -29,66 +30,88 @@ if (process.argv[2]) {
 var outputFile = process.argv[3] || "bundle.js";
 pack(process.argv[2]);
 
-function pack(fileName) {
+/**
+ *
+ * @param {string} entryFilePath 入口文件路径
+ */
+function pack(entryFilePath) {
     //fileName.js => fileName
-    var name = fileName.replace(/\.js/, "");
+    var name = entryFilePath.replace(/\.js/, "");
 
+    //模板
     var moduleTemplate = "function (module, exports, require, global) {\n{{moduleContent}}\n}";
 
-    bundleModule(name, './').then(function () {
+    recursiveBundleModule(name, './').then(function (promise) {
+        console.log(promise);
         console.log(__MODULES);
+        //得到一个按依赖顺序排序的依赖路径数组
+        //["a.js","b.js","module/c.js"，etc....]
         return _bluebird2.default.map(__MODULES, replaceRequireWithID);
     }).then(function (moduleContents) {
+
         console.log("*********************");
         console.log(moduleContents);
         console.log("*********************");
+        //*******************************构建一个函数数组
         return '[' + moduleContents.map(function (content) {
             return moduleTemplate.replace(/{{moduleContent}}/, content);
         }).join(',\n') + ']';
     }).then(function (modules) {
-        return fs.readFileAsync("packSource.js", "utf8").then(function (content) {
+        return fs.readFileAsync("packSource.js", "utf8")
+        //*******************************将上一步构建好的数组注入到模板的调用参数位置
+        .then(function (content) {
             return content + "(" + modules + ")";
         });
     }).then(_jsBeautify.js_beautify).then(log).then(function (result) {
         return fs.writeFileAsync(outputFile, result);
-    }).then(function () {
+    }) //输出打包文件
+    .then(function () {
         return console.log("bundle success");
     });
 }
 
-function bundleModule(moduleName, nowPath) {
+/**
+ *  获取模块路径，然后将所有模块路径存放到__MODULES数组中
+ *
+ * @param {string} moduleName js文件名作为模块名
+ * @param {string} nowPath js文件所在目录
+ * @returns {Promise.<TResult>}
+ */
+function recursiveBundleModule(moduleName, nowPath) {
     var pathNormalized = _path2.default.normalize(nowPath + moduleName + '.js');
     console.log('\n');
     console.log('**now path:', nowPath);
     console.log('moduleName:', moduleName);
     console.log("unNormalized", nowPath + moduleName + '.js');
     console.log("reading:", pathNormalized);
-    return fs.readFileAsync(pathNormalized, 'utf8').then(function (content) {
-        // console.log("fileContent:", content);
 
-        __MODULES.push(_path2.default.normalize(nowPath + moduleName));
-        return content;
-    }).then(function (content) {
-        return matchRequire(content);
-    }) //相当于 content => {return matchRequire(content)}
-    .then(function (requires) {
-        if (requires.length > 0) {
+    //在__MODULES中注册这个模块名
+    __MODULES.push(_path2.default.normalize(nowPath + moduleName));
+
+    return fs.readFileAsync(pathNormalized, 'utf8').then(function (content) {
+        return matchAllRequires(content);
+    }) //找出当前模块文件的所有依赖路径
+    .then(function (requiresPath) {
+        //根据依赖路径递归加载依赖模块
+        if (requiresPath.length > 0) {
             //对每个require分别递归打包
-            return _bluebird2.default.map(requires, function (requireName) {
+            return _bluebird2.default.map(requiresPath, function (requireName) {
                 // console.log('path.dirname:', path.dirname);
                 console.log('map dir: ');
                 console.log('nowPath:', nowPath);
                 console.log('moduleName:', moduleName);
                 console.log('path.dirname:', _path2.default.dirname(nowPath + moduleName) + "/");
 
-                return bundleModule(requireName, _path2.default.dirname(nowPath + moduleName) + "/");
+                return recursiveBundleModule(requireName, _path2.default.dirname(nowPath + moduleName) + "/");
             });
         } else {
             //所有依赖加载完成，直接返回一个Promise对象
-            return _bluebird2.default.resolve();
+            return _bluebird2.default.resolve('ok');
         }
 
-        //  A common use of Promise.map is to replace the .push+Promise.all boilerplate:
+        /* Promise.map实际上是对下面原生js代码进行封装 */
+        //  A common use of Promise.map is to replace the .push + Promise.all boilerplate:
+
         //             var promises = [];
         //             for (var i = 0; i < fileNames.length; ++i) {
         //                 promises.push(fs.readFileAsync(fileNames[i]));
@@ -97,7 +120,7 @@ function bundleModule(moduleName, nowPath) {
         //                 console.log("done");
         //             });
         //
-        // //           *****Using Promise.map:
+        //            *****Using Promise.map:
         //             Promise.map(fileNames, function(fileName) {
         //                 // Promise.map awaits for returned promises as well.
         //                 return fs.readFileAsync(fileName);
@@ -107,8 +130,13 @@ function bundleModule(moduleName, nowPath) {
     });
 }
 
-//解析依赖的模块名:找出所有require语句， require("./module1") => ./module1
-function matchRequire(code) {
+/**
+ * 解析依赖的模块名:找出当前js文件所有require语句的中依赖文件路径，eg: 匹配出require语句，然后 require("./module1") => ./module1
+ *
+ * @param {string} code js文件中的代码
+ * @returns {Array} 该数组包含当前js文件所有依赖文件的路径
+ */
+function matchAllRequires(code) {
     var requires = code.match(/require\("\S*"\)|require\('\S*'\)/g) || [];
     //从js文件中匹配require语句，比如 require("./module1")
     // console.log('matchRequire:', requires);
@@ -117,7 +145,7 @@ function matchRequire(code) {
     // var temp = requires.map(item => item.match(/"\S*"|'\S*'/)[0]);
     // console.log(temp);
 
-    //去掉"号，比如 "./module1" =>  ./module1
+    //去掉引号，比如 "./module1" =>  ./module1
     // console.log(temp.map(item => item.substring(1, item.length - 1)));
 
     return requires.map(function (item) {
@@ -127,17 +155,23 @@ function matchRequire(code) {
     });
 }
 
+/**
+ *  "./module1" 这样的字符串作为模块的唯一识别码，这是一个明显的缺陷，存在多层级文件时，这个名称很容易冲突。
+ *  所以用 moduleID 替代 moduleName
+ *
+ *  过程：
+ *  读取js文件内容，将 require("./module1") 转换成 模板所在数组下标
+ *
+ * @param moduleName 模板名
+ * @returns {Promise.<TResult>}
+ */
 function replaceRequireWithID(moduleName) {
-    // return fs.readFileAsync(moduleName + '.js', 'utf8')
-    //     .then(content => {
-    //         return content;
-    //     });
-
     var dirPath = _path2.default.dirname(moduleName) + '/';
     return fs.readFileAsync(moduleName + '.js', 'utf-8').then(function (code) {
-        matchRequire(code).forEach(function (item) {
+        matchAllRequires(code).forEach(function (item) {
             var regRequire = new RegExp("require\\(\"" + item + "\"\\)|" + "require\\(\'" + item + "\'\\)");
             var modulePath = _path2.default.normalize(dirPath + item);
+            //这句代码是关键，将模块的数组下标作为其唯moduleID
             var moduleID = __MODULES.indexOf(modulePath);
             code = code.replace(regRequire, "require(" + moduleID + ")");
         });
@@ -146,6 +180,5 @@ function replaceRequireWithID(moduleName) {
 }
 
 function log(packSourceConnected) {
-    // console.log(packSourceConnected);
     return packSourceConnected;
 }
