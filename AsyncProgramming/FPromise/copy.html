@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body></body>
+<script>
+    //Promise类 静态变量
+    Promise.STATE = {PENDING: 'pending', FULFILLED: 'fulfilled'};
+    function Promise(fn) {
+        this.state = Promise.STATE.PENDING;
+        this.value = null;
+        this.deferreds = [];
+
+        this.then = function (onFulfilled) {
+            new Promise(resolve => {
+                handle({
+                    onFulfilled: onFulfilled || null,
+                    resolve: resolve
+                });
+            });
+        };
+
+        function handle(deffered) {
+            if(this.state === Promise.STATE.PENDING){
+                this.deferreds.push(deffered);
+                return;
+            }
+
+            var onFulfilledCallbackExecutedVal = deffered.onFulfilled(this.value);
+            deffered.resolve(onFulfilledCallbackExecutedVal);
+        }
+
+        function resolve(newValue) {
+            this.value = newValue;
+            this.state = Promise.STATE.FULFILLED;
+            setTimeout(() => {
+                this.deferreds.forEach(deferred => handle(deferred));
+            },0);
+        }
+
+        handle.bind(this);
+        resolve.bind(this);
+
+        fn(resolve);
+    }
+
+    function getUserId() {
+        return new Promise(function (resolve) {
+            resolve('HelloGit');
+        });
+    }
+
+    var promise =  getUserId();
+</script>
+</html>

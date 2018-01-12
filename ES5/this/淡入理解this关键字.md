@@ -69,18 +69,19 @@ exampleFunc(); //打印结果：global, false ，调用方式：全局环境下�
 1. 求值一个标识符的时候
 2. 进行属性访问的时候
 
-解释器会在作用域中查找需要的标识符/对象，然后返回一个**引用类型的值**,也就是返回一个保存着引用类型的内存地址的变量，而不是返回一个引用类型。用伪代码表示为一个拥有两个属性的对象。
+如果是第1种情况，解释器会在作用域中查找需要的标识符，然后返回一个**引用类型的值**，也就是返回一个保存着引用类型的内存地址的变量，而不是返回一个引用类型。用伪代码表示为一个拥有两个属性的对象。
 
 ````
 var valueOfReferenceType = {
-  base: <object>,//base属性是一个对象
-  propertyName: <property name of base object> //propertyName是上面base对象里的一个属性的名字
+  base: <object>,//base对象是 标识符所在的变量对象/属性所在对象
+  propertyName: <property name of base object> //propertyName为标识符/属性
 };
 ````
-下面我们来举个栗子看看VRT是具体长什么样子。(以下内容都用”VRT“代替”引用类型的值“)
+如果是第2种情况也是返回引用类型的值，但是base对象是否需要到作用域链中查找，Dmitry A.Soshnikov的文章没有说明，但是理论上来说这种情况下base对象也应该要到作用域中查找的。下面我们来举个栗子看看VRT是具体长什么样子。(以下内容都用”VRT“代替”引用类型的值“)
 
 ````
 //***************我是全局执行环境
+//**********标识符
 //声名
 var foo = 10;
 function bar() {}
@@ -99,6 +100,17 @@ var barReference = {
   base: global,
   propertyName: 'bar'
 };
+
+//**********属性访问
+foo.bar();
+foo['bar']();
+//中间过程中，得到如下的引用类型的值：
+var fooBarReference = {
+  base: foo,
+  propertyName: 'bar'
+};
+
+GetValue(fooBarReference); // function object "bar"
 ````
 
 这时候有一个问题，虽然我们得到了某个标识符/属性的VRT，但我们还是没有拿到这个标识符/属性的值。也说是说console.log(foo)，不可能打印出{base: global, propertyName: 'foo'}吧，我们要打印的是foo的值10。这时解释器会调用GetValue方法，该方法用于在VRT中提取propertyName的值，用伪代码可以描述成如下形式：

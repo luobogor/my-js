@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+</body>
+<script>
+    function Promise(fn) {
+        debugger;
+        var value = null,
+            deferreds = [];
+
+        this.then = function (onFulfilled) {
+            deferreds.push(onFulfilled);
+            return this;
+        };
+
+        function resolve(value) {
+            deferreds.forEach(deferred => deferred(value));
+        }
+
+        fn(resolve);
+    }
+
+
+    function getUserId() {
+        return new Promise(function (resolve) {
+            setTimeout(function () {
+                resolve("I am back");
+            }, 2000);
+        })
+    }
+
+
+    getUserId().then(function (id) {
+        console.log(id);
+    });
+</script>
+</html>

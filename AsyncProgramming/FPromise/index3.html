@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+</body>
+<script>
+    function Promise(fn) {
+        this.state = 'pending';
+        this.value = null;
+        this.deferreds = [];
+
+        this.then = function (onFulfilled) {
+            if (this.state === 'pending') {
+                this.deferreds.push(onFulfilled);
+                return this;
+            }
+            var result = onFulfilled(this.value);
+            this.value = result;
+            return this;
+        };
+
+        function resolve(newValue) {
+            this.value = newValue;
+            this.state = 'fulfilled';
+            setTimeout(() => {
+                this.deferreds.forEach(deferred => deferred(this.value));
+            }, 0);
+        }
+
+        fn.call(this, resolve.bind(this));
+    }
+
+
+    function getUserId() {
+        return new Promise(function (resolve) {
+            resolve('30624700');
+        });
+    }
+
+    var promise = getUserId();
+
+    //事件可以注册多个回调方法
+    promise.then(function (id) {
+        console.log('n1:', id);//30624700
+        return 'nima';
+    }).then(function (value) {
+        //这里的值仍然是30624700而不是想像中的nima。
+        // 在this.then中添加 var result = onFulfilled(this.value);this.value = result;可以完成then的value刷新，但是，只能同步操作，不能异步操作
+
+        //要完成promise接力的关键是不用原来promise对象的then，
+        // 让原来对象的then方法生成一个新的promise，构造新的promise时调用旧promise的回调方法作为新promise的参数方法，旧promise的回调已经执行完就将返回值给新promise的resolve
+        // 这时候只要在新的promise的then方法中注册回调方法就可以拿到旧promise对象的回调方法的执行结果
+        console.log(value);
+    });
+
+//    promise.then(function (id) {
+//        console.log('n2:', id);//30624700
+//    });
+</script>
+</html>
