@@ -4,3 +4,7 @@
 即使是return语句后的变量定义和函数定义都是有效的。
 ![](https://ws1.sinaimg.cn/large/006tNc79gy1fn9ldtmnlpj30hh0ajacz.jpg)
 - 第二次遍历填充变量对象的值，如果找不到定义则将变量添加到对象变量末端。（不声名变量宽容）
+- [[]]表示内部属性，如[[scopes]],[[class]]
+## 不影响VO的
+- 函数表达式
+- 一个block内的变量或函数

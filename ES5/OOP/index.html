@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+</body>
+<script>
+    var a = {
+        valueOf: function () {
+            return 100;
+        },
+        toString: function () {
+            return '__test';
+        }
+    };
+
+    // 这个操作里，toString方法自动调用
+//    alert(a); // "__test"
+//    console.log(a)
+
+
+
+
+    // 引用F.prototype的时候获取该对象g
+    //var __objectPrototype = F.prototype;
+    // 如果__objectPrototype是对象，就:
+    //O.[[Prototype]] = __objectPrototype
+    // 否则:
+    //O.[[Prototype]] = Object.prototype;
+    // 这里O.[[Prototype]]是Object对象的原型
+
+    var foo = {a:'hello'}
+
+    function MyObj() {
+
+    }
+
+    MyObj.prototype = foo
+    var bar = new MyObj()
+    console.log('1:',MyObj.prototype === bar.__proto__)//true
+    console.log('a' in bar)//true in操作符也可以负责查找属性（也会查找原型链）
+
+    MyObj.prototype = null
+    var obj = new MyObj()
+    console.log(MyObj.prototype === obj.__proto__)//false
+    console.log(obj.__proto__)
+
+
+//    首先，新创建对象的原型是从当前时刻函数的prototype属性获取的（这意味着同一个构造函数创建的两个创建对象的原型可以不同是因为函数的prototype属性也可以不同）。
+//其次，正如我们上面提到的，如果在对象初始化的时候，[[Call]]返回的是对象，这恰恰是用于整个new操作符的结果：
+</script>
+</html>
