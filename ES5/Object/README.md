@@ -323,8 +323,6 @@ return O
 2. 其次，正如我们上面提到的，如果在对象初始化的时候，[[Call]]返回的是对象，这恰恰是用于整个new操作符的结果：
 3. 我的补充，如果构造函数的prototype为null，生成对象的__proto__并不是prototype
 
-注意虽然手动恢复了constructor属性，和原来丢失的原型相比，{DontEnum}特性没有了，也就是说A.prototype里的for..in循环语句不支持了，不过第5版规范里，通过[[Enumerable]] 特性提供了控制可枚举状态enumerable的能力。
-
 ````
 var foo = {x: 10};
  

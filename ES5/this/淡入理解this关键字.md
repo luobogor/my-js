@@ -311,7 +311,8 @@ window.fn();//开启严格模式后，this为global，非严格模式下this为g
 
 
 - setTimeout回调
-- DOM事件回调
+- DOM事件回调(参考事件文章)
+- 自执行函数(为什么this为window??)
 
 ````
 <!DOCTYPE html>
@@ -340,10 +341,3 @@ window.fn();//开启严格模式后，this为global，非严格模式下this为g
 ````
 ## this与作用域链
 this是在运行时确定的，作用域链是在函数声明时确定的。
-
-## JavaScript VS Java in this
-
-````
-new 运算符
-//VS java：先进入构造函数内部，再分配一块内存，返回内存块的首地址存储在this中
-````

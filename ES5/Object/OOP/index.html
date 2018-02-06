@@ -47,9 +47,11 @@
     var obj = new MyObj()
     console.log(MyObj.prototype === obj.__proto__)//false
     console.log(obj.__proto__)
+    //只能通过Object.create(null) 来创建一个以null为原型的对象
+    console.log('obj instanceof MyObj:',obj instanceof MyObj)//报错 Function has non-object prototype 'null' in instanceof check
 
-
-//    首先，新创建对象的原型是从当前时刻函数的prototype属性获取的（这意味着同一个构造函数创建的两个创建对象的原型可以不同是因为函数的prototype属性也可以不同）。
-//其次，正如我们上面提到的，如果在对象初始化的时候，[[Call]]返回的是对象，这恰恰是用于整个new操作符的结果：
+    //把MyObj.prototype的注释去掉，执行下面语句
+//    obj.__proto__ = null
+//    console.log('obj instanceof MyObj:',obj instanceof MyObj)//不报错，但结果为false
 </script>
 </html>

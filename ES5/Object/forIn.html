@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+</body>
+<script>
+
+    function test1() {
+        function A() {}
+        A.prototype = {
+            constructor: A,
+            x: 10
+        };
+        var a = new A();
+        a.hello = 'world'
+        console.log('key in a')
+        //遍历所有可枚举的属性，包括继承的属性
+        for(key in a)
+            console.log(key)
+
+        console.log('*********')
+
+
+        var pro = {a:4,myfun:function () {
+            console.log('myFun')
+        }}
+        pro.prototype = {
+            constructor:pro,
+            hello : 'world'
+        }
+
+        //遍历所有可枚举的属性，包括继承的属性
+        var newO = Object.create(pro)
+        newO.b = 5
+
+        Object.defineProperty(newO,'noEnum',{
+            value:998,
+            enumerable:false
+        })
+
+        for(x in newO)
+            console.log(x)
+
+        //以下两个都是ES5中的方法，ES3中没有提供任何类似Object.getOwnPropertyName的方法来获取对象不可枚举属性
+        console.log(Object.keys(newO))//keys只获取可枚举自身属性，不包括原型属性
+        console.log(Object.getOwnPropertyNames(newO))//包括不可枚举，不包括原型
+
+        //还有就是ES6，参数非对象不会报错
+        //Object.keys('foo');
+        // TypeError: "foo" is not an object (ES5 code)
+        //Object.keys('foo');
+        // ["0", "1", "2"]                   (ES2015 code)
+    }
+    test1()
+
+    function test2() {
+        //但是对象继承的内置方法不可枚举的
+        var o = {x:1,y:2,z:3}
+        console.log(o.propertyIsEnumerable("toString"))
+        for(p in o)
+            console.log(p)    
+    }
+//    test2()
+    
+    
+    //给Object.prototype添加了新的方法或属性，这些方法可以被所有对象继承并使用。
+    //然而在ES5之前，这些新添加的方法是不能定义为不可枚举的，因此它们都可以在for/in循环中枚举出来。可以用hasOwnProperty过滤掉这些属性
+    function test() {
+        var o = {x:1,y:2,z:3}
+        for(p in o)
+            if(o.hasOwnProperty(p)) continue
+            
+    }
+
+
+</script>
+</html>
