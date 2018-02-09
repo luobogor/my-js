@@ -57,7 +57,7 @@
     test1()
 
     function test2() {
-        //但是对象继承的内置方法不可枚举的
+        //但是不遍历对象继承的内置方法
         var o = {x:1,y:2,z:3}
         console.log(o.propertyIsEnumerable("toString"))
         for(p in o)

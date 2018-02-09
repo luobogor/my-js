@@ -1,3 +1,5 @@
+# DIY Promise
+
 - Promise类里的resolve方法之所以要把promise任务队列异步执行，是因为这样可以确保then方法能先完成注册回调到promise任务队列里
 
 - 执行Promise构造方法，构造过程中会调用**参数方法**，**参数方法**可以调用resolve。

@@ -24,12 +24,13 @@ var e = 10;
 ````
 这些值是在底层上直接实现的，他们不是object，所以没有原型，没有构造函数。
 
-````
+
 尽管262-3的标准是定义null的类型是Null，因为某些说不清的原因，262-5已经将标准修改为null的类型是object了
 在 JavaScript 最初的实现中，JavaScript 中的值是由一个表示类型的标签和实际数据值表示的。对象的类型标签是 0。由于 null 代表的是空指针（大多数平台下值为 0x00），因此，null的类型标签也成为了 0，typeof null就错误的返回了"object"。（reference）
 
 ECMAScript提出了一个修复（通过opt-in），但被拒绝。这将导致typeof null === 'object'。
 
+````
 null instanceof Object //false
 ````
 
@@ -85,13 +86,14 @@ console.log(foo); {x: 10, y: 20}
 ### 属性的特性
 所有的属性（property） 都可以有很多特性（attributes）。
 
-{ReadOnly}——忽略向属性赋值的写操作尝，但只读属性可以由宿主环境行为改变——也就是说不是“恒定值” ;
-{DontEnum}——属性不能被for..in循环枚举
-{DontDelete}——糊了delete操作符的行为被忽略（即删不掉）;
-{Internal}——内部属性，没有名字（仅在实现层面使用），ECMAScript里无法访问这样的属性。
+- {ReadOnly}——忽略向属性赋值的写操作尝，但只读属性可以由宿主环境行为改变——也就是说不是“恒定值” ;
+- {DontEnum}——属性不能被for..in循环枚举
+- {DontDelete}——糊了delete操作符的行为被忽略（即删不掉）;
+- {Internal}——内部属性，没有名字（仅在实现层面使用），ECMAScript里无法访问这样的属性。
+
 注意，在ES5里{ReadOnly}，{DontEnum}和{DontDelete}被重新命名为[[Writable]]，[[Enumerable]]和[[Configurable]]，可以手工通过Object.defineProperty或类似的方法来管理这些属性。
 
-#### 内部属性和方法
+### 内部属性和方法
 对象也可以有内部属性（实现层面的一部分），并且ECMAScript程序无法直接访问（但是下面我们将看到，一些实现允许访问一些这样的属性）。 这些属性通过嵌套的中括号[[ ]]进行访问。我们来看其中的一些，这些属性的描述可以到规范里查阅到。
 
 每个对象都应该实现如下内部属性和方法：
@@ -318,10 +320,11 @@ return R
 return O
 ````
 
-请注意两个主要特点：
+请注意三个主要特点：
+
 1. 首先，新创建对象的原型是从当前时刻函数的prototype属性获取的（这意味着同一个构造函数创建的两个创建对象的原型可以不同是因为函数的prototype属性也可以不同）。
 2. 其次，正如我们上面提到的，如果在对象初始化的时候，[[Call]]返回的是对象，这恰恰是用于整个new操作符的结果：
-3. 我的补充，如果构造函数的prototype为null，生成对象的__proto__并不是prototype
+3. 最后，如果构造函数的prototype为null，那么生成的对象的\__proto__并不是null，而是Object。只能通过Object.create(null)创建一个原型为null的对象
 
 ````
 var foo = {x: 10};
@@ -353,10 +356,11 @@ var foo = {};
 Object.getPrototypeOf(foo) == Object.prototype; // true
 `````
 
-### instanceof
-instanceof不是用来检测对象foo是否是用Foo构造函数创建的，所有instanceof运算符只需要一个对象属性——foo.[[Prototype]]，在原型链中从Foo.prototype开始检查其是否存在。instanceof运算符是通过构造函数里的内部方法[[HasInstance]]来激活的。
+### instanceof 运算符
+instanceof不是用来检测对象foo是否是用Foo构造函数创建的，所有instanceof运算符只需要一个对象属性——foo.[[Prototype]]，在原型链中从Foo.prototype开始检查其是否存在，`instanceof运算符是通过构造函数里的内部方法[[HasInstance]]来激活的。`
 
 让我们来看看这个例子：
+
 ````
 function A() {}
 A.prototype.x = 10;
@@ -453,7 +457,7 @@ delete foo.x;
 console.log(foo.x); // 重新是100,继承属性
 ````
 
-请注意，不能掩盖原型里的只读属性，赋值结果将忽略，这是由内部方法[[CanPut]]控制的。
+请注意，不能覆盖原型里的只读属性，赋值结果将忽略，这是由内部方法[[CanPut]]控制的。
 
 ````
 // 例如，属性length是只读的，我们来掩盖一下length试试
@@ -473,6 +477,8 @@ foo.length = 5;
 console.log(foo.length); // 依然是3
 ````
 
-但在ES5的严格模式下，如果掩盖只读属性的话，会报TypeError错误。
+## 其他
+但在ES5的严格模式下，如果覆盖只读属性的话，会报TypeError错误。
 
 1.toString(); // 语法错误！
+// obj.__proto__以前是非标准的，在ES6已经被纳入标准，MDN建议使用obj.__proto__，不建议使用Object.getPrototypeOf

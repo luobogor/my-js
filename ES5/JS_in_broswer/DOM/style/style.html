@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>内联style</title>
+    <style>
+        div {
+            width: 200px;
+        }
+    </style>
+</head>
+<body>
+<div style="display: block;background: blue;height: 200px;color: white">hello</div>
+</body>
+<script>
+    var el = document.getElementsByTagName('div')[0]
+    console.log(el.style.height)
+</script>
+</html>

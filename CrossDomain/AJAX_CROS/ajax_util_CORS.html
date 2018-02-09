@@ -36,7 +36,7 @@
         util.json = function ajax(options) {
             //默认配置
             var opt = {
-                url: '',
+                url: 'http://www.baidu.com',
                 type: 'GET',//默认为get请求
                 data: {},
                 success: function () {
@@ -69,7 +69,7 @@
 
 
                 //*******************xhr.status状态
-                // 0
+                // 0    Before the request is complete, the value of status will be 0
                 //200
 
 
@@ -79,7 +79,7 @@
                 console.log('UNSENT', 'readyStatuds' + xhr.readyState, 'status:' + xhr.status);
 
                 xhr.onreadystatechange = function () {
-                    // debugger;
+                    //对于从无到0是不会触发onreadystatechange但是上面xhr.readyState可以获取到0
                     console.log(xhr.readyState);
                 };
 
