@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div data-id="998" data-color="red" data-fat="veryFat"></div>
+<script>
+    var nodeAttrs = document.querySelector('div').attributes,
+        likeArray = {"0": 'hello', "1": "world", length: 2}
+
+    console.log(nodeAttrs instanceof Array)//false
+    console.log(likeArray instanceof Array)//false
+
+    //类数组可以用forEach进行遍历，不需要用slice转换成数组
+    Array.prototype.forEach.call(nodeAttrs, function (attr) {
+        console.log(attr.name + ':' + attr.value)
+    })
+
+    //    ;Array.prototype.slice.call(nodeAttrs).forEach(function (attr) {
+    //        console.log(attr.name + ':'+ attr.value)
+    //    })
+
+    Array.prototype.forEach.call(likeArray, function (item,idx) {
+        console.log(idx + ':' + item)
+    })
+
+</script>
+</body>
+</html>

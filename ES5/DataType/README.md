@@ -25,6 +25,25 @@ typeof console.log // "function"
 - 特别注意 null instanceof Object => false
 
 ## 类型转换
+### 显式类型转换
+#### Number
+![](https://ws2.sinaimg.cn/large/006tKfTcgy1foccf8m9xpj30s60bqaav.jpg)
+**valueOf -> toString -> 报错**
+
+![](https://ws1.sinaimg.cn/large/006tKfTcgy1foccfhbdtaj30dl05z0u3.jpg)
+
+#### String
+![](https://ws3.sinaimg.cn/large/006tKfTcgy1foccfu91maj30at05iq3e.jpg)
+
+**toString -> valueOf -> 报错**
+
+![](https://ws1.sinaimg.cn/large/006tKfTcgy1foccg2hhptj30dg05hab4.jpg)
+
+#### Boolean
+![](https://ws1.sinaimg.cn/large/006tKfTcgy1foccgo3ffej30ct05laad.jpg)
+
+
+### 隐式类型转换
 1. 字符串拼接
 
 ````
@@ -54,6 +73,7 @@ var a = 100;
 console.log(!!a);
 ````
 
+
 ## 问题
 1. JS中的内置函数(共9种)，Math，JSON是内置对象**不是函数**
    1. Object
@@ -66,3 +86,4 @@ console.log(!!a);
    8. RegExp
    9. Error
 ![](https://ws4.sinaimg.cn/large/006tNc79gy1fmzt40h3ysj30hr051gm0.jpg)
+

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>显式类型转换考察</title>
+</head>
+<body>
+<script>
+    //String优先
+
+    //String([]) + String([])
+    console.log('[] + [] = ', [] + [])//空串
+    //String([]) + String({})
+    console.log('[] + {} = ', [] + {})
+
+//   下面这两句要直接在控制台输入才能看到真实效果，console.log打印会受语法影响
+//    {} + []  //{}表示一个块会被忽略，最终执行 +[] => Number([]) => 0
+//    {} + {}  //chrome结果[object Object][object Object]   firefox结果NaN
+
+    //Number(true) + Number(true)
+    console.log('true + true = ', true + true)
+    //String('2') + String({a:1})
+    console.log('1 + {a:1} = ', 1 + {a: 1})
+    //Number('2')
+    console.log('+ \'2\' = ', +'2')
+    //Number('-2')
+    console.log('- \'2\' = ', -'2')
+    //String(1) + String('2')
+    console.log('1 + \'2\' = ', 1 + '2')
+</script>
+</body>
+</html>
