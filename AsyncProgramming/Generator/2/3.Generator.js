@@ -10,18 +10,21 @@
 
     console.log(k.next());//false
     console.log(k.next());//false
+    console.log(k.next());//true，表示后面已经没值可以返回了
     console.log(k.next());//true
-    console.log(k.next());//true
+    for(let value of tell())
+        console.log(value)// 'a','b'
 }
 
 {
     console.log("*****************************part2:Generator返回Iterator");
-    let obj = {};
-    //Generator是一个遍历器生成函数(Generator实际上是一个对象不是函数)
-    obj[Symbol.iterator] = function* () {
-        yield 1;
-        yield 2;
-        yield 3;
+    let obj = {
+        //Generator是一个遍历器生成函数
+        *[Symbol.iterator]() {
+            yield 1;
+            yield 2;
+            yield 3;
+        }
     };
 
     for (let value of obj) {

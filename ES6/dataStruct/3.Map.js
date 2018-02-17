@@ -10,7 +10,7 @@
 {
     console.log('另一种初始化的方法');
     //[[key,value],[key,value],.....]
-    let map = new Map([['a', 123], ['b', 456]]);
+    let map = new Map([['a', 123], ['b', 456], ['abc', 887]]);
     console.log('map args',map);
     //delete,clear方法与Set类似
 }

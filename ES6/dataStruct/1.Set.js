@@ -17,8 +17,9 @@
     let list = new Set();
     list.add(1);
     list.add(2);
+    list.add('2');
     list.add(1);
-    console.log(list);//结果1,2    1不会重复添加
+    console.log(list);//结果1,2,'2'    1不会重复添加
 
     // 利用元素唯一的特性可以做数组去重操作
     let arr = [1, 2, 4, 3, 1, 2];
@@ -37,7 +38,6 @@
     console.log('list', list);
 }
 
-//Set是有序还是无序？？实验是有序的,即按原加入顺序
 
 {
     console.log('**************************遍历');
