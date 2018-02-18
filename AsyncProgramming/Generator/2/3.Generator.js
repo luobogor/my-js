@@ -12,7 +12,7 @@
     console.log(k.next());//false
     console.log(k.next());//true，表示后面已经没值可以返回了
     console.log(k.next());//true
-    for(let value of tell())
+    for (let value of tell())
         console.log(value)// 'a','b'
 }
 
@@ -20,7 +20,7 @@
     console.log("*****************************part2:Generator返回Iterator");
     let obj = {
         //Generator是一个遍历器生成函数
-        *[Symbol.iterator]() {
+        * [Symbol.iterator]() {
             yield 1;
             yield 2;
             yield 3;
@@ -53,24 +53,29 @@
 }
 
 {
-    console.log("*****************************part4:Async Await只是Generator的一个语法糖，功能是一样的");
-    //****注意这里要打补丁才能执行
+    console.log("*****************************part4:给迭代器传递参数及抛出错误");
 
-    // let state = async function() {
-    //     while (1) {
-    //         await 'A';
-    //         await 'B';
-    //         await 'C';
-    //     }
-    // };
-    //
-    // let status = state();
-    // console.log(status.next());
-    // console.log(status.next());
-    // console.log(status.next());
-    // console.log(status.next());
-    // console.log(status.next());
-    // console.log(status.next());
+    function* createIterator(num) {
+        console.log('begin');
+        let first = yield num + 1;// 1 + 1
+        console.log(first);// 已经被替换成4
+        let second;
+        try {
+            second = yield first + 2;// yield 4 + 2，然后抛出错误
+        } catch (ex) {
+            second = 6;
+        }
+        yield second + 3;//6 + 3 = 9
+    }
+
+    //通过调用生成器时传递参数给第一次执行yield语句使用。
+    let iterator = createIterator(1);
+    //因为第一次调用next()方法前不会执行任何yield语句，因此在第一次调用next()方法时传递998没任何作用
+    console.log(iterator.next(998));//1,false
+    // next()方法的参数4会替代生成器内部上一条yield语句的返回值2
+    console.log(iterator.next(4));//6,false
+    console.log(iterator.throw(new Error("Boom")));//9,false
+    console.log(iterator.next());//undefined,true
 }
 
 {
@@ -79,18 +84,31 @@
     function* G1() {
         yield 'a';
         yield* G2();
+        // 如果要返回'z'，将这样操作
+        // let res = yield* G2();
+        // yield res;
         yield 'b';
+        return 'hello';
     }
 
     function* G2() {
         yield 'x';
         yield 'y';
+        return 'z';
     }
 
-    for (let item of G1()) {
-        console.log(item);
+    let iteratorG1 = G1();
+    for (let item of iteratorG1) {
+        console.log(item);//'a','x','y','b'
     }
+
+    let iteratorG2 = G2();
+    iteratorG2.next();//'x',false
+    iteratorG2.next();//'y',false
+    //如果当前生成器不作为委托生成器，可以用next()可以取到return的值
+    iteratorG2.next();//'z',true
 }
+
 
 {
     console.log("*****************************part5:Generator作长轮询使用");

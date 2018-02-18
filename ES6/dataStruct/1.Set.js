@@ -23,7 +23,8 @@
 
     // 利用元素唯一的特性可以做数组去重操作
     let arr = [1, 2, 4, 3, 1, 2];
-    console.log('元素去重',new Set(arr));
+    //对set对象进行展开操作以达到元素去重的效果
+    console.log([...new Set(arr)]);
 }
 
 
