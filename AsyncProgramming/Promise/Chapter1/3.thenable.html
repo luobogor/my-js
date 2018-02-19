@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>非Promise的Thenable对象</title>
+</head>
+<body>
+<script>
+    const thenable = {
+        then(resolve, reject) {
+            resolve(42);
+        }
+    }
+
+    const p1 = Promise.resolve(thenable)
+    p1.then(value => {
+        console.log(value)
+    })
+</script>
+</body>
+</html>

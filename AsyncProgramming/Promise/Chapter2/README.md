@@ -15,7 +15,12 @@
     });
 
 ````
-#### Promise.reject的作用
+
+#### 什么时候该使用Thenable？
+许多库都使用了Thenable对象，所以如果要向后兼容之前的已有的库，则将Thenable对象转换为正式Promise的能力显得至关重要了。
+
+
+### Promise.reject的作用
 - Promise.reject与Promise.resolve类似
 - 实际上 Promise#catch 只是 promise.then(undefined, onRejected); 方法的一个别名而已。
 
