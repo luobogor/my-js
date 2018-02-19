@@ -205,6 +205,11 @@ for~of 循环通过的代码通过调用可迭代目标的`Symbol.iterator`方�
 }
 ````
 
+### async
+在函数前添加关键字async表示该函数以异步模式运行，await关键字表示执行的语句应该返回一个Promise，否则，响应应该被包裹在Promise中。
+
+正如之前章节中的run()实现，如果Promise被拒绝则await应该报出错误，否则通过Promise来返回值。
+
 - async与Generator的区别
   - 语法糖
   - 不需要co库
