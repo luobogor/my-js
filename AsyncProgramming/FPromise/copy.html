@@ -2,56 +2,71 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>my-promise</title>
 </head>
 <body></body>
 <script>
     //Promise类 静态变量
-    Promise.STATE = {PENDING: 'pending', FULFILLED: 'fulfilled'};
+    Promise.STATE = {PENDING: 'pending', FULFILLED: 'fulfilled'}
+
     function Promise(fn) {
-        this.state = Promise.STATE.PENDING;
-        this.value = null;
-        this.deferreds = [];
+        let state = Promise.STATE.PENDING,
+            value = null,
+            deferredQueue = []
 
-        this.then = function (onFulfilled) {
-            new Promise(resolve => {
-                handle({
-                    onFulfilled: onFulfilled || null,
-                    resolve: resolve
-                });
-            });
-        };
-
-        function handle(deffered) {
-            if(this.state === Promise.STATE.PENDING){
-                this.deferreds.push(deffered);
-                return;
+        function handle(deferred = null) {
+            if (state === Promise.STATE.PENDING) {
+                deferredQueue.push(deferred)
+                return
             }
 
-            var onFulfilledCallbackExecutedVal = deffered.onFulfilled(this.value);
-            deffered.resolve(onFulfilledCallbackExecutedVal);
+            const result = deferred.onFulfilled(value)
+            deferred.resolve(result)
         }
 
+        //第一次 newPromise -> resolve  更新value，status改变为FULFILLED setTimeout执行异步调用 Promise构造完成
+        //then(onFulfilled) -> 内部 new Promise -传递onFulfilled,resolve-> handle 执行onFulfilled,再执行resolve更新value
         function resolve(newValue) {
-            this.value = newValue;
-            this.state = Promise.STATE.FULFILLED;
+            if(newValue &&
+                (typeof newValue === 'object' || typeof newValue === 'function')){
+                const then = newValue.then
+                if(typeof then === 'function') {
+                    then.call(newValue, resolve)
+                    return
+                }
+            }
+
+            //更新值
+            value = newValue
+            state = Promise.STATE.FULFILLED
+
+            //统一异步处理所有任务，让开发者有时机调用then()注册回调方法
             setTimeout(() => {
-                this.deferreds.forEach(deferred => handle(deferred));
-            },0);
+                //resolve完成后执行开发者调用then()时加入延时队列的函数
+                deferredQueue.forEach(handle)
+            }, 0)
         }
 
-        handle.bind(this);
-        resolve.bind(this);
+        this.then = (onFulfilled) => {
+            //递归构造Promise
+            return new Promise((resolve) => {
+                handle({onFulfilled, resolve})
+            })
+        }
 
-        fn(resolve);
+        //回调开发者传入的函数
+        fn(resolve)
     }
 
     function getUserId() {
         return new Promise(function (resolve) {
-            resolve('HelloGit');
+            resolve('KD121');
         });
     }
 
-    var promise =  getUserId();
+    getUserId().then((mobile) => {
+        console.log('the mobile is:', mobile);
+        return "hello Id";
+    })
 </script>
 </html>

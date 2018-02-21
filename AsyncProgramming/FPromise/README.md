@@ -11,3 +11,10 @@
 - 把一个对象压入到任务队列{回调方法，resolve方法}
 
 - bridge promise会帮助原promise对象调用原promise对象的构造参数方法
+
+
+new Promise回调
+then()回调
+
+浏览器异步队列
+回调队列

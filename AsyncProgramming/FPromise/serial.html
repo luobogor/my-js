@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>my-promise</title>
 </head>
 <body>
 </body>
@@ -25,19 +25,19 @@
         /**
          *  判断上一个promise的then注册方法是立即执行，还是放到上一个promise的任务队列
          *
-         *   deffered 结构 {
+         *   deferred 结构 {
          *     onFulfilled {function} 上一个promise的回调方法
          *     resolve {function}  这个promise的resolve
          *   }
          *
-         * @param {obj} deffered
+         * @param {obj} deferred
          */
-        function handle(deffered) {
+        function handle(deferred) {
             //如果resolve未触发，则将回调方法放进队列
             if (state === 'pending') {
 //                then 方法传入的形参 onFullfilled，
                 //以及创建新 Promise 实例时传入的 resolve 均被压入当前 promise 的 deferreds 队列中。
-                deferreds.push(deffered);
+                deferreds.push(deferred);
                 return;
             }
 
@@ -45,9 +45,9 @@
 //            然后将其返回值作为resolve方法的参数，而这标志着下一个 promise 异步操作成功，接力工作就这样完成啦！
 
             //如果resolve已经触发，则立即执行回调方法
-            var result = deffered.onFulfilled(value);//value是在resolve执行时已经更新，result是回调方法的返回值,只要回调方法返回一个promise对象，那就可以一直串行下去
+            var result = deferred.onFulfilled(value);//value是在resolve执行时已经更新，result是回调方法的返回值,只要回调方法返回一个promise对象，那就可以一直串行下去
             //********************* 这里非常关键，触发下一个promise的resolve方法，将回调方法的返回值即一个promise对象注入到下一个then注册回望中
-            deffered.resolve(result);
+            deferred.resolve(result);
         }
 
 
@@ -55,6 +55,7 @@
          * @param {*} newValue 构造Promise时参数方法传递给resolve的值
          */
         function resolve(newValue) {
+            debugger
 //            //当resolve接收到一个Promise对像
             if (newValue && (typeof newValue === 'object' || typeof newValue === 'function')) {
                 var then = newValue.then;
@@ -69,7 +70,7 @@
             value = newValue;
             state = 'fulfilled';
             setTimeout(function () {
-                deferreds.forEach(deferred => handle(deferred));
+                deferreds.forEach(handle);
             }, 0);
         }
 
@@ -87,26 +88,17 @@
     function getUserMobileById(id) {
         return new Promise(function (resolve) {
             console.log('start to get user mobile by id:', id);
-//            setTimeout(function () {
-            console.log("I have come in getUserMobileById paramFun");
-            resolve('13121231231');
-//            }, 2000);
+            setTimeout(function () {
+                console.log("I have come in getUserMobileById paramFun");
+                resolve('13121231231');
+            }, 2000);
         });
     }
 
     var promise = getUserId();
-        promise.then(function (mobile) {
-            console.log('the mobile is:', mobile);
-            return "aaa";
-        });
-
-    //    var promise = getUserId();
-    //    promise.then(function (mobile) {
-    //        console.log('the mobile is:', mobile);
-    //        return "aaa";
-    //    });
-    //        .then(function (v) {
-    //            console.log(v);
-    //        });
+//    promise.then(function (mobile) {
+//        console.log('the mobile is:', mobile);
+//        return "hello Id";
+//    }).then(getUserMobileById);
 </script>
 </html>
