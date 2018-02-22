@@ -2,45 +2,44 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>DIY Promise</title>
 </head>
 <body>
 </body>
 <script>
+    //Promise类 静态变量
+    Promise.STATE = {PENDING: 'pending', FULFILLED: 'fulfilled'}
+
     function Promise(func) {
         const promise = this;
+        //初始化状态
+        let state = Promise.STATE.PENDING;
         //then()方法注册的回调函数队列
         promise._successCallbacks = [];
-        promise._failCallbacks = [];
 
-        function handler(i, previousResult, useRejector) {
+        function handler(i, previousResult) {
             if (i === promise._successCallbacks.length) {
                 return;
             }
 
-            try {
-                //回调then传入的函数，然后将回调函数返回值作为参数传递给下一个回调函数
-                //这里进行回调有可能会出错异常
-                const nextResult = promise[useRejector ? '_failCallbacks' : '_successCallbacks'][i](previousResult);
-                //如果回调函数返回的是Promise对象，则立即调用返回Promise对象的then方法
-                if (nextResult instanceof Promise) {
-                    nextResult.then(function (nextPromiseResolveData) {
-                        //新Promise继续执行旧Promise的未完成的递归，两个Promise对接完成
-                        handler(i + 1, nextPromiseResolveData);
-                    }, function (err) {
-                        handler(i + 1, err, true);
-                    });
-                    //结束当前Promise递归，让回调函数返回的Promise接力递归
-                    return;
-                }
-                //如果回调函数返回非Promise对象
-                handler(i + 1, nextResult);
-            } catch (e) {
-                handler(i + 1, e, true)
+            //回调then传入的函数，然后将回调函数返回值作为参数传递给下一个回调函数
+            const nextResult = promise._successCallbacks[i](previousResult);
+            //如果回调函数返回的是Promise对象，则立即调用返回Promise对象的then方法
+            if (nextResult instanceof Promise) {
+                nextResult.then(function (data) {
+                    //Promise回调继续执行之前的递归，完成两个Promise对接
+                    handler(i + 1, data);
+                });
+                //结束当前Promise递归，让回调函数返回的Promise接力递归
+                return;
             }
+            //如果回调函数返回非Promise对象
+            handler(i + 1, nextResult);
         }
 
         function resolver(resolveData) {
+            //调用resolve则状态改变为已完成
+            state = Promise.STATE.FULFILLED;
             //将resolve结果丢到浏览器异步队列，让开发者有时机调用then()方法注册回调方法以获取结果
             setTimeout(handler.bind(promise, 0, resolveData), 0);
         }
@@ -52,11 +51,9 @@
     Promise.prototype.then = function (onFulfilled, onRejected) {
         //将开发者传入的函数加入到回调函数队列
         this._successCallbacks.push(onFulfilled);
-        this._failCallbacks.push(onRejected);
         //返回当前Promise以便链式调用
         return this;
     };
-
 
     function getUserId() {
         return new Promise(function (resolve) {
@@ -64,7 +61,6 @@
             resolve('KD121');
         });
     }
-
 
     function getUserMobileById(id) {
         return new Promise(function (resolve) {
@@ -79,14 +75,10 @@
 
     getUserId().then(function (id) {
         console.log('the mobile is:', id);
-        throw Error("helloBug")
         return "hello Id";
     }).then(getUserMobileById)
         .then(function (mobile) {
             console.log(mobile);
-        },function (err) {
-            console.log(err.message);
-            return 'helloBugAgain'
         });
 </script>
 </html>
