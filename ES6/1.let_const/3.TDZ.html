@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>临时死区</title>
+</head>
+<body>
+</body>
+<script>
+
+    {
+        console.log(typeof value)//不报错 "undefined"
+        if(true){
+            let value = "blue"
+        }
+    }
+
+    {
+        if(true) {
+            console.log(typeof value)//访问TDZ,报错
+            let value = "blue"
+        }
+    }
+
+</script>
+</html>

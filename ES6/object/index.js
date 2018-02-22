@@ -21,9 +21,12 @@
     console.log(obj3);
 
     //新增API
-    //Object.is与===的功能是一样的
+    //Object.is与===的功能是一样的，
     console.log(Object.is('abc', 'abc'), 'abc' === 'abc');
     console.log('数组',Object.is([],[]),[]===[]);//false , false
+    //以下两个判断比===准确
+    console.log(Object.is(+0, -0),Object.is(NaN, NaN));//false true
+    console.log(+0 === -0,NaN === NaN);//true false
     
     //Object.assign是浅拷贝，而且不可枚举和继承的属性都不会拷贝
     //Object.assign(target,src);

@@ -15,3 +15,44 @@ Despite the similarities between classes and custom types, there are some import
 4. All methods lack an internal `[[Construct]]` method and will throw an error if you try to call them with `new`.
 5. Calling the class constructor without `new` throws an error.
 6. Attempting to overwrite the class name within a class method throws an error.
+
+### static
+static关键字可以声明静态方法，但不可以声明静态变量。可能通过在类名上绑定变量的方法达到静态变量的效果。
+
+### extends&super
+使用extends关键字可以指定继承的函数。原型会自动调整，通过调用super()方法即可访问基类的构造函数。
+
+如果在派生类中指定了构造函数则必须要调用super()，如果不这样做程序就会报错。如果选择不使用函数，则当创建新的类实例时会自动调用super()并传入所有参数。
+
+````
+class Rectangle {
+    constructor(length, width) {
+        this.length = length;
+        this.width = width;
+    }
+
+    getArea() {
+        return this.width * this.length;
+    }
+}
+
+class Square extends Rectangle {
+    constructor(length) {
+        //必须显式调用super，js不会像java那样自动调用super
+        super(length, length);//等价于Rectangle.call(this, length , length)
+    }
+
+    //如果不显式写出constructor，则js引擎默认constructor如下
+    // constructor(...args){
+    //     super(...args)
+    // }
+}
+
+var square = new Square(3);
+
+console.log(square.getArea());//9
+console.log(square instanceof Square);//true
+console.log(square instanceof Rectangle);//true
+````
+- 只能在派生类的构造函数中调用super()
+- 在构造函数中访问this之前一定要调用super()，它负责初始化this，否则报错

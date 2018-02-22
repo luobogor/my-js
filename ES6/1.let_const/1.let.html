@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Let</title>
 </head>
 <body>
 </body>
@@ -31,6 +31,19 @@
 //    testLet2();
 
 
+    function testLetFor() {
+        var funcs = []
+        for(let i = 0; i < 10; i++){
+            funcs.push(function () {
+                console.log(i)
+            })
+        }
 
+        console.log('letFor')
+        funcs.forEach(function (func) {
+            func()//输出0到9，不会出现一直输出10的问题
+        })
+    }
+    testLetFor()
 </script>
 </html>

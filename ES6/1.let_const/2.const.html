@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Const</title>
 </head>
 <body>
 </body>
@@ -15,5 +15,21 @@
     }
 
     testConst();
+
+    function testConstFor() {
+        var funcs = []
+        for(const i = 0; i < 10; i++){//执行一次之后报错
+            console.log('in', i)
+            funcs.push(function () {
+                console.log(i)
+            })
+        }
+
+        console.log('constFor')
+        funcs.forEach(function (func) {
+            func()//输出0到9，不会出现一直输出10的问题
+        })
+    }
+    testConstFor()
 </script>
 </html>
