@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>textContent</title>
+</head>
+<body>
+<div>
+    <style>
+        span {
+            color: #6cffa7;
+        }
+    </style>
+    this is <span>a</span>
+    <p hidden>hello hidden</p>
+    text!
+</div>
+</body>
+<script>
+    const dom = document.querySelector('div')
+    console.log(dom.textContent)//包含style标签
+    console.log(dom.innerText)//不包含style标签
+</script>
+</html>
