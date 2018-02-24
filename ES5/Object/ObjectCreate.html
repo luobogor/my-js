@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+</body>
+<script>
+    //这个函数不能创建原型为null的对象，但原生Object.create可以
+    Object.create = function (obj) {
+        function fun() {}
+        fun.prototype = obj;
+        return new fun();
+    }
+
+</script>
+</html>
