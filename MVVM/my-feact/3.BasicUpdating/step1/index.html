@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Feact2自定义组件</title>
+</head>
+<body>
+<div id="root"></div>
+</body>
+<script src="Feact.js"></script>
+<script>
+    Feact.render(
+        Feact.createElement('h1', null, 'hello'),
+        document.getElementById('root')
+    );
+
+
+    setTimeout(function () {
+        Feact.render(
+            Feact.createElement('h1', null, 'hello again'),
+            document.getElementById('root')
+        );
+    },1000);
+</script>
+</html>

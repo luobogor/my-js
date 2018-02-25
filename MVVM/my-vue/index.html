@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>my-mvvm</title>
+</head>
+<style>
+    #app {
+        text-align: center;
+    }
+</style>
+<body>
+<div id="app">
+    <h2>{{title}}</h2>
+    <input v-model="name">
+    <h1>{{name}}</h1>
+    <button v-on:click="clickMe">click me change name</button>
+</div>
+</body>
+<script src="js/observer.js"></script>
+<script src="js/watcher.js"></script>
+<script src="js/compile.js"></script>
+<script src="js/index.js"></script>
+<script>
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            title: 'my-vue',
+            name: 'helloGit'
+        },
+        methods: {
+            clickMe: function () {
+                console.log('name:', this.name)
+                this.name = 'hello git again'
+            }
+        },
+        mounted: function () {
+            setTimeout(()=> {
+                this.title = 'timeout 1500'
+            },1500)
+        }
+    })
+
+    console.log(vm.title)//hello
+    console.log(vm.name)//git
+</script>
+</html>

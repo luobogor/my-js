@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Feact2自定义组件</title>
+</head>
+<body>
+<div id="root0"></div>
+<div id="root1"></div>
+<div id="root2"></div>
+<div id="root3"></div>
+</body>
+<script src="Feact.js"></script>
+<script>
+    const MyH1 = Feact.createClass({
+        componentWillDidMount() {
+            console.log('MyTitle about to mouth');
+        },
+        componentDidMount() {
+            console.log('MyTitle just finished mounting');
+        },
+        render() {
+            return Feact.createElement('h1', null, this.props.message);
+        }
+    });
+
+    const MyMessage = Feact.createClass({
+        componentWillDidMount() {
+            console.log('MyMessage about to mouth');
+        },
+        componentDidMount() {
+            console.log('MyMessage just finished mounting');
+        },
+        render() {
+            if (this.props.asTitle) {
+                return Feact.createElement(MyH1, {message: this.props.message});
+            } else {
+                return Feact.createElement('p', null, this.props.message);
+            }
+        }
+    });
+
+    Feact.render(
+        Feact.createElement(MyMessage, {
+            asTitle: true,
+            message: 'open the console to see componentWillMount and componentDidMount\'s output'
+        }),
+        document.getElementById('root1')
+    );
+</script>
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Feact2自定义组件</title>
+</head>
+<body>
+<div id="root0"></div>
+<div id="root1"></div>
+<div id="root2"></div>
+<div id="root3"></div>
+</body>
+<script src="Feact.js"></script>
+<script>
+    //*******************************Feact的实现
+    //自定义组件
+    const MyTitle = Feact.createClass({
+        render() {
+            return Feact.createElement('h1', null, this.props.title);
+        }
+    });
+
+    //自定义组件
+    const MyMessage = Feact.createClass({
+        render() {
+            if (this.props.asTitle) {
+                return Feact.createElement(MyTitle, {title: 'hey there MyTitle'});
+            } else {
+                return Feact.createElement('p', null, this.props.message);
+            }
+        }
+    });
+
+
+    //    type 是字符串，元素就原生的，如果 type 是函数，那就代表复合组件。
+//    Feact.render(
+//        Feact.createElement(MyTitle, {title: 'hey there Mytitle'}),
+//        document.getElementById('root0')
+//    );
+
+    Feact.render(
+        Feact.createElement(MyMessage, {asTitle: true, message: 'hey there MyMessage'}),
+        document.getElementById('root1')
+    );
+//
+//    Feact.render(
+//        Feact.createElement(MyMessage, {asTitle: false, message: 'hey there MyMessage'}),
+//        document.getElementById('root2')
+//    );
+//
+//    Feact.render(
+//        Feact.createElement('h2', null, 'I am h2'),
+//        document.getElementById('root3')
+//    );
+
+</script>
+</html>
