@@ -1,6 +1,6 @@
 ##数据类型
 - 引用类型：对象，数组，函数
-- 基本类型(值类型)：除上述引用类型外的其他类型
+- 基本类型(值类型)：string、number、boolean、undefined、null(虽然undefined、null表现怪异但规范说明这两个是基本类型)
 ###注意
 - 特殊的类型：undefined
 - 引用类型可以直接用.赋值，而值类型不可以。例如funA.fieldA = 'abc',arrA.fieldA='abc'

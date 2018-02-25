@@ -12,7 +12,7 @@ h5新增属性multiple，据我所知有以下作用
 ## 提交表单
 
 ### JS交互
-标签只要填写了name属性，都会自动添加到window的属性
+form标签填写了name属性，都会自动添加到window的属性，其他标签不会
 
 ````
 <form action="#" name="myform">

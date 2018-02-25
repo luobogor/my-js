@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>i question</title>
+</head>
+<body>
+
+</body>
+<script>
+
+    {
+        var F = function () {
+        };
+        Object.prototype.a = function () {
+            console.log('hello a')
+        };
+        Function.prototype.b = function () {
+            console.log('hello b')
+        };
+        var f = new F();
+        console.log(f)
+        f.a()//hello a
+        f.__proto__.__proto__.a();//hell a
+        f.constructor.constructor.prototype.b()//hello b
+//        f.b()//报错
+
+        //问f能不能取到a或b
+        //    这个问题涉及到js的原型继承
+        //    1.  f.__proto__ === f[的构造函数].prototype === F.prototype
+        //    2.  F.prototype.__proto__ ===  (F.prototype)[的构造函数].prototype ===   Object.prototype (所以a能够 通过f.a访问)
+        //    3. f.constructor === F
+        //    4. F.__proto__ === F[的构造函数].prototype === Function.prototype (所以f.constructor.constructor.prototype.b（非原型方式访问） 或 f.constructor.b（原型向上搜索访问）访问到 b)
+        //
+        //    注意:
+        //        (F.prototype)[的构造函数] === Object
+        //    F[的构造函数] === Function
+    }
+
+
+
+
+        //优先级 ! 16 , in 11 ，所以先
+        console.log(!"a" in window)
+        function Foo() {
+            //没有用var，所以成为全局变量，跟Foo没有半点关系
+            getName = function () {
+                console.log(1)
+            }
+            return this
+        }
+
+        Foo.getName = function () {console.log(2)}
+        Foo.prototype.getName = function () {console.log(3)}
+        var getName = function () {console.log(4)}
+        function getName() {console.log(5)}
+
+        console.log(Foo.getName())//2
+        console.log(getName())//没有执行过Foo()，所以getName不会被覆盖，function getName提升比var getName还要前，function getName被覆盖，打印4
+        console.log(Foo().getName())//没用用new，所以return this是window，执行Foo()之后,getName原来的getName已经被覆盖window.getName打印1
+        console.log(getName())//1
+        console.log(new Foo.getName())//先调用Foo.getName输出2，然后new过程中没有输出
+        console.log(new Foo().getName())//先调用new Foo()，再调用foo.getName，打印3，无新对象返回
+        console.log(new new Foo().getName());//先调用new Foo()，然后new foo.getName()打印3，有新对象返回
+
+
+        var fun = 'IamHello'
+        function fun() {
+            console.log('I am real fun')
+        }
+        console.log(fun)
+        console.log(fun())//报错
+</script>
+</html>

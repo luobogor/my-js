@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css'/>
+    <script src="/javascripts/encode.js" type="text/javascript"></script>
+    <script src="/javascripts/domParse.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        var parse = function(str){
+            var results = '';
+            try{
+                //he是encode的对象
+                console.log("he********:"+he.unescape(str, {strict: true}));
+                //he.unescape用于反转义
+                HTMLParser(he.unescape(str,{strict:true}),{
+//                    标签开始
+//                                (标签名，属性，单标签标识)
+                    start:function(tag,attrs,unary){
+                        //过滤标签
+                        if(tag=='script'||tag=='style'||tag=='link'||tag=='iframe'||tag=='frame')return;
+                        results += '<'+tag;
+//                        如果把下面的for循环注释掉则可以过滤掉属性
+                        for(var i=0,len=attrs.length;i<len;i++){
+                            results += " "+attrs[i].name+'="'+attrs[i].escaped+'"';
+                        }
+//                       unary为true则该标签是一个单标签，如果用户漏写了'/'有这里可以校正
+                        results += (unary?"/":"")+">";
+                    },
+//                    标签结束
+                    end:function(tag){
+                        results += "</"+tag+">";
+                    },
+//                    标签内的内容
+                    chars:function(text){
+                        results += text;
+                    },
+//                    注释内容
+                    comment:function(text){
+                        results +="<!--"+text+"-->";
+                    }
+                });
+                return results;
+            }catch(e){
+                console.log(e);
+            }finally{
+
+            }
+        }
+    </script>
+</head>
+<body>
+<h1><%= title %></h1>
+<p>Welcome to <%= title %></p>
+<textarea id="text" name="name" id="" cols="30" rows="10">
+        <style>
+            html *{
+                background-color:blue;
+            }
+        </style>
+      <p>XSS <img src="null" alt="" onerror="alert(1)"> </p>
+    </textarea>
+<button type="button" name="button" id="btn">评论</button>
+<button type="button" name="button" id="get">获取评论</button>
+
+<script type="text/javascript">
+    //获取元素
+    var btn = document.getElementById('btn');
+    var get = document.getElementById('get');
+    var txt = document.getElementById('text');
+
+    //监听评论按钮事件
+    btn.addEventListener('click', function () {
+        var xhr = new XMLHttpRequest();
+        var url = '/comment?comment=' + txt.value;
+        xhr.open('GET', url, true);
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                console.log('发送的数据:' + xhr);
+            } else {
+                console.log('error');
+            }
+        }
+        xhr.send();
+    });
+
+    //监听获取评论按钮事件
+    get.addEventListener('click', function () {
+        var xhr = new XMLHttpRequest();
+        var url = '/getComment';
+        xhr.open('GET', url, true);
+        xhr.onreadystatechange = function () {
+            if(xhr.readyState == 4){
+                if(xhr.status == 200){
+//                    parse用于过滤某些标签或属性
+                    var com = parse(JSON.parse(xhr.response).comment);
+//                    var com = JSON.parse(xhr.response).comment;
+                    var txt = document.createElement('span');
+                    txt.innerHTML = com;
+                    document.body.appendChild(txt);
+                }else{
+                    console.log('error');
+                }
+            }
+        }
+        xhr.send();
+    });
+
+</script>
+</body>
+</html>

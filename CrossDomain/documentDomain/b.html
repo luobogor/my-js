@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+hell page b
+</body>
+<script>
+    //假设在(2) 在www.script.a.com/b.html中：
+    document.domain = 'a.com';//注意：使用document.domain允许子域安全访问其父域时，您需要设置document域在父域和子域中具有相同的值。这是必要的，即使这样做只是将父域设置回其原始值。否则可能会导致权限错误。这里都是a.com。
+</script>
+</html>
