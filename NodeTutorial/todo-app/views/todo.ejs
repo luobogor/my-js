@@ -1,0 +1,28 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Todo List</title>
+    <script src="/assets/jquery.js"></script>
+    <script src="/assets/todo-list.js"></script>
+    <!--因为中间件做了配置，所以不是"../public/assets/styles.css-->
+    <link rel="stylesheet" href="/assets/styles.css">
+</head>
+<body>
+<h1>My Todo List</h1>
+<div id="todo-table">
+    <form>
+        <input placeholder="Add new item..." type="text" name="item">
+        <button type="submit">Add Item</button>
+    </form>
+    <ul>
+        <% for (var i = 0; i < todos.length; i++) { %>
+            <li><%= todos[i].item %></li>
+        <% } %>
+        <!--<li>Item 1</li>-->
+        <!--<li>Item 2</li>-->
+        <!--<li>Item 3</li>-->
+        <!--<li>Item 4</li>-->
+    </ul>
+</div>
+</body>
+</html>

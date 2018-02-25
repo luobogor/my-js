@@ -1,0 +1,2 @@
+- __dirname
+- __filename
