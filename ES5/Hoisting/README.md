@@ -8,3 +8,17 @@ var fn1 = function(){
 function fn2(){}
 ````
 - index.html在函数内不定义变量可直接使用,会被当成全局变量
+
+
+````
+    var foo = {n: 1};
+    (function (foo) {
+        console.log(foo)
+        console.log(foo.n);//如果当前作用域找不到foo，作用域上层继续找
+        foo.n = 3;
+        var foo = {n: 2};
+        console.log(foo.n);
+    })(foo);
+    console.log(foo.n);
+    //输出1,2,3
+````

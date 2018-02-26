@@ -6,12 +6,12 @@
     }
 
 // static method
-    PersonType.create = function(name) {
+    PersonType.create = function (name) {
         return new PersonType(name);
     };
 
 // instance method
-    PersonType.prototype.sayName = function() {
+    PersonType.prototype.sayName = function () {
         console.log(this.name);
     };
 
@@ -27,6 +27,10 @@
         // equivalent of the PersonType constructor
         constructor(name) {
             this.name = name;
+            //无论return什么js引擎都无视
+            // return this;
+            // return null;
+            // return 'hello';
         }
 
         // equivalent of PersonType.prototype.sayName
@@ -41,4 +45,6 @@
     }
 
     let person = PersonClass.create("Nicholas");
+    person.sayName();
+    // PersonClass() 当方法调用会报错 Class constructor PersonClass cannot be invoked without 'new'
 }

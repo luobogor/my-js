@@ -1,0 +1,21 @@
+{
+  "name": "runenv",
+  "version": "1.0.0",
+  "description": "webpack配置es6",
+  "main": "index.js",
+  "scripts": {
+    "dev": "webpack-dev-server --devtool eval --progress --colors",
+    "deploy": "NODE_ENV=production webpack -p"
+  },
+  "dependencies": {
+    "webpack": "^1.12.9",
+    "webpack-dev-server": "^1.12.9"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "babel-core": "^6.3.26",
+    "babel-loader": "^6.2.0",
+    "babel-preset-es2015": "^6.24.1"
+  }
+}

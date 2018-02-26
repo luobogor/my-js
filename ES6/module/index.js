@@ -12,3 +12,4 @@ import HelloB from './ComponentB';
 
 console.log(A, test, Hello);
 console.log(ComponentA.A, ComponentA.test, ComponentA.Hello);
+console.log(HelloB.A)
