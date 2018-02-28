@@ -132,11 +132,7 @@ Module._findPath = function(request, paths) {
             //    filename = basePath + request
             //    例如require('./helloGit.js') 匹配 basePath/helloGit.js
             // }else {
-            //   if(把request加上扩展名处理可行){
-            //     filename = basePath + request + .[扩展名]
-            //     例如require('./helloGit') 匹配 basePath/helloGit.js ，与显式写扩展名的结果一样
-            //   }else{
-            //     if(basePath目录下查找到request目录){
+            //     if(basePath目录存在[request]目录){
             //        if(request目录下存在package.json &&
             //                      package.json有指定main){
             //                 if(main指向的文件存在){
@@ -145,12 +141,14 @@ Module._findPath = function(request, paths) {
             //                     抛出异常
             //                 }
             //              例如require('./helloGit') 匹配 basePath/helloGit/main指向的文件名
-            //         }else if(request目录下不存在package.json，但存在index.[扩展名]){
+            //         }
+            //     }else if(basePath目录存在[request].[扩展名]){
+            //              filename = basePath + request + .[扩展名]
+            //               例如require('./helloGit') 匹配 basePath/helloGit.js ，与显式写扩展名的结果一样
+            //      }else if(basePath目录下存在request目录 && request目录下存在index.[扩展名]){
             //			    filename = basePath + request目录 + index.[扩展名]
             //              例如require('./helloGit') 匹配 basePath/helloGit/index.js
-            //		  }
-            //     }
-            //   }
+            //		}
             // }
         // }else 进行非路径形式的文件模块检测{
         //      上文提到path 为 xx/.../node_modules
