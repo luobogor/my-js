@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>JS各种继承方式</title>
+</head>
+<body>
+<script>
+    //    function parent(foo) {
+    //        this.foo = foo;
+    //    }
+    //
+    //    parent.prototype.myFn = function (foo) {
+    //        console.log(foo)
+    //    }
+    //
+    //    function children(bar) {
+    //        this.bar = bar
+    //    }
+    //
+    //    children.scriptprototype
+
+    {
+//        function Parent() {
+//
+//        }
+//
+//        Parent.prototype.
+    }
+
+    {
+        console.log('借用构造函数');
+
+        function Parent() {
+            this.name = 'Mark';
+        }
+
+        function Child() {
+            Parent.call(this);
+        }
+
+        var ins1 = new Child();
+        console.log(ins1.name);//'Mark'
+    }
+
+
+    {
+        console.log('组合继承，是指将原型链和借用构造函数的技术组合使用');
+
+        //组合继承避免了原型链和借用构造函数的缺陷，融合了它们的优点，成为了JS中最常用的继承模式
+        function Parent(name) {
+            this.name = name;
+            this.colors = ["red", "blue", "yellow"];
+        }
+
+        Parent.prototype.sayName = function () {
+            console.log('name:', this.name);
+        };
+
+        function Child(name, age) {
+            Parent.call(this, name);//继承属性
+            this.age = age;
+        }
+
+        Child.prototype = new Parent();//继承方法，但实例里name与colors两个多余属性浪费了内存空间
+        Child.prototype.constructor = Child;
+        Child.prototype.sayAge = function () {
+            console.log('age:', this.age);
+        };
+
+        var ins1 = new Child('helloGit', 12);
+        ins1.colors.push("black");
+        console.log(ins1.colors);
+        ins1.sayName();
+        ins1.sayAge();
+
+        var ins2 = new Child('helloWorld', 13);
+        ins2.colors.push("pink");//不会覆盖ins1的数据
+    }
+
+    {
+        console.log('原型式继承，实质是上对传入的对象进行一次浅复制');
+
+        //Object.create的原理
+        function object(o) {
+            function F() {
+            }
+
+            F.prototype = o;
+            return new F();
+        }
+
+        function Parent(name) {
+            this.name = name;
+            this.colors = ["red", "blue", "yellow"];
+        }
+
+        var parent = new Parent('Mark')
+        var child1 = object(parent);
+        child1.name = 'helloWorld';
+        child1.colors.push("black");
+        var child2 = object(parent);
+        child2.name = 'helloGit';
+        child2.colors.push("pink");
+
+        console.log(child1.colors === child2.colors)//true
+    }
+
+
+    {
+        console.log('寄生组合式继承 = 寄生式继承 + 组合式继承 = 寄生式继承 + 原型链 + 借用构造函数');
+
+        function Parent(aaa) {
+//            this.name = name;
+            this.aaa = aaa;
+            this.colors = ["red", "blue", "yellow"];
+        }
+
+        //原型链
+        Parent.prototype.sayName = function () {
+            console.log(this.aaa);
+        };
+
+        function Child(name, age) {
+            //借用构造函数
+            Parent.call(this, name);
+            this.age = age;
+        }
+
+        //寄生式继承
+        function inheritPrototype(child, parent) {
+            var prototype = Object.create(parent);//创建对象
+            prototype.constructor = child;//增强对象
+            child.prototype = prototype;//指定对象
+        }
+
+        inheritPrototype(Child, Parent);
+
+        Child.prototype.sayAge = function () {
+            console.log(this.age);
+        }
+
+        var child = new Child("Mark", 20);
+        debugger
+        console.log(child.colors);
+        console.log(child.sayName());
+        console.log(child.sayAge());
+    }
+</script>
+</body>
+</html>

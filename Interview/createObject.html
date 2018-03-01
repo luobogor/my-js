@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>创建对象</title>
+</head>
+<body>
+<script>
+    //0.对象字面量的方式
+    var person = {firstname: "Mark", lastname: "Yun", age: 25, eyecolor: "black"};
+    {
+        // 1.工厂模式，即抽象了创建具体对象的过程
+        // 工厂模式虽然解决了创建多个相似对象的问题，但却没有解决对象识别的问题(即怎样知道一个对象的类型)
+        function createPerson(name, age, job) {
+            var o = new Object();
+            o.name = name;
+            o.age = age;
+            o.job = job;
+            o.sayName = function () {
+                console.log('工厂模式;', this.name);
+            };
+            return o;
+        }
+
+        var person = createPerson("Mark", 18, "dev");
+        person.sayName();
+
+    }
+
+
+    {
+        //2.构造函数模式，最常用
+        //优点：可以识别对象
+        //缺点：每个方法都要在每个实例上重新创建一遍，浪费内存空间
+        function Person(name, age, job) {
+            this.name = name;
+            this.age = age;
+            this.job = job;
+            this.sayName = function () {
+                console.log('构造函数模式:' + this.name)
+            };
+        }
+
+        var person = new Person("Mark", 18, "dev");
+        person.sayName();
+
+    }
+
+    {
+        //3.原型模式
+        //优点：可以识别对象，新对象可以共享原型上的属性和方法，节省内存
+        //缺点：省略了为构造函数传递初始化参数这一环节，结果所有实例属性相同
+        function Person(name, age, job) {
+            this.name = name;
+            this.age = age;
+            this.job = job;
+        }
+
+        Person.prototype = {
+            name: "Mark",
+            age: 18,
+            job: "div",
+            sayName: function () {
+                console.log('原型模式:' + this.name)
+            }
+        };
+
+        var person1 = new Person();
+        var person2 = new Person();
+        person1.sayName();//Mark
+        person2.sayName();//Mark
+        console.log('name' in person1)
+    }
+
+    {
+        //4.组合使用构造函数模式与原型模式，实际开发中最常用的模式
+        //优点：可以识别对象，新对象可以共享原型上的属性和方法，节省内存
+        //缺点：对新手来说不好理解
+        function Person(name, age, job) {
+            this.name = name;
+            this.age = age;
+            this.job = job;
+        }
+
+        Person.prototype.sayName = function () {
+            console.log('原型模式:' + this.name)
+        };
+
+        var person1 = new Person("Mark", 18, "dev");
+        var person2 = new Person("MarkAgain", 20, "qa");
+        person1.sayName();
+        person2.sayName();
+    }
+
+    {
+        //5.动态原型模式
+        //优点：实现比上面所说的组合模式更好的封装
+        function Person(name, age, job) {
+            this.name = name;
+            this.age = age;
+            this.job = job;
+
+            if (typeof this.sayName !== 'function') {
+                Person.prototype.sayName = function () {
+                    console.log('动态原型模式:', this.name);
+                }
+            }
+
+        }
+
+        var person1 = new Person("Mark", 18, "dev");
+        var person2 = new Person("MarkAgain", 20, "qa");
+        person1.sayName();
+        person2.sayName();
+    }
+
+
+    {
+        //6.寄生构造函数模式
+        //与工厂模式一致，但调用方式不同，这里用new进行调用。
+        //可以用来创建一些特别的数据结构，具体见Javascript高级编程第三版，p161
+        function Person(name, age, job) {
+            var o = new Object();
+            o.name = name;
+            o.age = age;
+            o.job = job;
+            o.sayName = function () {
+                console.log('寄生构造函数模式;', this.name);
+            };
+            return o;
+        }
+
+        var person = new Person("Mark", 18, "dev");
+        console.log(person.sayName());
+    }
+
+    {
+        //7.稳妥构造函数模式
+        // 所谓稳妥对象，指是的没有公共属性，而且其方法也不引用this
+        // 适合在一些安全的环境(例如禁用new与this的环境)中或者在防止数据被其他应用程序改动时使用。
+
+        //与寄生构造函数模式的区别是，不使用this，不使用new
+
+        //结合寄生构造函数模式与闭包，实现私有变量
+        function Person(name, age, job) {
+            var o = new Object();
+            //可以在这里定义私有变量
+            o.sayName = function () {
+                console.log('稳妥构造函数模式:', name);
+            };
+            return o;
+        }
+
+        var person = Person("Mark", 18, "dev");
+        console.log(person.sayName());//"Mark"
+        person.name;//undefined
+    }
+</script>
+</body>
+</html>

@@ -357,7 +357,7 @@ Object.getPrototypeOf(foo) == Object.prototype; // true
 `````
 
 ### instanceof 运算符
-instanceof不是用来检测对象foo是否是用Foo构造函数创建的，所有instanceof运算符只需要一个对象属性——foo.[[Prototype]]，在原型链中从Foo.prototype开始检查其是否存在，`instanceof运算符是通过构造函数里的内部方法[[HasInstance]]来激活的。`
+ES5并没有说明instanceof的作用，只是规定了instanceof的运算过程，但是一般开发中会用来检测对象foo是否是用Foo构造函数创建的，所有instanceof运算符只需要一个对象属性——foo.[[Prototype]]，在原型链中从Foo.prototype开始检查其是否存在，`instanceof运算符激活构造函数里的内部方法[[HasInstance]]`
 
 让我们来看看这个例子：
 
@@ -378,7 +378,26 @@ alert(a.x); // 10
  
 // 不过，instanceof操作符不能再正常使用了
 // 因为它是从构造函数的prototype属性来实现的
-alert(a instanceof A); // 错误，A.prototype不是对象
+alert(a instanceof A); 
+// 相当于 A.HasInstance(a)
+// 抛出异常，A.prototype不是对象
+````
+
+以下引用自ECMA-262 5.1 
+
+````
+[[HasInstance]] (V)
+Assume F is a Function object.
+
+When the [[HasInstance]] internal method of F is called with value V, the following steps are taken:
+
+1. If V is not an object, return false.
+2. Let O be the result of calling the [[Get]] internal method of F with property name "prototype".
+3. If Type(O) is not Object, throw a TypeError exception.
+4. Repeat
+	a. Let V be the value of the [[Prototype]] internal property of V.
+	b. If V is null, return false.
+	c. If O and V refer to the same object, return true.
 ````
 
 ### [[Get]]方法
