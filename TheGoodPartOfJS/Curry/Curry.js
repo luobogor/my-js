@@ -1,10 +1,29 @@
-//柯里化
-//把函数与传递给它的参数相结合
+//柯里化: 把函数与传递给它的参数相结合
 //柯里化是 func.bind(null,args) 的实现原理
 Function.prototype.method = function (name, func) {
     this.prototype[name] = func;
     return this;
 };
+
+Function.method('bind', function () {
+    var slice = Array.prototype.slice,
+        context = arguments[0],
+        args = slice.call(arguments, 1),
+        that = this;//旧函数
+
+    return function () {//新函数
+        console.log('curry');
+        return that.call(context, args.concat(slice.apply(arguments)));
+    }
+});
+
+
+function testBind(x, y) {
+    console.log(this);
+    console.log('sum:', x + y);
+}
+
+testBind.bind([1, 2, 3], 1)(2);
 
 //错误写法
 // Function.method('curry', function () {

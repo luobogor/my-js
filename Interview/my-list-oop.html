@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>my-list-oop</title>
+    <style>
+        .del {
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<ul class="list">
+    <li>
+        <h1>第一行</h1>
+        <p>这是内容区，点击X删除当前行，<span class="del">X</span></p>
+    </li>
+    <li>
+        <h1>第二行</h1>
+        <p>这是内容区，点击X删除当前行，<span class="del">X</span></p>
+    </li>
+    <li>
+        <h1>第三行</h1>
+        <p>这是内容区，点击X删除当前行，<span class="del">X</span></p>
+    </li>
+</ul>
+
+<ul class="list">
+    <li>
+        <h1>这是另一个List第一行</h1>
+        <p>这是内容区，点击X删除当前行，<span class="del">X</span></p>
+    </li>
+    <li>
+        <h1>这是另一个List第二行</h1>
+        <p>这是内容区，点击X删除当前行，<span class="del">X</span></p>
+    </li>
+    <li>
+        <h1>这是另一个List第三行</h1>
+        <p>这是内容区，点击X删除当前行，<span class="del">X</span></p>
+    </li>
+</ul>
+</body>
+<script>
+    //面向对象复用性设计
+    class List {
+        constructor(sel) {
+            const self = this;
+            this.el = Array.from(document.querySelectorAll(sel));
+            this.el.forEach(item => {
+                item.addEventListener('click', function (e) {
+                    //事件委托
+                    if (e.target.className.indexOf('del') > -1) {
+                        self.removeItem.call(self, e.target);
+                    }
+                })
+            })
+        }
+
+        removeItem(target) {
+            const self = this,
+                findParent = function (node) {
+                    const parent = node.parentNode,
+                        root = self.el.find(item => item === parent);
+                    if (root) {
+                        root.removeChild(node);
+                    } else {
+                        findParent(parent);
+                    }
+                };
+
+            findParent(target);
+        }
+    }
+
+    //确保script在页面任何地方都可以运行
+    window.addEventListener('DOMContentLoaded', function () {
+        new List('.list');
+    })
+</script>
+</html>

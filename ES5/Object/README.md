@@ -370,7 +370,7 @@ alert(a.x); // 10
  
 alert(a instanceof A); // true
  
-// 如果设置原型为null
+// 如果设置原型不为Object
 A.prototype = null;
  
 // ..."a"依然可以通过a.[[Prototype]]访问原型

@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>排序算法</title>
+</head>
+<body>
+<script>
+
+    //    重要：快排、选择排序、希尔排序
+
+    {
+        function bubbleSort(arr) {
+            for (let i = arr.length; i >= 0; i--) {
+                for (let j = 1; j < i; j++) {
+                    if (arr[j] < arr[j - 1]) {
+                        [arr[j], arr[j - 1]] = [arr[j - 1], arr[j]];
+                    }
+                }
+            }
+        }
+
+        const arr = [7, 5, 2, 4, 3, 9];
+        bubbleSort(arr); //[2, 3, 4, 5, 7, 9]
+        console.log(arr);
+    }
+
+    {
+        function selectionSort(arr) {
+            for (let i = 0; i < arr.length; i++) {
+                for (let j = 1; i + j < arr.length; j++) {
+                    if (arr[i + j] < arr[i]) {
+                        [arr[i + j], arr[i]] = [arr[i], arr[i + j]];
+                    }
+                }
+            }
+        }
+
+        const arr = [7, 5, 2, 4, 3, 9];
+        selectionSort(arr); //[2, 3, 4, 5, 7, 9]
+        console.log(arr);
+    }
+
+    {
+        console.log('insertSort');
+
+        function insertSort(arr) {
+            let j, el;
+            for (let i = 1; i < arr.length; i++) {
+                //保存当前需要插入的元素
+                el = arr[i];
+                j = i;
+
+                //寻找合适的索引位置
+                //j-1 是 i 的前一位指针
+                while (j > 0 && arr[j - 1] > el) {
+                    //元素后移
+                    arr[j] = arr[j - 1];
+                    j--;
+                }
+
+                //插入元素
+                arr[j] = el;
+            }
+        }
+
+        const arr = [7, 5, 2, 4, 3, 9];
+        selectionSort(arr); //[2, 3, 4, 5, 7, 9]
+        console.log(arr);
+    }
+
+
+    {
+        console.log('mergeSort')
+
+        function mergeSort(arr) {
+            const len = arr.length;
+            if (len < 2)
+                return arr;
+
+            let mid = Math.floor(len / 2),
+                left = arr.slice(0, mid),
+                right = arr.slice(mid);
+
+            return merge(mergeSort(left), mergeSort(right));
+        }
+
+
+        function merge(left, right) {
+            let result = [],
+                lLen = left.length,
+                rLen = right.length,
+                l = 0,
+                r = 0;
+            while (l < lLen && r < rLen) {
+                if (left[l] < right[r]) {
+                    result.push(left[l++]);
+                }
+                else {
+                    result.push(right[r++]);
+                }
+            }
+
+            //slice API 如果参数超过数组长度返回一个空数组，所以这里无需做判断左边还是右边先消耗完
+            return result.concat(left.slice(l)).concat(right.slice(r));
+        }
+
+        const arr = [7, 5, 2, 4, 3, 9];
+        console.log(mergeSort(arr));//[2, 3, 4, 5, 7, 9]
+    }
+
+
+    {
+        console.log('quickSort')
+//     "快速排序"的思想很简单，整个排序过程只需要三步：
+//    （1）在数据集之中，选择一个元素作为"基准"（pivot）。
+//    （2）所有小于"基准"的元素，都移到"基准"的左边；所有大于"基准"的元素，都移到"基准"的右边。
+//    （3）对"基准"左边和右边的两个子集，不断重复第一步和第二步，直到所有子集只剩下一个元素为止。
+
+        function quickSort(arr, left, right) {
+            let pivot,//基准
+                partitionIndex;//分割线
+
+            if (left < right) {
+                pivot = right;//选取右边的索引作为基准
+                partitionIndex = partition(arr, pivot, left, right);
+
+                //分割线索引位置，左边全小于基准，右边全大于基准
+                quickSort(arr, left, partitionIndex - 1);
+                quickSort(arr, partitionIndex + 1, right);
+            }
+        }
+
+
+        function partition(arr, pivot, left, right) {
+            let pivotValue = arr[pivot],
+                partitionIndex = left;//选取最左边索引作为分割线
+
+            for (let i = left; i < right; i++) {
+                if (arr[i] < pivotValue) {
+                    swap(arr, i, partitionIndex);
+                    partitionIndex++;//分割线向前移一位
+                }
+            }
+
+            //将分割线索引的元素与最后一个元素交换，刚好分割线索引位置，左边全小于基准，右边全大于基准
+            swap(arr, right, partitionIndex);
+            return partitionIndex;
+        }
+
+        function swap(arr, i, j) {
+            [arr[i], arr[j]] = [arr[j], arr[i]];
+        }
+
+        const arr = [7, 5, 2, 4, 3, 9];
+        quickSort(arr, 0, 5);
+        console.log(arr);
+    }
+</script>
+</body>
+</html>

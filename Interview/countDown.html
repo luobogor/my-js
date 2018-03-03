@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <!--请用代码实现如下倒计时组件（包括HTML，JS，CSS代码），要求：支持单页面多次调用及移动端显示；-->
+    <title>clock</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <style>
+        .wrapper {
+            background-color: brown;
+            font-size: 24px;
+            border-radius: 4px;
+            padding: 4px;
+            color: #fff;
+            width: 100px;
+        }
+    </style>
+</head>
+<body>
+<div class="countDownWrapper"></div>
+</body>
+<script>
+    function countDown(sel, hour, min, sec) {
+        if (hour == 0)
+            hour = '00';
+        if (min == 0)
+            min = '00'
+        if (sec == 0)
+            sec = '00'
+
+        let clientWrapper = document.querySelector(sel),
+            oldTime = {hour, min, sec};
+
+        function myTemplate(time) {
+            return `<div class="wrapper"><span class="hour">${time.hour}<span>:<span class="min">${time.min}<span>:<span class="sec">${time.sec}<span></div>​`;
+        }
+
+        function addZero() {
+            var key;
+            for (key in oldTime) {
+                if ((oldTime[key] + '').length === 1) {
+                    oldTime[key] = '0' + oldTime[key];
+                }
+            }
+        }
+
+        let cancelId = setInterval(function () {
+            if (--oldTime.sec < 0) {
+                oldTime.sec = 60;
+                if (--oldTime.min < 0) {
+                    oldTime.min = 60;
+                    if (--oldTime.hour < 0) {
+                        oldTime.hour = '00';
+                        oldTime.min = '00';
+                        oldTime.sec = '00';
+                        clearInterval(cancelId);
+                    }
+                }
+            }
+            addZero();
+            clientWrapper.innerHTML = myTemplate(oldTime);
+        }, 1000);
+
+        addZero();
+        clientWrapper.innerHTML = myTemplate(oldTime);
+    }
+
+    window.addEventListener('DOMContentLoaded', countDown.bind(this, '.countDownWrapper', 0, 1, 3))
+
+
+    var totalTime=200000
+    var counter=document.getElementById('counter')
+
+
+    //计算时分秒的方式更好
+//    function countTime(){
+//        if(this.totalTime<0) return
+//        var objTime=this.divideTime(this.totalTime)
+//        var res=objTime.hours+':'+objTime.minutes+':'+objTime.seconds+':'+objTime.milliseconds/100
+//        this.counter.innerHTML=res
+//        this.totalTime-=100
+//        setTimeout("countTime()",100)
+//    }
+//
+//
+//    function divideTime(totalMilliseconds){
+//        var hours,minutes,seconds,milliseconds;
+//        var rest
+//        milliseconds=totalMilliseconds%1000
+//        rest=Math.floor(totalMilliseconds/1000)
+//        seconds=rest%60
+//        rest=Math.floor(rest/60)
+//        minutes=rest%60
+//        rest=Math.floor(rest/60)
+//        hours=rest%24
+//        return {hours,minutes,seconds,milliseconds}
+//    }
+//
+//    countTime()
+</script>
+​
+</html>
+​

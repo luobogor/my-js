@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>array interview question</title>
+</head>
+<body>
+<script>
+    //    移除数组 arr 中的所有值与 item 相等的元素，直接在给定的 arr 数组上进行操作，并将结果返回
+    function removeWithoutCopy(arr, item) {
+        var i;
+        for (i = 0; i < arr.length; i++) {
+            if (arr[i] === item) {
+                arr.splice(i, 1);
+                i--;//下一个元素将前移，所以指针也要跟着前移
+            }
+        }
+        return arr;
+    }
+
+    removeWithoutCopy([1, 2, 2, 3, 4, 2, 2], 2);
+
+    //不变的
+    //slice,concat
+    //可变
+    //splice，可以用来做克隆数组，es6还可以用Object.assign（浅复制）来做
+
+    const object1 = {
+        a: 1,
+        b: 2,
+        c: 3
+    };
+
+    const object2 = Object.assign({}, object1);
+
+
+    const arr1 = [1, 2, 3]
+    const arr2 = Object.assign([], object1);
+
+
+    function insert(arr, item, index) {
+        var newArr = arr.slice(0);
+        //错误，因为splice接口只会返回一个空数组
+//        return newArr.splice(index, 0, item);
+        newArr.splice(index, 0, item);
+        return newArr;
+    }
+
+    console.log('insert', insert([1, 2, 3, 4], 'z', 2));
+
+    //    function parse2Int(num) {
+    //        let str = num + '';
+    //        if(str.indexOf('0') === 0)
+    //            return 0;
+    //        return parseInt(num);
+    //    }
+
+
+    function parse2Int(num) {
+        return parseInt(num, 10);
+    }
+
+    console.log(parse2Int('0x12'));
+    console.log(parse2Int('012'));
+    console.log(parse2Int('12px'));
+    console.log(parse2Int('12'));
+    //注意下面两个的区别
+    console.log(parse2Int('0hello123'));//0
+    console.log(parse2Int('hello123'));//NaN
+
+
+    //    实现一个打点计时器，要求
+    //    1、从 start 到 end（包含 start 和 end），每隔 100 毫秒 console.log 一个数字，每次数字增幅为 1
+    //    2、返回的对象中需要包含一个 cancel 方法，用于停止定时操作
+    //    3、第一个数需要立即输出
+    function count(start, end) {
+        console.log(start++);
+        var iId = setInterval(function () {
+            if (start <= end) {
+                console.log(start++);
+            } else {
+                clearInterval(iId);
+            }
+        }, 100);
+
+        return {
+            cancel: function () {
+                clearInterval(iId);
+            }
+        }
+    }
+
+//    count(2, 8);
+
+
+    function fn(greeting, name, punctuation) {
+        return greeting + ', ' + name + (punctuation || '!');
+    }
+
+
+    function argsAsArray(fn, arr) {
+//        return fn(...arr);
+        return fn.apply(null, arr);
+    }
+
+    console.log(argsAsArray(fn, ['Hello', 'Ellie', '!']));
+</script>
+</body>
+</html>

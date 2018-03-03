@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>数组去重</title>
+</head>
+<body>
+<script>
+    const array = [1, 1, 1, 90, 90, 12, 22, 22];
+
+    //不使用任何原生API
+    function uniq(arr) {
+        var res = [], i;
+        function indexOf(arr, item) {
+            var i;
+            for (i = 0; i < arr.length; i++) {
+                if (arr[i] === item) {
+                    return i;
+                }
+            }
+            return -1;
+        }
+
+        for (i = 0; i < arr.length; i++) {
+            var current = arr[i];
+            if (indexOf(arr, current) === i) {
+                res.push(current);
+            }
+        }
+        return res;
+    }
+
+    //使用indexOf
+    function uniq0(arr) {
+        var res = [],
+            i;
+        for (i = 0; i < arr.length; i++) {
+            var current = arr[i];
+            if (arr.indexOf(current) === i) {
+                res.push(current);
+            }
+        }
+        return res;
+    }
+
+    //使用filter + indexOf
+    function uniq1(arr) {
+        return arr.filter(function (item, idx) {
+            return arr.indexOf(item) === idx;
+        });
+    }
+
+    //ES6
+    function uniq2(arr) {
+        return [...new Set(arr)];
+    }
+
+    console.log(uniq(array));
+    console.log(uniq0(array));
+    console.log(uniq1(array));
+    console.log(uniq2(array));
+</script>
+</body>
+</html>

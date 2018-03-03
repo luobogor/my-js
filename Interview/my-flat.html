@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>my-flat</title>
+</head>
+<body>
+<script>
+    {
+        console.log('方法一，递归')
+
+        function flat1(array) {
+            const result = [],
+                each = function (arr) {
+                    arr.forEach(item => {
+                        if (Array.isArray(item) || Object.prototype.toString.call(item) === '[object Array]') {
+                            each(item);
+                        } else {
+                            result.push(item);
+                        }
+                    })
+                };
+            each(array);
+            return result;
+        }
+
+        //reduce递归
+        function flat2(array) {
+            return array.reduce((res, current) => {
+                return res.concat(Array.isArray(current) ? flat2(current) : current);
+            }, []);
+        }
+
+        //ES6 扩展运算符
+        //两层循环效率低，不推荐
+        function flat3(array) {
+            while (array.some(item => Array.isArray(item))) {
+                array = [].concat(...array);
+            }
+            return array;
+        }
+
+        const arr = [1, 2, [3, 4, [5, 6, 7]]];
+        console.log(flat1(arr));//1,2,3,4,5,6,7
+        console.log(flat2(arr));//1,2,3,4,5,6,7
+        console.log(flat3(arr));//1,2,3,4,5,6,7
+    }
+
+    {
+        console.log('方法二，valueOf/toString');
+
+        function flat(arr) {
+            const toString = Array.prototype.toString;
+            //改写valueOf/toString方法
+            Array.prototype.toString = function () {
+                return this.join(',');
+            };
+            //强制调用toString方法
+            //算术运算时先调用对象的valueOf方法，如果valueOf没有返回基本类型数据，
+            //再调用toString方法，如果还没有返回基本类型数据则报错。所以改写数组的valueOf或toString方法都是可行的
+
+            //Array内部非基本类型都会自动调用valueOf/toString，如果是Object只会调用一次valueOf/toString，内部非基本类型不会调用valueOf/toString
+            const res = arr + '';
+            //还原toString方法
+            Array.prototype.toString = toString;
+            return res;
+        }
+
+        const arr = [1, 2, [3, 4, [5, 6, 7]]];
+        console.log(flat(arr));//1,2,3,4,5,6,7
+    }
+
+    {
+        console.log('方法3，迭代器实现，其实内部也是用了递归')
+        Array.prototype[Symbol.iterator] = function () {
+            let arr = [].concat(this),
+                getFirst = function (array) {
+                    let first = array[0];
+                    if (Array.isArray(first)) {
+                        //递归
+                        return getFirst(first);
+                    } else if (first !== undefined) {
+                        return array.shift();
+                    } else {
+                        return '';
+                    }
+                };
+            return {
+                next: function () {
+                    let item = getFirst(arr);
+                    if (item) {
+                        return {
+                            value: item,
+                            done: false
+                        }
+                    } else {
+                        return {
+                            done: true
+                        }
+                    }
+                }
+            }
+        }
+        const arr = [1, 2, [3, 4, [5, 6, 7]]];
+        for (let i of arr) {
+            console.log(i);
+        }
+    }
+</script>
+
+</body>
+</html>

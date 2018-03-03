@@ -6,26 +6,35 @@
 </head>
 <body>
 <script>
-    //    function parent(foo) {
-    //        this.foo = foo;
-    //    }
-    //
-    //    parent.prototype.myFn = function (foo) {
-    //        console.log(foo)
-    //    }
-    //
-    //    function children(bar) {
-    //        this.bar = bar
-    //    }
-    //
-    //    children.scriptprototype
+
 
     {
-//        function Parent() {
-//
-//        }
-//
-//        Parent.prototype.
+        console.log('原型链');
+
+        //缺点：构造子类实例时，不能给基类构造函数传参
+        function Parent() {
+            this.name = "Mark";
+        }
+
+        Parent.prototype.sayName = function () {
+            console.log('name:', this.name);
+        };
+
+        function Child() {
+            this.age = 23;
+        }
+
+        Child.prototype = new Parent();
+
+        Child.prototype.sayAge = function () {
+            console.log('age:', this.age);
+        }
+
+        var ins = new Child();
+        ins.sayAge();
+        ins.sayName();
+        console.log(ins instanceof Child)//true
+        console.log(ins instanceof Parent)//true
     }
 
     {
@@ -33,14 +42,17 @@
 
         function Parent() {
             this.name = 'Mark';
+            this.colors = ["red", "blue", "yellow"];
         }
 
         function Child() {
             Parent.call(this);
         }
 
-        var ins1 = new Child();
-        console.log(ins1.name);//'Mark'
+        var ins = new Child();
+        console.log(ins.name);//'Mark'
+        console.log(ins instanceof Child)//true
+        console.log(ins instanceof Parent)//false
     }
 
 
@@ -76,6 +88,8 @@
 
         var ins2 = new Child('helloWorld', 13);
         ins2.colors.push("pink");//不会覆盖ins1的数据
+        console.log(ins1 instanceof Child)
+        console.log(ins1 instanceof Parent)
     }
 
     {
@@ -104,21 +118,21 @@
         child2.colors.push("pink");
 
         console.log(child1.colors === child2.colors)//true
+        console.log(child1 instanceof Parent)
     }
 
 
     {
         console.log('寄生组合式继承 = 寄生式继承 + 组合式继承 = 寄生式继承 + 原型链 + 借用构造函数');
 
-        function Parent(aaa) {
-//            this.name = name;
-            this.aaa = aaa;
+        function Parent(name) {
+            this.name = name;
             this.colors = ["red", "blue", "yellow"];
         }
 
         //原型链
         Parent.prototype.sayName = function () {
-            console.log(this.aaa);
+            console.log(this.name);
         };
 
         function Child(name, age) {
@@ -127,9 +141,17 @@
             this.age = age;
         }
 
+        function object(o) {
+            function F() {
+            }
+
+            F.prototype = o;
+            return new F();
+        }
+
         //寄生式继承
         function inheritPrototype(child, parent) {
-            var prototype = Object.create(parent);//创建对象
+            var prototype = object(parent.prototype);//创建对象
             prototype.constructor = child;//增强对象
             child.prototype = prototype;//指定对象
         }
@@ -138,10 +160,9 @@
 
         Child.prototype.sayAge = function () {
             console.log(this.age);
-        }
+        };
 
         var child = new Child("Mark", 20);
-        debugger
         console.log(child.colors);
         console.log(child.sayName());
         console.log(child.sayAge());
