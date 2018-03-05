@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>setTimeout异常</title>
+</head>
+<body>
+<script>
+
+    // try...catch语句只会捕获当前执行环境下的异常。
+    // 但是在上面异常抛出的时候，JavaScript解释器已经不在try...catch中了
+    // 因此无法被捕获。所有的Ajax请求也是这样。
+    function example1() {
+        try {
+            setTimeout(function callback() {
+                throw new Error("error");
+            }, 0);
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    example1();
+
+    function example2() {
+        setTimeout(function callback() {
+            try {
+                throw new Error("error");
+            } catch (error) {
+                console.error(error);
+                console.log('I can catch error');
+            }
+        }, 0);
+    }
+
+    example2();
+</script>
+</body>
+</html>

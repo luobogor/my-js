@@ -3,6 +3,12 @@
 将函数代码放到一个内存[[FunctionLocation]]属性,将所有变量与函数定义存在变量对象中。存储函数代码后，存储方法返回函数的[[scope]]
 即使是return语句后的变量定义和函数定义都是有效的。
 ![](https://ws1.sinaimg.cn/large/006tNc79gy1fn9ldtmnlpj30hh0ajacz.jpg)
+
+
+Arindam Paul - JavaScript VM internals, EventLoop, Async and ScopeChains
+
+https://www.youtube.com/watch?v=QyUFheng6J0
+
 - 第二次遍历填充变量对象的值，如果找不到定义则将变量添加到对象变量末端。（不声名变量宽容）
 - [[]]表示内部属性，如[[scopes]],[[class]]
 
