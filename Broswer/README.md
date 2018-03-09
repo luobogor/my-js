@@ -37,6 +37,10 @@ screen属性跟操作系统桌面有关，鼠标事件与window对象上都有�
 
 > 以上window、document、element对象提到的属性除了getBoundingClientRect能获取小数，其他的都是四舍五入并返回整数
 
+更多参考
+
+http://www.cnblogs.com/polk6/p/5051935.html
+
 ## 其他
 
 ### 节点查询

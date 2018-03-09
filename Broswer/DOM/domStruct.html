@@ -30,6 +30,8 @@
     var childs = div1.childNodes;//注意这是个属性，不是个函数。
     console.log('子节点：', childs);
 
+//    更多操作
+//    http://harttle.land/2015/10/01/javascript-dom-api.html
 
     //***删除节点
     //方法1 dom.removeChild
@@ -37,5 +39,33 @@
 
     //方法2 dom.remove
     //    childs[0].remove();
+
+    //outerHTML可以连同标签一起获取
+    console.log(myP.outerHTML);
+    setTimeout(function () {
+        myP.outerHTML = "<p>This paragraph replaced the original div.</p>"
+    },2000)
 </script>
+
+
+<!--//用nextSibling模拟insertAfter-->
+<!--<div id="parentElement">-->
+    <!--<span id="childElement">foo bar</span>-->
+<!--</div>-->
+
+<!--<script>-->
+    <!--// Create a new, plain <span> element-->
+    <!--var sp1 = document.createElement("span");-->
+    <!--sp1.textContent = ' helloworld ';-->
+
+    <!--// Get a reference to the element, before we want to insert the element-->
+    <!--var sp2 = document.getElementById("childElement");-->
+    <!--console.log(sp2.nextSibling)-->
+    <!--debugger-->
+    <!--// Get a reference to the parent element-->
+    <!--var parentDiv = sp2.parentNode;-->
+
+    <!--// Insert the new element into the DOM before sp2-->
+    <!--parentDiv.insertBefore(sp1, sp2.nextSibling);-->
+<!--</script>-->
 </html>

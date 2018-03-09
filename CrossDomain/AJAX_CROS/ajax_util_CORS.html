@@ -12,7 +12,7 @@
         //浅拷贝************************************************
         util.extend = function (dst, obj) {
             for (var i in obj) {
-               //所有继承了 Object 的对象都会继承到 hasOwnProperty 方法。这个方法可以用来检测一个对象是否含有特定的自身属性；和 in 运算符不同，该方法会忽略掉那些从原型链上继承到的属性。
+                //所有继承了 Object 的对象都会继承到 hasOwnProperty 方法。这个方法可以用来检测一个对象是否含有特定的自身属性；和 in 运算符不同，该方法会忽略掉那些从原型链上继承到的属性。
                 if (obj.hasOwnProperty(i)) {
                     //注意dst.i这种写法会声名一个i属性，这并不是我们想要的
                     //dst.i = obj.i;
@@ -79,7 +79,7 @@
                 console.log('UNSENT', 'readyStatuds' + xhr.readyState, 'status:' + xhr.status);
 
                 xhr.onreadystatechange = function () {
-                    //对于从无到0是不会触发onreadystatechange但是上面xhr.readyState可以获取到0
+                    //对于从无到0是不会触发onreadystatechange，但是上面xhr.readyState可以获取到0
                     console.log(xhr.readyState);
                 };
 
@@ -111,12 +111,11 @@
 
                 if (type === 'POST') {
                     xhr.open(type, url, true);
-                    //xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");//表单类型数据
+                    xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");//表单类型数据
                     //xhr.setRequestHeader('Content-type', 'application/json');发送json格式数据
                     //xhr.setRequestHeader('Content-type', 'application/json');发送文件数据
-                    xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
                     xhr.send(dataArr.join('&'));
-                    xhr.send(JSON.stringify(opt.data));
+//                    xhr.send(JSON.stringify(opt.data));
                 }
 
                 if (type === 'PUT') {
@@ -138,11 +137,11 @@
                     //304：服务器告诉浏览器资源未修改过，可以用缓存
                     if (xhr.status === 200 || xhr.status === 304) {
                         if (opt.success && opt.success instanceof Function) {
-                            //call绑定xhr作用域方便回调方法操作xhr对象
-                            opt.success.call(xhr, res);
                             if (typeof res === 'string') {
                                 res = JSON.parse(res);
                             }
+                            //call绑定xhr作用域方便回调方法操作xhr对象
+                            opt.success.call(xhr, res);
                         }
                     } else {
                         if (opt.error && opt.error instanceof Function) {
@@ -166,23 +165,22 @@
         };
 
 
-
 //**************************GET请求
-        util.json({
-            type: 'GET',
-            url: 'http://localhost:8081/user/test',
-            data: {sendData: 'I am send data'},
-            success: function (res) {
-                //如果回调写的是opt.success.call(xhr, res)，那么this是xhr对象
-                //如果回调写的是opt.success(res)，那么this是当前对象
-//                getResponseHeader(this);
-                console.log('successCallback:' + res);
-            },
-            error: function (res) {
-                console.log(this);
-                console.log('errorCallback:' + res);
-            }
-        });
+//        util.json({
+//            type: 'GET',
+//            url: 'http://localhost:8081/user/testGet',
+//            data: {sendData: 'I am send data'},
+//            success: function (res) {
+//                //如果回调写的是opt.success.call(xhr, res)，那么this是xhr对象
+//                //如果回调写的是opt.success(res)，那么this是当前对象
+////                getResponseHeader(this);
+//                console.log('successCallback:' + res);
+//            },
+//            error: function (res) {
+//                console.log(this);
+//                console.log('errorCallback:' + res);
+//            }
+//        });
 
         //获取响应头信息
         function getResponseHeader(xhr) {
@@ -199,21 +197,21 @@
 
 
 //**************************POST请求
-//         util.json({
-//             type: 'POST',
-//             url: 'http://localhost:8081/user/testPost',
-//             data: {userId: 'jinzhan.ye', password: '123456'},
-//             success: function (res) {
-//                 //如果回调写的是opt.success.call(xhr, res)，那么this是xhr对象
-//                 //如果回调写的是opt.success(res)，那么this是当前对象
-//                 console.log(this);
-//                 console.log('successCallback:' + res);
-//             },
-//             error: function (res) {
-//                 console.log(this);
-//                 console.log('errorCallback:' + res);
-//             }
-//         });
+        util.json({
+            type: 'POST',
+            url: 'http://localhost:8081/user/testPost',
+            data: {userId: 'jinzhan.ye', password: '123456'},
+            success: function (res) {
+                //如果回调写的是opt.success.call(xhr, res)，那么this是xhr对象
+                //如果回调写的是opt.success(res)，那么this是当前对象
+                console.log(this);
+                console.log('successCallback:' + res);
+            },
+            error: function (res) {
+                console.log(this);
+                console.log('errorCallback:' + res);
+            }
+        });
 
 
 //**************************PUT请求可以观察预检options请求
