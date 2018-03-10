@@ -21,7 +21,6 @@ Observer.prototype = {
             configurable:true,
             //Compile -> new Watcher -> Watcher.prototype.get -> Observer.get  这条路径会addSub
             get: function getter() {
-
                 Dep.target && dep.addSub(Dep.target)
                 return val
             },
@@ -29,7 +28,6 @@ Observer.prototype = {
             //model驱动view变化
             //执行阶段完成，用户对对象设置触发 set -> dep.notify -> sub.update -> get 这条路径不会addSub
             set: function setter(newVal) {
-
                 if(newVal === val) return
                 val = newVal
                 dep.notify()
@@ -44,8 +42,9 @@ function observe(value) {
     return new Observer(value)
 }
 
-//Dep是defineProperty的缩写？？
+//Dep即dependencies
 function Dep() {
+    //订阅者
     this.subs = []
 }
 

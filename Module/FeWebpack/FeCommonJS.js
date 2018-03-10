@@ -47,7 +47,7 @@ function pack(entryFilePath) {
                 content => moduleTemplate.replace(/{{moduleContent}}/, content)).join(',\n') +
                 ']';
         })
-        .then(modules => fs.readFileAsync("packSource.js", "utf8")
+        .then(modules => fs.readFileAsync("packTemplate.js", "utf8")
         //*******************************将上一步构建好的数组注入到模板的调用参数位置
             .then(content => content + "(" + modules + ")"))
         .then(js_beautify)

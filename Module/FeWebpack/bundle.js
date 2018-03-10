@@ -23,8 +23,46 @@
     }
     return require(0);
 })([function(module, exports, require, global) {
-    function hello() {
-        console.log("Hello!");
+        var module1 = require(1);
+        module1.foo();
+
+        function hello() {
+            console.log("Hello!");
+        }
+        module.exports = hello;
+    },
+    function(module, exports, require, global) {
+        var module2 = require(2);
+        console.log("initialize module1");
+
+        console.log("this is module2.foo() in module1:");
+        module2.foo();
+        console.log("\n")
+
+        module.exports = {
+            foo: function() {
+                console.log("module1 foo !!!");
+            }
+        };
+
+    },
+    function(module, exports, require, global) {
+        var module3 = require(3);
+        console.log("initialize module2");
+        module.exports = {
+            foo: function() {
+                console.log("module2 foo !!!");
+            }
+        };
+
+    },
+    function(module, exports, require, global) {
+        console.log("initialize module3");
+        module.exports = {
+            foo: function() {
+                console.log("module3 foo !!!");
+            }
+        };
+
     }
-    module.exports = hello;
-}])
+])

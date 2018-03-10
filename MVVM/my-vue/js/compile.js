@@ -49,6 +49,7 @@ Compile.prototype = {
             //处理 v-mode、v-on:click 等情况
             if (self.isElementNode(node))
                 self.compile(node)
+            //处理标签中的情况 <span>{{hello}}</span>
             else if (self.isTextNode(node) && reg.test(text))
                 self.compileText(node, reg.exec(text)[1])
 

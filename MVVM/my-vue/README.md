@@ -40,4 +40,6 @@ Directive 可以把 Watcher 和 指令 连在一起
 
 当指令在页面上修改了数据会触发watcher的set方法来修改数据
 
+![](https://ws3.sinaimg.cn/large/006tNc79gy1fp7slv97x6j30ez06m0tx.jpg)
+
 ![](https://camo.githubusercontent.com/02bbf419db713e3f7ff66045d95c062d86206ba7/687474703a2f2f70342e7168696d672e636f6d2f743031393762633739666463396663303465662e706e67)
