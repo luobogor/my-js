@@ -1,4 +1,6 @@
-> **CORS规范中请求头的Origin字段都是浏览器自动添加的，不需要人为设置。**
+CORS (Cross-Origin Resource Sharing)
+
+CORS规范中请求头的Origin字段都是浏览器自动添加的，不需要人为设置。
 
 ### 服务器端常用配置(以下为SpringMVC配置)
 
@@ -91,3 +93,6 @@ User-Agent: Mozilla/5.0...
 #### 缺点
 - Support IE 10+
 
+参考
+
+http://www.ruanyifeng.com/blog/2016/04/cors.html

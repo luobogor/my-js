@@ -36,7 +36,6 @@
         util.json = function ajax(options) {
             //默认配置
             var opt = {
-                url: 'http://www.baidu.com',
                 type: 'GET',//默认为get请求
                 data: {},
                 success: function () {
@@ -46,6 +45,7 @@
             };
 
             util.extend(opt, options);
+            opt.type = opt.type.toUpperCase();//HTTP请求方法大小写敏感，但是
 
             if (opt.url) {
                 //*******************xhr.readyState状态

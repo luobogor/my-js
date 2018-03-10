@@ -1,12 +1,13 @@
 # JSONP跨域
+
 ## 原理
 script标签的资源请求不受同源策略限制，可以通过标签内的src属性发送跨域请求。比如我们平时引入一个jQuery是像下面这样写的。很明显这是一个跨域请求，但浏览器依然可以成功加载。
 
 ````
 <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.slim.js"></script>
-
 ````
 ## 客户端
+
 ````
 <script>
     (function () {
