@@ -149,8 +149,8 @@
      */
     feRequireJs._recursiveUpdateModuleState = function () {
         loadingIds.forEach((id, idx) => {
-            let obj = modules[id];
-            let allLoaded = true;
+            let obj = modules[id],
+                allLoaded;
 
             //检测循环依赖
             feRequireJs._checkCycle(obj.depsPath, id, depFlagBase++);
@@ -162,7 +162,7 @@
                 loadingIds.splice(idx, 1);//在等待队列中踢除当前模块
                 feRequireJs._fireDepsCallback(obj);//执行当前模块的回调方法
                 //***********!!!该模块执行完成后可能使其他模块也满足执行条件了，继续检查，直到没有模块满足allLoaded条件
-                feRequireJs._recursiveUpdateModuleState();//尾递归调用
+                feRequireJs._recursiveUpdateModuleState();
             }
         });
     };

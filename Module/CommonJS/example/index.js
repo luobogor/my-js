@@ -4,7 +4,9 @@
 // 加载当前目录下hello.js
 // require('./hello.js')
 //不加扩展名也可以
-require('./hello')
+// require('./hello')
+
+require('./hello/')
 
 console.log('example/index.js')
 

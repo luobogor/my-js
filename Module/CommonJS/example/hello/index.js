@@ -1,1 +1,1 @@
-console.log('u r hello')
+console.log('hello/index.js')
