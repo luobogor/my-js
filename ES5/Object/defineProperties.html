@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>defineProperties</title>
+</head>
+<body>
+value,writable,enumerable,configurable默认值全是false
+<script>
+    //    存取描述符
+    function getset() {
+        var vue = {}
+        Object.defineProperty(vue, "title", {
+            get: function () {
+                return 'helloworld'
+            },
+            set: function (value) {
+                console.log(value);
+            },
+            enumerable: false,
+            configurable: false
+        });
+        vue.title = 'BAT I AM COMING SOON';
+        console.log(vue.title);
+    }
+
+    getset();
+
+
+    //    数据描述符
+    function enumerable() {
+        var o = {};
+        Object.defineProperty(o, 'a', {
+            value: 37,
+            writable: false
+        });
+
+        o.a = 25; // No error thrown
+        console.log(o.a)//37
+    }
+
+    enumerable();
+
+
+    //    configurable特性表示对象的属性是否可以被删除，以及除writable特性外的其他特性是否可以被修改。
+    //    如果configurable，不能将writable由false变为true，但可将将writable由true变为false
+    function configurable() {
+        var o = {};
+        Object.defineProperty(o, "a", {
+            value: 998,
+            writable: true,
+            configurable: false
+        });
+        Object.defineProperty(o, "a", {writable: false});
+    }
+
+    configurable();
+
+    function configurable2() {
+        var o = {};
+        Object.defineProperty(o, "a", {
+            value: 998,
+            writable: false,
+            configurable: false
+        });
+        Object.defineProperty(o, "a", {writable: true});//报错
+    }
+
+    //    configurable2();
+</script>
+</body>
+</html>
