@@ -312,7 +312,7 @@ window.fn();//开启严格模式后，this为global，非严格模式下this为g
 
 - setTimeout回调
 - DOM事件回调(参考事件文章)
-- 自执行函数(为什么this为window??)
+
 
 ````
 <!DOCTYPE html>

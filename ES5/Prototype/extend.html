@@ -38,7 +38,7 @@
     }
 
     {
-        console.log('借用构造函数');
+        console.log('借用构造函数，缺点是父类数据不能共享，每个子类实例都有一个父类实例副本');
 
         function Parent() {
             this.name = 'Mark';
