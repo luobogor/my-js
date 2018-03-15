@@ -1,3 +1,22 @@
+
+
+config取别名
+
+````js
+require.config({
+    paths : {
+        "jquery" : ["http://libs.baidu.com/jquery/2.0.3/jquery"]   
+    }
+})
+require(["jquery","js/a"],function($){
+    $(function(){
+        alert("load finished");  
+    })
+})
+````
+
+path作为Id
+
 require/define方法参数 依赖路径数组，回调方法
 
 loadingsIds 等待栈

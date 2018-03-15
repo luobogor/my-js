@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+    //必须返回一个Promise对象
+    //resolve可以是值，可以是thenable对象，如果是thenable对象即立即尝试调用thenable里的resolve方法
+
+    let promise1 = new Promise((resolve, reject) => {
+        resolve(88)
+    });
+
+    const thenable = {
+        then(resolve, reject) {
+            resolve(42);
+        }
+    }
+
+    let promise2 = promise1.then((data) => {
+        console.log(data);
+        return thenable;
+    });
+
+    console.log(promise2 instanceof Promise)
+    console.log(promise2)
+
+    promise2.then((data) => {
+        console.log(data)
+    })
+    //    console.log(promise1 === promise2);
+    //    promise2.resolve(2).then((data)=> {
+    //        console.log(data)
+    //    })
+
+    let promise3 = new Promise((resolve, reject) => {
+        resolve(2)
+//        reject("I am error");
+    })
+    let promise4 = new Promise((resolve) => {
+        setTimeout(function () {
+            throw Error('i am error')
+        }, 2000)
+    })
+
+    Promise.all([promise3, promise4]).then(arr => {
+        console.log(arr)
+    }).catch((e) => {
+            console.log(e)
+        })
+    //    console.log(arr);
+</script>
+</body>
+</html>

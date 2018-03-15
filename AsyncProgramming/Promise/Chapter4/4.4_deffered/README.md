@@ -1,4 +1,5 @@
-> deferred对象具有的函数属性，并分为两组：
+deferred对象具有的函数属性，并分为两组：
+
 1. 主动触发用来改变状态（成功或者失败）
   - dtd.resolve
   - dtd.reject
