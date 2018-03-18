@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>深克隆</title>
+</head>
+<body>
+<script>
+
+    function isPlainObject(obj) {
+        return Object.prototype.toString.call(obj) === '[object Object]';
+    }
+
+    function clone(obj, deep) {
+        let newObj;
+        if (isPlainObject(obj)) {
+            newObj = {};
+        } else if (Array.isArray(obj)) {
+            newObj = [];
+        } else {
+            return;
+        }
+
+        for (let key in obj) {
+            let value = obj[key];
+            if (deep && (isPlainObject(value) || Array.isArray(value))) {
+                newObj[key] = clone(value, deep);
+            } else if (value !== undefined) {
+                newObj[key] = value;
+            }
+        }
+
+        return newObj;
+    }
+
+
+    function extend(target, source, deep) {
+        for (let key in source) {
+            if (deep && (isPlainObject(source[key]) || Array.isArray(source[key]))) {
+                if (isPlainObject(source[key]) && !isPlainObject(target[key])) {
+                    target[key] = {};
+                }
+
+                if (Array.isArray(source[key]) && !Array.isArray(target[key])) {
+                    target[key] = [];
+                }
+                extend(target[key], source[key], true);
+            } else if (source[key] !== undefined) {
+                target[key] = source[key];
+            }
+        }
+        return target;
+    }
+
+
+    function test() {
+        let obj = {a: 123, b: "213", c: {h: 'bbb', i: [1, 2, 3]}};
+        let haha = {};
+        let newObj = clone(obj, true);
+        console.log(newObj);
+        console.log(newObj.c === obj.c);
+        console.log(extend(haha, obj, true));
+    }
+
+    test();
+</script>
+</body>
+</html>

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+//    http://www.jxbh.cn/article/1854.html
+//    这个东西只在IE和Opera中支持
+
+    var script = document.createElement("script");
+    var head = document.getElementsByTagName("head")[0];
+    script.type = "text/javascript";
+    script.src = "./test.js";
+    // 绑定资源加载成功事件
+    script.onreadystatechange = function () {
+        // 判断资源加载状态是否为加载成功或加载完成
+        if (/^(loaded|complete)$/.test(script.readyState)) {
+//            script.onreadystatechange = null;
+            console.log(script.readyState);
+        }
+
+    };
+    // 绑定资源加载失败事件
+
+    script.onerror = function (e) {
+
+    };
+
+    head.insertBefore(script, head.firstChild)
+</script>
+</body>
+</html>
