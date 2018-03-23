@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>单例模式</title>
+</head>
+<body>
+<script>
+    let Singleton = function (name) {
+        this.name = name;
+        this.instance = null;
+    };
+
+    Singleton.prototype.getName = function () {
+        return this.name;
+    };
+
+    function getInstance(name) {
+        if (!this.instance) {//在window上绑定实例
+            this.instance = new Singleton(name);
+        }
+
+        return this.instance;
+    }
+
+    let insA = getInstance('xiaoMing');
+    let insB = getInstance('xiaoHua');
+    console.log(insA === insB);//true
+    console.log(insA.getName())
+    console.log(insB.getName())
+</script>
+</body>
+</html>

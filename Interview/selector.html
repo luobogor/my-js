@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>下拉选择组件</title>
+    <style>
+        .wrapper {
+            position: relative;
+            width: 100px;
+        }
+
+        .view input {
+            height: 30px;
+            cursor: default;
+            width: 100%;
+        }
+
+        .panel {
+            width: 100%;
+            position: absolute;
+            top: 38px;
+            border: 1px solid #333;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        ul li {
+            cursor: default;
+        }
+
+        ul li:hover {
+            background-color: lightskyblue;
+        }
+
+        .hide {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<div class="wrapper"></div>
+<script>
+    window.addEventListener('DOMContentLoaded', function () {
+        initSelector('.wrapper', ['option1', 'option2', 'option3']);
+    });
+
+    function initSelector(wrapperSelector, items) {
+        let itemsDom = items.reduce((sum, current) => {
+                return sum + `<li>${current}</li>`;
+            }, ''),
+            template = `
+                   <div class="view">
+                        <input placeholder="click to select" type="text"  readonly>
+                </div>
+                <div class="panel hide">
+                    <ul>
+                        ${itemsDom}
+                    </ul>
+                </div>`;
+
+
+        let wrapper = document.querySelector(wrapperSelector);
+        wrapper.innerHTML = template;
+
+        let panel = document.getElementsByClassName('panel')[0],
+            view = document.querySelector('input');
+
+        wrapper.addEventListener('click', function (e) {
+            if (e.target.tagName === 'LI') {
+                view.value = e.target.textContent;
+                panel.classList.add('hide');
+            } else if (e.target.tagName === 'INPUT') {
+                panel.classList.toggle('hide');
+            }
+        });
+    }
+
+
+    //    面向对象的方式
+    //    class Selector {
+    //        constructor(wrapperSelector, items) {
+    //            this.wrapper = document.querySelector(wrapperSelector);
+    //            this.items = items;
+    //
+    //            let itemsDom = items.reduce((sum, current) => {
+    //                    return sum + `<li>${current}</li>`;
+    //                }, ''),
+    //                template = `
+    //               <div class="view">
+    //                    <input placeholder="click to select" type="text"  readonly>
+    //            </div>
+    //            <div class="panel hide">
+    //                <ul>
+    //                    ${itemsDom}
+    //                </ul>
+    //            </div>`;
+    //
+    //            this.wrapper.innerHTML = template;
+    //            this.panel = document.getElementsByClassName('panel')[0];
+    //            this.view = document.querySelector('input');
+    //            this.setHandler();
+    //        }
+    //
+    //        setHandler() {
+    //            this.wrapper.addEventListener('click', (e) => {
+    //                if (e.target.tagName === 'LI') {
+    //                    this.handleItemChange(e.target.textContent);
+    //                } else if (e.target.tagName === 'INPUT') {
+    //                    this.handleExpand();
+    //                }
+    //            });
+    //        }
+    //
+    //        handleItemChange(item) {
+    //            this.view.value = item;
+    //            this.panel.classList.add('hide');
+    //        }
+    //
+    //        handleExpand() {
+    //            this.panel.classList.toggle('hide');
+    //        }
+    //    }
+    //
+    //    window.addEventListener('DOMContentLoaded', function () {
+    //        (function main() {
+    //            new Selector('.wrapper', ['option1', 'option2', 'option3']);
+    //        })();
+    //    });
+
+
+</script>
+</body>
+</html>
+
+

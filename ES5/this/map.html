@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+    var arr = [" abc", "c d "];
+
+    function F(arr){
+        return arr.map(
+            Function.prototype.call,
+            String.prototype.trim
+        )
+        //map第二个参数用于指定回调函数上的this，也就是说现在call内部的this是String.prototype.trim
+        //然后call内部调用" abc".trim
+    }
+    console.log(F(arr))//[" abc", "c d "];
+
+</script>
+</body>
+</html>

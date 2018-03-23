@@ -28,14 +28,14 @@ typeof console.log // "function"
 ### 显式类型转换
 #### Number
 ![](https://ws2.sinaimg.cn/large/006tKfTcgy1foccf8m9xpj30s60bqaav.jpg)
-**valueOf -> toString -> 报错**
+valueOf -> toString -> 报错
 
 ![](https://ws1.sinaimg.cn/large/006tKfTcgy1foccfhbdtaj30dl05z0u3.jpg)
 
 #### String
 ![](https://ws3.sinaimg.cn/large/006tKfTcgy1foccfu91maj30at05iq3e.jpg)
 
-**toString -> valueOf -> 报错**
+toString -> valueOf -> 报错
 
 ![](https://ws1.sinaimg.cn/large/006tKfTcgy1foccg2hhptj30dg05hab4.jpg)
 
@@ -75,7 +75,7 @@ console.log(!!a);
 
 
 ## 问题
-1. JS中的内置函数(共9种)，Math，JSON是内置对象**不是函数**
+1. JS中的内置构造函数(共9种)，Math，JSON是内置对象**不是函数**
    1. Object
    2. Array
    3. Boolean
