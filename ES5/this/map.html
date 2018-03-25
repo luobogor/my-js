@@ -15,9 +15,22 @@
         )
         //map第二个参数用于指定回调函数上的this，也就是说现在call内部的this是String.prototype.trim
         //然后call内部调用" abc".trim
+        //跟下面调用hello函数的原理是一样的
+//        Function.prototype.call.call(hello, 'I am this', 'I am arg');
     }
     console.log(F(arr))//[" abc", "c d "];
 
+    function hello(arg) {
+        console.log(this);
+        this();
+        console.log(arg);
+    }
+
+
+    hello.call('I am this', 'I am arg');//如果指定this不是一个函数，那么指定的值会转成一个对象
+    hello.call(function () {
+        console.log('hello');
+    }, 'I am arg');
 </script>
 </body>
 </html>

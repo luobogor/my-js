@@ -18,13 +18,13 @@
     var someRes = array.some(function (item, idx) {
         return item < 2;
     });
-    console.log('some:',someRes);
+    console.log('some:', someRes);
 
     //    **every:判断是否所有元素符合条件
     var everyRes = array.every(function (item, idx) {
         return item < 4;
     });
-    console.log('every:',everyRes);
+    console.log('every:', everyRes);
     //    **sort:排序
     var arr2 = [1, 4, 2, 5];
     var sortRes = arr2.sort(function (a, b) {
@@ -43,10 +43,18 @@
     //** 删除元素
     var arrDelete = [3, 4, 5, 6];
     //方法1:delete运算符会使得数组变得稀疏，不推荐
-//    delete arrDelete[2];
+    //    delete arrDelete[2];
 
     //方法2:splice会污染原数组
-    console.log(arrDelete.splice(2,1));//[5]
+    console.log(arrDelete.splice(2, 1));//[5]
     console.log(arrDelete);//[3,4]
+
+    //** 截断数组
+    console.log('slice**********');
+    var arrSlice = [1, 2, 3, 4, {hello: 'world'}],
+        newArr = arrSlice.slice(3);
+
+    console.log(newArr === arrSlice);//false,slice不会污染原数组
+    console.log(newArr[newArr.length - 1] === arrSlice[arrSlice.length - 1]);//true，只能数组进行为浅复制
 </script>
 </html>

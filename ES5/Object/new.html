@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>new一个对象的过程</title>
+</head>
+<body>
+<script>
+    let new2 = function (func) {
+        let o = Object.create(func.prototype),
+            k = func.call(o);
+        if(typeof k === 'object'){
+            return k;
+        }
+        return o;
+    }
+
+
+    function Test(x) {
+        this.x = x;
+        return 1;
+    }
+
+    console.log(new Test(2));//不会返回1，而是返回对象
+
+
+    function Test2(x) {
+        this.x = x;
+        return {hello:'hello'};
+    }
+
+    console.log(new Test2(2));//返回hello对象
+
+</script>
+</body>
+</html>

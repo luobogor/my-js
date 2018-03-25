@@ -7,7 +7,10 @@
 <body>
 <script>
     //0.对象字面量的方式
-    var person = {firstname: "Mark", lastname: "Yun", age: 25, eyecolor: "black"};
+    var person = {firstname: "Mark", lastname: "Yun", age: 25, eyecolor: "black"},
+        person2 = new Object({firstname: "Mark", lastname: "Yun", age: 25, eyecolor: "black"});
+
+
     {
         // 1.工厂模式，即抽象了创建具体对象的过程
         // 工厂模式虽然解决了创建多个相似对象的问题，但却没有解决对象识别的问题(即怎样知道一个对象的类型)
@@ -50,10 +53,7 @@
         //3.原型模式
         //优点：可以识别对象，新对象可以共享原型上的属性和方法，节省内存
         //缺点：省略了为构造函数传递初始化参数这一环节，结果所有实例属性相同
-        function Person(name, age, job) {
-            this.name = name;
-            this.age = age;
-            this.job = job;
+        function Person() {
         }
 
         Person.prototype = {
@@ -154,6 +154,11 @@
         var person = Person("Mark", 18, "dev");
         console.log(person.sayName());//"Mark"
         person.name;//undefined
+    }
+
+    {
+        //这也算一种
+        Object.create({})
     }
 </script>
 </body>
