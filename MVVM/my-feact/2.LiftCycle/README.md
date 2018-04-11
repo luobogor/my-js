@@ -12,6 +12,8 @@ javascript对象映射到真实dom节点
 
 
 
+FeactDOMComponent与FeactCompositeComponentWrapper都实现了mountComponent接口
+
 FeactCompositeComponentWrapper -> FeactDOMComponent
 
 FeactDOMComponent -> NativeDOM 

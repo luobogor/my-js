@@ -27,7 +27,7 @@ const Feact = {
     // createElement('h1', null, 'hello world'),
     //**
     /**
-     *生成virtual dom
+     * 生成virtual dom
      *
      * @param {string/function} type
      *          如果type 是字符串，元素就原生组件(即原生标签)，
@@ -65,7 +65,7 @@ const Feact = {
             this.props = props;
         }
 
-        //将spec对象里的方法全部拷贝到prototype中
+        //将spec对象里的方法全部拷贝到prototype中，相当于做继承
         Constructor.prototype = Object.assign(Constructor.prototype, spec);
         return Constructor;
     },
@@ -96,7 +96,8 @@ class FeactDOMComponent {
      *
      * @param {obj} element virtualDOM
      *
-     */    constructor(element) {
+     */
+    constructor(element) {
         this._currentElement = element;
     }
 
@@ -204,7 +205,7 @@ class FeactCompositeComponentWrapper {
 }
 
 
-// 这是相当数量的新代码，但基本思想是将挂载移至另一层。这是 FeactReconciler 的工作，随着我们的前进，
+// 这是相当数量的新代码，但基本思想是将挂载移至另一层。这是 FeactReconciler 的工作，随着我们的前进
 // 也将有更多的工作要做。在 React 中，ReactReconciler 扮演同样的角色。
 /**
  * Reconciler 调解人
