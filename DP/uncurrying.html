@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>uncurrying</title>
+</head>
+<body>
+<script>
+    // 不使用uncurrying
+    (function () {
+        Array.prototype.push.call(arguments, 4);
+        console.log('不使用uncurrying:', arguments);//[1,2,3,4]
+    })(1, 2, 3);
+
+
+    //使用 uncurrying提取Array.prototype.push.call绑定this的代码
+    Function.prototype.uncurrying = function () {
+        var self = this;//this 是 Array.prototype.push
+        return function () {
+            var context = Array.prototype.shift.call(arguments);
+            return self.apply(context, arguments);
+        }
+    };
+
+    var push = Array.prototype.push.uncurrying();
+    var obj = {"0": 1, length: 1};
+    push(obj, 2);
+    console.log('使用 uncurrying:', obj);
+</script>
+</body>
+</html>

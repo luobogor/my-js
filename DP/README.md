@@ -1,0 +1,39 @@
+## 原则
+### 开放-封闭 原则
+
+### 单例模式
+- 单例模式的核心
+    1. 确保只有一个实例
+    2. 提供全局访问
+- 实战
+    - createScript
+    - createXhr
+    
+### 装饰者模式
+装饰者(decorator)模式也称为包装器(wrapper)模式
+
+从功能上而言，decorator能很好地描述这个模式，但从结构上看，wrapper的说法更加贴切。
+装饰者模式将一个对象嵌入另一个对象之中，`实际上相当于这个对象被另一个对象包装起来，形成一条包装链。`
+请求随着这条链依次传递到所有对象，每个对象都有处理这个请求的机会
+
+- 实战
+    - 用户操作记录上报 p217
+    - 动态添加参数 p218
+    - ajax token 解耦 p219
+    - 表单验证解耦
+
+#### 注意
+因为通过Function.property.before | after 被装饰之后，返回的实际上是一个新的函数，如果在原函数上保存了一些属性，
+那么这些属性会丢失。比如
+
+````js
+    var func = function() {
+      console.log(1);
+    };
+    func.a = 'a';
+    
+    func.after = function() {
+        console.log(2);  
+    };
+    console.log(func.a);// undefined
+````

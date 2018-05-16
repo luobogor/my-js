@@ -13,5 +13,14 @@
     console.log(location.pathname);//域名后的路径
     console.log('search:',location.search);
     console.log(location.hash);//#hash值
+
+
+    setTimeout(() => {
+        window.location = 'http://www.baidu.com/';
+//        window.location 只读属性，返回一个 Location  对象，其中包含有关文档当前位置的信息。
+//        尽管 window.location 是一个只读 Location 对象，你仍然可以赋给它一个 DOMString
+//        DOMString 是一个UTF-16字符串。由于JavaScript已经使用了这样的字符串，所以DOMString 直接映射到 一个String。
+//        window.location = 'http://www.example.com'，是 window.location.href = 'http://www.example.com'的同义词
+    }, 2000)
 </script>
 </html>

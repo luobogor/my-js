@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>单例模式</title>
+</head>
+<body>
+<script>
+    var CreateDiv = (function () {
+        var instance;
+
+        var CreateDiv = function (html) {
+            if (instance) {
+                return instance;
+            }
+
+            this.html = html;
+            this.init();
+            return instance = this;
+        };
+
+        CreateDiv.prototype.init = function () {
+            var div = document.createElement('div');
+            div.innerHTML = this.html;
+            document.body.appendChild(div);
+        };
+
+        return CreateDiv;
+    })();
+
+    var one = new CreateDiv('ONE');
+    var two = new CreateDiv('TWO');
+    console.log(one === two);
+</script>
+</body>
+</html>

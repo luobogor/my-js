@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>单例模式</title>
+</head>
+<body>
+<script>
+    var CreateDiv = function (html) {
+        this.html = html;
+        this.init();
+    };
+
+    CreateDiv.prototype.init = function () {
+        var div = document.createElement('div');
+        div.innerHTML = this.html;
+        document.body.appendChild(div);
+    };
+
+    // 将负责管理单例的逻辑移到代理类ProxySingletonCreateDiv
+    var ProxySingletonCreateDiv = (function () {
+        var instance;
+        return function (html) {
+            if (!instance) {
+                instance = new CreateDiv(html);
+            }
+
+            return instance;
+        }
+    })();
+
+    var one = new ProxySingletonCreateDiv('ONE');
+    var two = new ProxySingletonCreateDiv('TWO');
+    var three = new CreateDiv('Three');
+    console.log(one === two);
+</script>
+</body>
+</html>

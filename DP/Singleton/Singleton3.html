@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>单例模式</title>
+</head>
+<body>
+<script>
+    // p68
+    // 创建实例对象
+    var createLoginLayer = function () {
+        var div = document.createElement('div');
+        div.innerHTML = 'I am login layer';
+        div.style.display = 'none';
+        document.body.appendChild(div);
+        return div;
+    };
+
+    // 管理单例
+    var getSingle = function (fn) {
+        var result;
+        return function () {
+            // 缺点，只使用函数调用的方式生成对象，无法new 对象
+            // 一般来说将单例绑定到全局作用域，也就是当前this
+            // 惰性单例，仅在首次调用该函数时才创建实例
+            return result || (result = fn.apply(this, arguments));
+        };
+    };
+
+    var createSingleLoginLayer = getSingle(createLoginLayer);
+    var loginLayer1 = createSingleLoginLayer();
+    var loginLayer2 = createSingleLoginLayer();
+    console.log(loginLayer1 === loginLayer2);
+    console.log(loginLayer1);
+</script>
+</body>
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>代理模式</title>
+</head>
+<body>
+<script>
+    // 目标对象
+    var myImage = (function () {
+        var imageNode = document.createElement('img');
+        document.body.appendChild(imageNode);
+
+        return {
+            setSrc: function (src) {
+                imageNode.src = src;
+            }
+        }
+    })();
+
+    // 代理对象
+    // 实现共同的接口setSrc
+    var proxyImage = (function () {
+        var img = new Image();
+        img.onload = function () {
+            var self = this;
+            setTimeout(function () {// 模拟网络延时加载图片
+                myImage.setSrc(self.src);
+            }, 2000);
+        };
+        return {
+            setSrc: function (src) {
+                myImage.setSrc('loading.gif');
+                img.src = src;
+            }
+        }
+    })();
+
+    proxyImage.setSrc('TestPic.png');
+</script>
+</body>
+</html>

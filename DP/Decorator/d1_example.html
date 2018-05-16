@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>简单的装饰器例子</title>
+</head>
+<body>
+<script>
+    // 原理：实现共同的接口，比如下面的work接口
+
+    // 传统面向对象编程实现装饰器模式，主要使用“类”
+    function traditionalOOPDecorator() {
+        console.log('***traditionalOOPDecorator***');
+        var Developer = function () {
+        };
+
+        Developer.prototype.work = function () {
+            console.log('手撕代码');
+        };
+
+        var TestDecorator = function (developer) {
+            this.developer = developer;
+        };
+
+        TestDecorator.prototype.work = function () {
+            this.developer.work();
+            console.log('测试代码');
+        };
+
+        var OpsDecorator = function (developer) {
+            this.developer = developer;
+        };
+
+        OpsDecorator.prototype.work = function () {
+            this.developer.work();
+            console.log('部署代码');
+        };
+
+        var developer = new Developer();
+        developer = new TestDecorator(developer);
+        developer = new OpsDecorator(developer);
+        developer.work();//手撕代码 测试代码 部署代码
+    }
+
+    traditionalOOPDecorator();
+
+    // JS不使用“类”，实现装饰器模式
+    function JSDecorator() {
+        console.log('***JSDecorator***');
+        var developer = {
+            work: function () {
+                console.log('手撕代码');
+            }
+        };
+
+        var testDeveloper = function () {
+            console.log('测试代码');
+        };
+
+        var opsDeveloper = function () {
+            console.log('部署代码');
+        };
+
+        var work1 = developer.work;
+        developer.work = function () {
+            work1();
+            testDeveloper();
+        };
+
+        var work2 = developer.work;
+        developer.work = function () {
+            work2();
+            opsDeveloper();
+        };
+        developer.work();
+    }
+
+    JSDecorator();
+</script>
+</body>
+</html>
