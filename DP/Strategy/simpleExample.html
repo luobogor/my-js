@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>策略模式</title>
+</head>
+<body>
+<script>
+    {
+        // 一个简单计算绩效的例子
+        // *********三种不同的计算绩效算法(必须实现共同的接口)
+        const strategies = {
+            ["S"](salary) {
+                return salary * 4;
+            },
+            ["A"](salary) {
+                return salary * 3;
+            },
+            ["B"](salary) {
+                return salary * 2;
+            },
+        };
+
+        // // *********calculateBonus充当context
+        let calculateBonus = function (level, salary) {
+            return strategies[level](salary);
+        };
+
+        console.log(calculateBonus('S', 10000)); // 40000
+        console.log(calculateBonus('A', 10000)); // 30000
+    }
+
+
+    console.log('函数作为一等公民，策略模式的另一种表现形式:');
+    {
+        let S = function (salary) {
+            return salary * 4;
+        };
+
+        let A = function (salary) {
+            return salary * 3;
+        };
+
+        let B = function (salary) {
+            return salary * 2;
+        };
+
+        let calculateBonus = function (level, salary) {
+            return level(salary);
+        };
+
+        console.log(calculateBonus(S, 10000));  // 400000
+        console.log(calculateBonus(A, 10000)); // 400000
+    }
+</script>
+</body>
+</html>
