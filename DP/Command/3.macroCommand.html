@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>宏命令</title>
+</head>
+<body>
+<script>
+    //    宏命令是一组命令的集合，通过执行宏命令的方式，可以一次执行一批命令
+    let closeDoorCommand = {
+        execute: function () {
+            console.log('关灯');
+        }
+    };
+
+    let openPcCommand = {
+        execute: function () {
+            console.log('开电脑');
+        }
+    };
+
+    let openQQCommand = {
+        execute: function () {
+            console.log('登录QQ');
+        }
+    };
+
+    let MacroCommand = function () {
+        return {
+            commandsList: [],
+            add: function (command) {
+                this.commandsList.push(command);
+            },
+            execute: function () {
+                for (let i = 0, command; command = this.commandsList[i++];) {
+                    command.execute();
+                }
+            }
+        }
+    };
+    let macroCommand = MacroCommand();
+    macroCommand.add(closeDoorCommand);
+    macroCommand.add(openPcCommand);
+    macroCommand.add(openQQCommand);
+    macroCommand.execute();
+</script>
+</body>
+</html>
