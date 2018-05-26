@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Chain</title>
+</head>
+<body>
+<script>
+    var Chain = function (fn) {
+        this.fn = fn;
+        this.successor = null;
+    };
+
+    Chain.prototype.setNextSuccessor = function (successor) {
+        return this.successor = successor;
+    };
+
+    Chain.prototype.passRequest = function () {
+        var ret = this.fn.apply(this, arguments);
+        if (ret === 'nextSuccessor') {
+            return this.successor && this.successor.passRequest.apply(this.successor, arguments);
+        }
+        return ret;
+    };
+
+    Chain.prototype.next = function () {
+        this.successor && this.successor.passRequest.apply(this.successor, arguments);
+    };
+
+    // 包装职责链节点
+    var chainOrder500 = new Chain(function () {
+        console.log(1);
+        return 'nextSuccessor';
+    });
+    var chainOrder200 = new Chain(function () {
+        console.log(2);
+        var self = this;
+        // Promise利用这种模式实现异步回调
+        setTimeout(function () {// 异步回调next
+            self.next();
+        },1000);
+    });
+    var chainOrderNormal = new Chain(function () {
+        console.log(3);
+    });
+
+    // 指定职责链中的执行顺序
+    chainOrder500.setNextSuccessor(chainOrder200).setNextSuccessor(chainOrderNormal);
+
+    // test case
+    chainOrder500.passRequest();// 先输出1 ，2，一秒后再输出3
+</script>
+</body>
+</html>

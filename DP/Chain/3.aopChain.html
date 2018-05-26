@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AOP</title>
+</head>
+<body>
+<script>
+    var order500 = function (orderType, pay, stock) {
+        if (orderType === 1 && pay === true) {
+            console.log('500元定金预购，得到100优惠劵');
+        } else {
+            return 'nextSuccessor';
+        }
+    };
+
+    var order200 = function (orderType, pay, stock) {
+        if (orderType === 2 && pay === true) {
+            console.log('200元定金预购，得到100优惠劵');
+        } else {
+            return 'nextSuccessor';
+        }
+    };
+
+    var orderNormal = function (orderType, pay, stock) {
+        if (stock > 0) {
+            console.log('普通购买，无优惠券');
+        } else {
+            console.log('手机库存不足');
+        }
+    };
+
+    // 后置装饰
+    Function.prototype.after = function (afterfn) {
+        var _self = this;
+        return function () {
+            var ret = _self.apply(this, arguments);
+            if (ret === 'nextSuccessor') {
+                return afterfn.apply(this, arguments);
+            }
+            return ret;
+        }
+    };
+
+    var order = order500.after(order200).after(orderNormal);
+    order(1, true, 500);// 输出:500 元定金预购，得到 100 优惠券
+    order(2, true, 500);    // 输出:200 元定金预购，得到 50 优惠券
+    order(3, true, 500);    // 输出:普通购买，无优惠券
+    order(3, false, 0);// 输出:手机库存不足
+</script>
+</body>
+</html>
