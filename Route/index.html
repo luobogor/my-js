@@ -24,7 +24,7 @@
                 },
                 {
                     path: 'contact',
-                    name: '/Contact'
+                    name: 'Contact'
                 },
                 {
                     path: 'about',
@@ -39,9 +39,7 @@
                 if (currentHash === '/') {
                     view.innerHTML = 'You are in the root page';
                 } else {
-                    let route = myFirstRouter.routes.filter((r) => {
-                        return r.path === currentHash;
-                    })[0];
+                    let route = myFirstRouter.routes.filter(r => r.path === currentHash)[0];
                     if (route) {
                         view.innerHTML = 'You are in the ' + route.name + ' path';
                     } else {
@@ -49,16 +47,17 @@
                     }
                 }
             }
+
             // add event listeners
-            //页面首次加载不会触发hashChange
-            window.onhashchange= function () {
+            // 页面首次加载不会触发hashChange
+            window.onhashchange = function () {
                 //判断当前路由
                 let currentHash = window.location.hash.substr(1);
                 changePage(currentHash);
             };
 
-            //首次加载手动触发#root
-            window.history.pushState(null, '', '#root');
+            // 首次加载手动触发#root
+            window.history.pushState(null, 'I am title', '#root');
             changePage('root');
         }
     </script>
