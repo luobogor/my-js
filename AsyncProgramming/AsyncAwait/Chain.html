@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Chain</title>
+</head>
+<body>
+<script>
+function myFetch(url) {
+    return new Promise(resolve => setTimeout(() => {
+        resolve(url);
+    }, 300));
+}
+
+async function logInOrder(urls) {
+    // fetch all the URLs in parallel
+    // 注：array.map(func) 不在乎我提供给它的是不是异步函数，
+    // 只把它当作一个返回 Promise 的函数来看待。它不会等到第一个函数执行完毕才调用第二个函数。
+    // 它会在同步情况下按顺序完成将一个数组转换成Promise数组
+    const textPromises = urls.map(async url => {
+        const response = await myFetch(url);
+        return response;
+    });
+
+    // log them in sequence
+    for (const textPromise of textPromises) {
+        console.log(await textPromise);
+    }
+}
+
+logInOrder(['1', '2', '3']);
+</script>
+</body>
+</html>
