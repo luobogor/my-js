@@ -18,11 +18,11 @@
             console.log('手撕代码');
         };
 
-        var TestDecorator = function (developer) {
+        var TesterDecorator = function (developer) {
             this.developer = developer;
         };
 
-        TestDecorator.prototype.work = function () {
+        TesterDecorator.prototype.work = function () {
             this.developer.work();
             console.log('测试代码');
         };
@@ -36,9 +36,7 @@
             console.log('部署代码');
         };
 
-        var developer = new Developer();
-        developer = new TestDecorator(developer);
-        developer = new OpsDecorator(developer);
+        var developer = new OpsDecorator(new TesterDecorator(new Developer()));
         developer.work();//手撕代码 测试代码 部署代码
     }
 

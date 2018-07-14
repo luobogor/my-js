@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>defineProperties</title>
+</head>
+<body>
+value,writable,enumerable,configurable默认值全是false
+<script>
+    //    存取描述符
+    function getset() {
+        var vue = {}
+        Object.defineProperty(vue, "title", {
+            get: function () {
+                return 'helloworld'
+            },
+            set: function (value) {
+                console.log(value);
+            },
+            enumerable: false,
+            configurable: false
+        });
+        vue.title = 'BAT I AM COMING SOON';
+        console.log(vue.title);
+    }
+
+    getset();
+</script>
+</body>
+</html>
