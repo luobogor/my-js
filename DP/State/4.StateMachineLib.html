@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Javascript Finite State Machine</title>
+</head>
+<body>
+有限状态机库
+<button id="btn">click</button>
+</body>
+<script src="https://cdn.bootcss.com/javascript-state-machine/2.0.0/state-machine.min.js"></script>
+<script>
+var fsm = StateMachine.create({
+    initial: 'off',
+    events: [
+        { name: 'buttonWasPressed', from: 'off', to: 'on' },
+        { name: 'buttonWasPressed', from: 'on', to: 'off' }
+    ],
+    callbacks: {
+        onbuttonWasPressed: function (event, from, to) {
+            console.log(arguments);
+        }
+    },
+    error: function (eventName, from, to, args, errorCode, errorMessage) {
+        console.log(arguments);
+        button.onclick = function () {
+            fsm.buttonWasPressed();
+        }
+        // 从一种状态试图切换到一种不可能到达的状态的时候
+    }
+});
+
+var button = document.getElementById('btn');
+button.onclick = function () {
+    fsm.buttonWasPressed();
+}
+</script>
+</html>
