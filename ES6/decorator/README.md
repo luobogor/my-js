@@ -36,4 +36,10 @@ descriptor = readonly(Dog.prototype, 'bark', descriptor) || descriptor
 // 重点！！覆盖原descriptor
 Object.defineProperty(Dog.prototype, 'bark', descriptor)
 ````
-参考 http://www.liuhaihua.cn/archives/115548.html
+
+## 其他
+- 由于存在函数提升，使得修饰器不能用于函数。类是不会提升的，所以就没有这方面的问题。
+
+## 参考 
+[ECMAScript 6 入门 - 修饰器](http://es6.ruanyifeng.com/#docs/decorator#%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BF%AE%E9%A5%B0%E5%99%A8%E4%B8%8D%E8%83%BD%E7%94%A8%E4%BA%8E%E5%87%BD%E6%95%B0%EF%BC%9F)
+[Decorators in ES7](http://www.liuhaihua.cn/archives/115548.html)
