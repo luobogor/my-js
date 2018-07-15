@@ -1,9 +1,16 @@
 {
     let log = (type) => {
+        // obj.prototype, fieldName, descriptor
         return function (target, name, descriptor) {
-            let src_method = descriptor.value;
+            //  descriptor = {
+            //     value: function () { console.log('classinner show excute'); },
+            //     enumerable: false,
+            //     configurable: true,
+            //     writable: true
+            // }
+            let srcMethod = descriptor.value;
             descriptor.value = (...arg) => {
-                src_method.apply(target, arg);
+                srcMethod.apply(target, arg);
                 console.log(`log ${type}`);
             }
         }

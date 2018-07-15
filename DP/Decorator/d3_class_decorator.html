@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>类级装饰</title>
+</head>
+<body>
+利用原型继承特性实现装饰
+<script>
+function myComponentFactory() {
+    // 利用闭包实现私有变量
+    let suffix = '';
+
+    return {
+        setSuffix: suf => suffix = suf,
+        printValue: value => console.log(`value is ${value + suffix}`)
+    }
+}
+
+function toLowerDecorator(inner) {
+    const instance = Object.create(inner);
+    instance.printValue = value => inner.printValue(value.toLowerCase());
+    return instance;
+}
+
+function validatorDecorator(inner) {
+    const instance = Object.create(inner);
+    instance.printValue = value => {
+        const isValid = ~value.indexOf('My');
+
+        setTimeout(() => {
+            if (isValid) inner.printValue(value);
+            else console.log('not valid man...');
+        }, 500);
+    };
+    return instance;
+}
+
+const component = validatorDecorator(toLowerDecorator(myComponentFactory()));
+component.setSuffix('!');
+component.printValue('My Value');
+component.printValue('Invalid Value');
+</script>
+</body>
+</html>
