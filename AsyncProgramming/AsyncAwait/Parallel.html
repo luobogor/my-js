@@ -19,14 +19,15 @@ async function series() {
 
 // 并行
 async function parallel() {
-    const wait1 = wait(500);
-    const wait2 = wait(500);
+    const wait1 = wait(2000);
+    const wait2 = wait(4000);
     await wait1;
     await wait2;
+    console.log('dddd');
     return "done!";
 }
 
-series();
+// series();
 parallel();
 </script>
 </body>

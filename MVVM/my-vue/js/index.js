@@ -18,7 +18,7 @@ Vue.prototype = {
     proxyKeys: function (key) {
         var self = this
         Object.defineProperty(this, key, {
-            enumerable: false,
+            enumerable: true,
             configurable: true,
             get:function () {
                 return self.data[key]

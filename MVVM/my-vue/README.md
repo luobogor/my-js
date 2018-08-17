@@ -17,7 +17,7 @@ data里的每个属性都有一个监听队列
 
 数据最终存储在哪里？
 Watcher.value
-Observer.prototype.defineReactive.val(私有属性)
+Observer.prototype.defineReactive.val(闭包私有属性)
 
 ## 总结
 
