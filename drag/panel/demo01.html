@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        html, body {
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+
+        .container {
+            box-sizing: border-box;
+            height: 100%;
+            border: 10px solid lightcoral;
+            position: relative;
+        }
+
+        .element {
+            background-color: burlywood;
+            width: 100px;
+            height: 100px;
+            cursor: all-scroll;
+            position: absolute;
+        }
+    </style>
+</head>
+<body>
+<div class="container" draggable="true">
+    <div class="element" draggable="true"></div>
+</div>
+</body>
+<script>
+const element = document.getElementsByClassName('element')[0];
+const containerBorderWidth = 10;
+const dis = {
+    x: 0,
+    y: 0,
+};
+
+function handleDragStart(e) {
+    dis.x = e.clientX - this.offsetLeft;
+    dis.y = e.clientY - this.offsetTop;
+    return false;
+}
+
+function handleDrop(e) {
+    const x = e.clientX - dis.x;
+    const y = e.clientY - dis.y;
+
+    element.style.left = x + 'px';
+    element.style.top = y + 'px';
+    return false;
+}
+element.addEventListener('dragstart', handleDragStart,false);
+document.addEventListener('drop',handleDrop,false);
+document.addEventListener('dragover', (e)=> {e.preventDefault()},false);
+</script>
+</html>

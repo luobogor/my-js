@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Test click href</title>
+</head>
+<body>
+<div>
+    <a id="a" href="#/hellaaa">hello</a>
+</div>
+</body>
+<script>
+const dom = document.getElementById('a');
+dom.addEventListener('click', function () {
+    history.pushState(null,'','#/hello');
+});
+</script>
+</html>
