@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Lazy Man</title>
+</head>
+<body>
+
+</body>
+<script>
+function toMillisecond(second) {
+    return second * 1000;
+}
+
+
+class _LazyMan {
+    constructor(name) {
+        this.sleepFirstSecond = 0;
+        this.promise = Promise.resolve().then(() => {
+            return new Promise((r) => {
+                const time = toMillisecond(this.sleepFirstSecond);
+                setTimeout(() => {
+                    if (time > 0) {
+                        console.log(`Wake up after ${this.sleepFirstSecond}`);
+                    }
+                    console.log(`Hi! this is ${name}`);
+                    r();
+                }, time);
+            });
+        });
+    }
+
+    eat(meal) {
+        this.promise = this.promise.then(() => {
+            console.log(`Eat ${meal}~`);
+        });
+        return this;
+    }
+
+    sleep(second) {
+        const time = toMillisecond(second);
+        this.promise = this.promise.then(() =>
+            new Promise((r) => {
+                setTimeout(() => {
+                    if (time > 0) {
+                        console.log(`Wake up after ${second}`);
+                    }
+                    r();
+                }, time);
+            }));
+        return this;
+    }
+
+    sleepFirst(second) {
+        this.sleepFirstSecond += second;
+        return this;
+    }
+}
+
+function LazyMan(name){
+    return new _LazyMan(name);
+}
+
+// new LazyMan('Hank');
+// new LazyMan('Hank').sleep(5).eat('dinner');
+LazyMan('Hank').sleepFirst(2).eat('dinner');
+</script>
+</html>
