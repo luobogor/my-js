@@ -2,23 +2,39 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>instanceof</title>
 </head>
 <body></body>
 <script>
-    function Foo(name) {
-        this.name = name;
+function Foo(name) {
+    this.name = name;
+}
+
+Foo.prototype.consoleName = function () {
+    console.log(this.name);
+};
+
+var f = new Foo('hello git');
+f.consoleName();
+console.log(f instanceof Foo);//true
+console.log(f instanceof Object);//true
+//路径 f.__proto__找到Foo.prototype，所以(f instanceof Foo)为true
+//Foo.prototype是一个对象，所以Foo.prototype.__proto__指向Object.prototype,所以（f instanceof Object)为true
+
+
+// instanceof 实现原理
+function myInstanceof(left, right) {
+    let prototype = right.prototype;
+    left = left.__proto__;
+    while (true) {
+        if (left === null) {
+            return false;
+        } else if (left === prototype) {
+            return true;
+        }
+
+        left = left.__proto__;
     }
-
-    Foo.prototype.consoleName = function () {
-        console.log(this.name);
-    };
-
-    var f = new Foo('hello git');
-    f.consoleName();
-    console.log(f instanceof Foo);//true
-    console.log(f instanceof Object);//true
-    //路径 f.__proto__找到Foo.prototype，所以(f instanceof Foo)为true
-    //Foo.prototype是一个对象，所以Foo.prototype.__proto__指向Object.prototype,所以（f instanceof Object)为true
+}
 </script>
 </html>

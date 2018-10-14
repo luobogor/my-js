@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>throttle</title>
+</head>
+<body>
+<script>
+function _now() {
+    return +new Date();
+}
+
+/**
+ * underscore 节流函数，返回函数连续调用时，func 执行频率限定为 次 / wait
+ *
+ * @param  {function}   func      回调函数
+ * @param  {number}     wait      表示时间窗口的间隔
+ * @return {function}             返回客户调用函数
+ */
+function throttle(func, wait = 50) {
+    let context, args, result;
+    let timer = null;
+    let previous = 0;
+    const later = function later() {
+        previous = _now();
+        timer = null;
+        result = func.apply(context, args);
+    };
+    return function () {
+        const now = _now();
+        if (!previous) {
+            previous = now;
+        }
+        const remaining = wait - (now - previous);
+        context = this;
+        args = arguments;
+        if (remaining <= 0) {
+            if (timer) {
+                clearTimeout(timer);
+                timer = null;
+            }
+            previous = now;
+            result = func.apply(context, args);
+        } else if (!timer) {
+            timer = setTimeout(later, remaining);
+        }
+        return result;
+    }
+}
+
+window.onresize = throttle(() => {
+    console.log('resize...');
+}, 2000);
+
+</script>
+</body>
+</html>

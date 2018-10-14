@@ -1,24 +1,25 @@
 ##数据类型
 - 引用类型：对象，数组，函数
-- 基本类型(值类型)：string、number、boolean、undefined、null(虽然undefined、null表现怪异但规范说明这两个是基本类型)
+- 基本类型(值类型)：string、number、boolean、undefined、null(虽然undefined、null表现怪异但规范说明这两个是基本类型)、symbol
 ###注意
 - 特殊的类型：undefined
 - 引用类型可以直接用.赋值，而值类型不可以。例如funA.fieldA = 'abc',arrA.fieldA='abc'
 
 ## typeof运算符
-- 记住，一共有6种情况，是6种。
+- 记住，一共有7种情况
 
 ````
 //**********值类型
 typeof undefined // "undefined"
 typeof 'abc' // "string"
 typeof 123 // "number"
+typeof NaN // "number"
 typeof true // "boolean"
+typeof Symbol() // 'symbol'
 //**********引用类型
 typeof {} // "object"
 typeof [] // "object"
 typeof null // "object"
-
 typeof console.log // "function"
 ````
 - typeof 只能区分值类型，不能区分引用类型中的对象和数组，但是可以区分出function,这是因为function在js中是"头等公民""
@@ -75,7 +76,7 @@ console.log(!!a);
 
 
 ## 问题
-1. JS中的内置构造函数(共9种)，Math，JSON是内置对象**不是函数**
+1. JS中的内置构造函数(共9种)，Math，JSON是`内置对象`不是函数
    1. Object
    2. Array
    3. Boolean

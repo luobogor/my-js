@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>destructuringArray</title>
+</head>
+<body>
+<script>
+const destructuringArray = (values, keys) => {
+    try {
+        const obj = {};
+        if (typeof keys === 'string') {
+            // RegExp.lastMatch ($&)/
+            keys = JSON.parse(keys.replace(/\w+/g, '"$&"'));
+        }
+
+        const iterate = (values, keys) =>
+            keys.forEach((key, i) => {
+                if(Array.isArray(key)) iterate(values[i], key)
+                else obj[key] = values[i]
+            })
+
+        iterate(values, keys)
+
+        return obj;
+    } catch (e) {
+        console.error(e.message);
+    }
+}
+const targetArray = [1, [2, 3], 4];
+const formater = "[a, [b], c]";
+console.dir(destructuringArray(targetArray,formater));
+</script>
+</body>
+</html>
