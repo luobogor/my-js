@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>call_apply_bind</title>
+</head>
+<body>
+<script>
+Function.prototype.myCall = function (context) {// 此处假设 context 一个对象，真正 call 函数 context 可为任意类型
+    context = context || window;
+    const args = Array.from(arguments).slice(1);
+    context.fn = this;
+    const res = context.fn(...args);
+    delete context.fn;
+    return res;
+};
+
+function hello(str1, str2) {
+    console.log(this);
+    console.log(str1, str2);
+}
+
+console.log('myCall.........');
+hello.myCall({ a: 123 }, 'Hello', 'World');
+
+Function.prototype.myApply = function (context) {
+    context = context || window;
+    context.fn = this;
+    let res;
+    if (arguments[1]) {
+        res = context.fn(...arguments[1]);
+    } else {
+        res = context.fn();
+    }
+    delete context.fn;
+    return res;
+};
+
+console.log('myApply..........');
+hello.myApply({ a: 123 }, ['Hello', 'World']);
+
+Function.prototype.myBind = function (context) {
+    if (typeof this !== 'function') {
+        throw new TypeError('Error')
+    }
+    const args = [...arguments].slice(1);
+    const fn = this;
+    return function F() {
+        // 因为返回了一个函数，我们可以 new F()，所以需要判断
+        if (this instanceof F) {
+            return new fn(...args, ...arguments)
+        }
+        return fn.apply(context, args.concat(...arguments));
+    }
+};
+
+console.log('myBind..........');
+hello.myBind({ a: 123 }, 'Hello')('World');
+</script>
+</body>
+</html>
