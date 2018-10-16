@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Generator 实现原理</title>
+</head>
+<body>
+<script>
+function* test() {
+    const a = 1 + 2;
+    yield  2;
+    yield  3;
+}
+
+console.log('生成器版..........');
+const b = test();
+console.log(b.next());// {value:2, done:false}
+console.log(b.next());// {value:3, done:false}
+console.log(b.next());// {value:undefined, done:true}
+console.log(b.next());// {value:undefined, done:true}
+
+// cb 也就是编译过的 test 函数
+// generator 函数返回一个迭代器对象
+// 这个 generator 函数不是完全正确的，只是思路作为一个参考
+function generator(cb) {
+    return (function () {
+        var object = {
+            next: 0,
+            stop: function () {}
+        };
+
+        return {
+            next: function () {
+                var ret = cb(object);
+                if (ret === undefined) {
+                    return {
+                        value: undefined,
+                        done: true,
+                    };
+                }
+                return {
+                    value: ret,
+                    done: false,
+                };
+            }
+        }
+    })();
+}
+
+// babel 编译后的 test 函数
+function ctest() {
+    var a;
+    return generator(function (_context) {
+        while (1) {
+            switch ((_context.prev = _context.next)) {
+                case 0:
+                    a = 1 + 2;
+                    _context.next = 4;
+                    return 2;
+                case 4:
+                    _context.next = 6;
+                    return 3;
+                case 6:
+                case 'end':
+                    return _context.stop();
+            }
+        }
+    });
+}
+
+console.log('数组版..........');
+const iter = ctest();
+console.log(iter.next());// {value:2, done:false}
+console.log(iter.next());// {value:3, done:false}
+console.log(iter.next());// {value:undefined, done:true}
+
+/** 数组迭代器实现原理 **/
+function makeIterator(array){
+    var nextIndex = 0;
+    return {
+        next: function(){
+            return nextIndex < array.length ?
+                {value: array[nextIndex++], done: false} :
+                {done: true};
+        }
+    };
+}
+
+const it = makeIterator(['yo', 'ya']);
+console.log(it.next()); // {value:'yo', done:false}
+console.log(it.next()); // {value:'ya', done:false}
+console.log(it.next());  // {value:undefined, done:true}
+</script>
+</body>
+</html>
