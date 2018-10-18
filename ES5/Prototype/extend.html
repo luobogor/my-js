@@ -11,7 +11,8 @@
     {
         console.log('原型链');
 
-        //缺点：构造子类实例时，不能给基类构造函数传参
+        //缺点：1.构造子类实例时，不能给基类构造函数传参
+        //     2.没有获取父类实例对象属性的副本
         function Parent() {
             this.name = "Mark";
         }
@@ -38,21 +39,26 @@
     }
 
     {
-        console.log('借用构造函数，缺点是父类数据不能共享，每个子类实例都有一个父类实例副本');
+        console.log('借用构造函数，缺点是父类数据不能共享，每个子类实例都有一个父类实例副本，而且不能继承父类链上的方法');
 
         function Parent() {
             this.name = 'Mark';
             this.colors = ["red", "blue", "yellow"];
         }
-
-        function Child() {
-            Parent.call(this);
+        Parent.prototype.getColors = function () {
+            return this.colors;
         }
 
-        var ins = new Child();
+        function Child(tall) {
+            Parent.call(this);
+            this.tall = tall;
+        }
+
+        var ins = new Child(187);
         console.log(ins.name);//'Mark'
         console.log(ins instanceof Child)//true
         console.log(ins instanceof Parent)//false
+        // console.log(ins.getColors())// ins.getColors is not a function
     }
 
 
@@ -97,9 +103,7 @@
 
         //Object.create的原理
         function object(o) {
-            function F() {
-            }
-
+            function F() {}
             F.prototype = o;
             return new F();
         }
@@ -142,9 +146,7 @@
         }
 
         function object(o) {
-            function F() {
-            }
-
+            function F() {}
             F.prototype = o;
             return new F();
         }

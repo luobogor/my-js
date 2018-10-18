@@ -6,33 +6,31 @@
 </head>
 <body>
 <script>
-
     function isPlainObject(obj) {
         return Object.prototype.toString.call(obj) === '[object Object]';
     }
-
+    // 性能最好、最简单的方案是使用 JSON.stringify，不过 JSON.stringify 方案不能处理函数与 undefined的情况。以下方案可以
+    // 注意: JSON.stringify 与以下方案都不能处理循环引用的情况
+    // 详细解决方案 https://segmentfault.com/a/1190000015042902
     function clone(obj, deep) {
-        let newObj;
+        let initObj;
         if (isPlainObject(obj)) {
-            newObj = {};
+            initObj = {};
         } else if (Array.isArray(obj)) {
-            newObj = [];
+            initObj = [];
         } else {
             return;
         }
 
-        for (let key in obj) {
-            let value = obj[key];
+        return Object.entries(obj).reduce((newObj, [key, value]) => {
             if (deep && (isPlainObject(value) || Array.isArray(value))) {
                 newObj[key] = clone(value, deep);
-            } else if (value !== undefined) {
+            } else {
                 newObj[key] = value;
             }
-        }
-
-        return newObj;
+            return newObj;
+        },initObj);
     }
-
 
     function extend(target, source, deep) {
         for (let key in source) {

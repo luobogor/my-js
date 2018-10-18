@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>generator问题</title>
+</head>
+<body>
+<script>
+// https://yuchengkai.cn/docs/zh/frontend/#async-%E5%92%8C-await
+var a = 0
+var b = async () => {
+    // 先执行等号右边部分的代码，所以 a=0 的状态被保存下来
+    a = a + await 10
+    console.log('2', a) // -> '2' 10
+    a = (await 10) + a
+    console.log('3', a) // -> '3' 20
+}
+b()
+a++
+console.log('1', a) // -> '1' 1
+
+setTimeout(() => {
+    console.log(a);
+}, 2000);
+</script>
+</body>
+</html>

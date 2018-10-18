@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div id="testDiv"></div>
+<script>
+const dom = document.getElementById('testDiv');
+const eve = new Event('test');
+dom.addEventListener('test', () => {
+    console.log('accept');
+});
+
+setTimeout(() => {
+    dom.dispatchEvent(eve);
+}, 1000);
+
+const eve2 = new CustomEvent('myCustomEvent', {
+    detail: 'hello',//自定义属性
+});
+
+
+dom.addEventListener('myCustomEvent', (e) => {
+    console.log(e.detail); // hello
+});
+setTimeout(() => {
+    dom.dispatchEvent(eve2);
+}, 2000);
+</script>
+</body>
+</html>
