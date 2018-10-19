@@ -17,7 +17,8 @@
 </body>
 <script>
     window.onload=function(){
-        window.frames[0].postMessage('我是来自source的消息','http://localhost:3000/index.html');
+        const otherWindow = window.frames[0];
+        otherWindow.postMessage('我是来自source的消息','http://localhost:3000/index.html');
     }
 </script>
 </html>

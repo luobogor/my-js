@@ -2,7 +2,7 @@
  - 源
  > 协+域名(域名 = 子域名+ 主域名)+端口
 -  同源策略简单来说就是一个源跟另一个源通信会受到以下限制
-   - Cookie、LocalStrong、IndexDB??无法读取 
+   - Cookie、LocalStrong、IndexDB无法读取 
    - DOM无法获得
    - AJAX请求不能发送
 
@@ -26,9 +26,9 @@
        
 - iframe跨域
 
-	1. Hash 
+   1. Hash 
    1. postMessage
-   2. websock
+   1. websock
 
 CORS原理
 
