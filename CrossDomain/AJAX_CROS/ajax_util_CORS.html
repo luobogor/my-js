@@ -38,14 +38,12 @@
             var opt = {
                 type: 'GET',//默认为get请求
                 data: {},
-                success: function () {
-                },
-                error: function () {
-                }
+                success: function () {},
+                error: function () {}
             };
 
             util.extend(opt, options);
-            opt.type = opt.type.toUpperCase();//HTTP请求方法大小写敏感，但是
+            opt.type = opt.type.toUpperCase();// HTTP请求方法大小写敏
 
             if (opt.url) {
                 //*******************xhr.readyState状态
@@ -105,7 +103,6 @@
                     xhr.open(type, url.replace(/\?$/g, ''), true);
                     console.log('OPENED:', 'readyStatuds' + xhr.readyState, 'status:' + xhr.status);
                     xhr.send();
-                    // debugger;
                     console.log('SEND:', 'readyStatuds' + xhr.readyState, 'status:' + xhr.status);
                 }
 
@@ -113,7 +110,6 @@
                     xhr.open(type, url, true);
                     xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");//表单类型数据
                     //xhr.setRequestHeader('Content-type', 'application/json');发送json格式数据
-                    //xhr.setRequestHeader('Content-type', 'application/json');发送文件数据
                     xhr.send(dataArr.join('&'));
 //                    xhr.send(JSON.stringify(opt.data));
                 }

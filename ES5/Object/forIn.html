@@ -61,18 +61,19 @@
         var o = {x:1,y:2,z:3}
         console.log(o.propertyIsEnumerable("toString"))
         for(p in o)
-            console.log(p)    
+            console.log(p)
     }
 //    test2()
-    
-    
+
+
     //给Object.prototype添加了新的方法或属性，这些方法可以被所有对象继承并使用。
     //然而在ES5之前，这些新添加的方法是不能定义为不可枚举的，因此它们都可以在for/in循环中枚举出来。可以用hasOwnProperty过滤掉这些属性
+    // ES6 新 API Object.keys 相当于以下代码
     function test() {
         var o = {x:1,y:2,z:3}
         for(p in o)
             if(o.hasOwnProperty(p)) continue
-            
+
     }
 
 

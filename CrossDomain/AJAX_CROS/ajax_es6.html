@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AJAX</title>
+</head>
+<body>
+<script>
+function mapObjToParams(obj) {
+    return Object.entries(obj).map(([key, val]) => `${key}=${val}`).join('&');
+}
+
+function http(options) {
+    const opt = {
+        type: 'GET',
+        data: {},
+        success() {},
+        error() {},
+    };
+
+    Object.assign(opt, options);
+    opt.type = opt.type.toUpperCase();
+
+    const xhr = XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
+
+    const typeHandler = {
+        GET() {
+            xhr.open(opt.type, `${opt.url}?${mapObjToParams(opt.data)}`);
+            xhr.send()
+        },
+        POST() {
+            xhr.open(opt.type, opt.url, true);
+            xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+            xhr.send(mapObjToParams(opt.data))
+        }
+    };
+
+    if (typeHandler[opt.type]) {
+        typeHandler[opt.type]();
+    } else {
+        return;
+    }
+
+    xhr.onload = function xhrOnload() {
+        const res = xhr.responseText;
+        if (xhr.status === 200 || xhr.status === 304) {
+            if (opt.success && opt.success instanceof Function) {
+                opt.success.call(xhr, JSON.parse(res));
+            }
+        } else if (opt.error && opt.error instanceof Function) {
+            opt.error.call(xhr, res);
+        }
+    };
+}
+
+http({
+    type: 'POST',
+    url: 'http://www.hello.com',
+    data: {
+        email: "hello@bbq.com",
+        password: "123456",
+    },
+    success(res) {
+        console.log('success:', res);
+    },
+    error(err) {
+        console.log('err:', err);
+    }
+});
+</script>
+</body>
+</html>
