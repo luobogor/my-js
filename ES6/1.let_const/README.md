@@ -11,15 +11,30 @@ for循环中使用let声明，每次迭代循环都会创建一个新变量，�
 var funcs = []
 //每次循环的时候let声明都会创建一个新变量i，并将其初始化为i的当前值，所以循环内部创建的每个函数都能得到属于它们自己的i的副本
 for(let i = 0; i < 10; i++){
-    funcs.push(function () {
-        console.log(i)
-    })
+	setTimeout( function timer() {
+		console.log( i );
+	}, i*1000 );
 }
 
-console.log('letFor')
-funcs.forEach(function (func) {
-    func()//输出0到9，不会出现一直输出10的问题
-})
+// 相当于 *************
+{ // 形成块级作用域
+  let i = 0
+  {
+    let ii = i
+    setTimeout( function timer() {
+        console.log( i );
+    }, i*1000 );
+  }
+  i++
+  {
+    let ii = i
+  }
+  i++
+  {
+    let ii = i
+  }
+  ...
+}
 ````
 for~in循环与for循环表现的行为一致。每次循环创建一个新的key绑定，因此每个函数都有一个变量key的副本，于是每个函数都输出不同的值。
 

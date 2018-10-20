@@ -27,13 +27,14 @@
             Promise.resolve().then(() => {
                 resolve(1);//因为外部已经调用了then()，所以外部Promise回调先加入Microtasks
                 Promise.resolve().then(() => console.log(2));//内部Promise回调第二加入Microtasks
+                // resolve(1); 如果放这个地方则打印 3 2 1，resolve、then都调用了Promise回调才会加入Microtasks
             });
         }).then(t => console.log(t));
         console.log(3);
         //3 1 2
     }
 
-    //    q2();
+       q2();
 
     function q3() {
         const button = document.querySelector('button');
@@ -55,7 +56,7 @@
         //结果 Listener 1、Microtask 1、Listener 2、Microtask 2
     }
 
-    q3();
+    // q3();
 
     function q4() {
         const link = document.querySelector('a');
@@ -64,15 +65,17 @@
         });
 
         nextClick.then(event => {
+            console.log('prevent');
             event.preventDefault();
         });
 
         link.click();
-        //页面会发生跳转
-        //link.click()是同步执行的，会完成事件（跳转）后再检查Microtask执行event.preventDefault()，已经错过了阻止默认行为的时机
+        // 页面会发生跳转
+        // link.click()是同步执行的，会完成事件（跳转）后再检查Microtask执行event.preventDefault()，已经错过了阻止默认行为的时机
+        // 如果是用户点击则不会发生跳转
     }
 
-    q4();
+    // q4();
 
 
     function q5() {
@@ -114,6 +117,10 @@
 
 //        分析
 //        调用async1时，async1内部第一次执行next后，取得的是执行async2后返回的Promise对象，接着在注册这个promise对象的resolve状态回调函数，在该回调函数中执行下一次next
+//        await async2() 相当于 await new Promise(resolve => {
+//                                                  console.log('async2');
+//                                                  resolve();
+//                                              })
 //        所以会连续打印async1 start，async2
     }
 </script>

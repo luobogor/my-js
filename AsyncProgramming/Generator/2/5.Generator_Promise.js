@@ -1,6 +1,7 @@
-let fs = require("fs");
-// async、await实现原理
+// async、await实现原理 ***************
 // Define a function to use with the task runner
+
+let fs = require("fs");
 
 function readFilePromise(filename) {
     return new Promise(function (resolve, reject) {

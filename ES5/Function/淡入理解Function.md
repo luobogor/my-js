@@ -4,7 +4,7 @@
 函数名 | 有函数名 | 函数名可有可无
 代码位置| 全局环境或者在函数的函数体（FunctionBody）中 | 必须要在表达式的位置
 创建时期 | 预编译阶段创建 | 代码执行阶段创建
-是否会添加到变量对象 | 会添加到变量对象 | 不会添加到变量对象
+是否会添加到变量对象 | 会影响变量对象 | 不会影响变量对象
 代码形式 | | 
 
 前方高能，建议翻开你的 <\<JavaScript语言精粹>> 一边查看语法图，一边阅读下面内容
@@ -164,7 +164,7 @@ function foo(x) {
 ````
 
 ## NFE
-NFE即带函数名的函数表达式，在NFE前后是不能通过NFE的名字来调用NFR的，NFE的好处是可以通过名字自递归又不影响VO(文章开头有提及FE不会影响VO)
+NFE 即带函数名的函数表达式，在NFE前后是不能通过NFE的名字来调用NFE的，NFE的好处是可以通过名字自递归又不影响VO(文章开头有提及FE不会影响VO)
 
 ````
 (function foo(bar) {
@@ -175,22 +175,37 @@ NFE即带函数名的函数表达式，在NFE前后是不能通过NFE的名字�
  
   foo(true); // "foo" name is available
 })();
+
+// but from the outside, correctly, is not
+ 
+foo(); // "foo" is not defined
 ````
 ### NFE的储存位置
 以上面的例子的foo函数为例，分析NFE创建过程
 
-1. 当解释器在执行代码阶段检测到NFE，它会在创建FE之前，创建一个辅助型的特殊对象，并把它添加到当前的作用域链(Scope)最前端，然后再创建FE
+1. 当解释器在执行代码阶段检测到NFE，它会在创建FE之前，创建一个辅助型的特殊对象，并把它添加到当前的作用域链(Scope)最前端，特殊对象中唯一的属性 —— FE的名字添加到了该对象中；其值就是对FE的引用。但是这个值又是只读的，所以对它的赋值并不生效
 
 	````
 	specialObject = {};
 	currentFunctionContext.Scope = specialObject + currentFunctionContext.Scope;
 	````
+	
+	````
+	var foo = 1;
+(function foo() {
+    foo = 10
+    console.log(foo)
+}()) // 打印 ƒ foo() { foo = 10 ; console.log(foo) }
+	````
+	
+	
 2. 在这个时候FE有了[[Scope]]属性，也就是当FE的外部函数所在上下文的作用域链(Scope)，也就是说FE.[[Scope]]有了那个特殊对象
 
 	````
 	foo = FunctionExpression;
 	foo.[[Scope]] = currentFunctionContext.Scope;
 	````
+	
 3. 之后，FE的名字添加到了特殊对象中，FE的名字是特殊对象的唯一属性，其值就是对FE的引用
 
 	````
