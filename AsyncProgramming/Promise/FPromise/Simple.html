@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Simple Promise</title>
+</head>
+<body>
+<script>
+'use strict';
+
+function FPromise(fn) {
+    const states = {
+        PENDING: 'pending',
+        FULFILLED: 'fulfilled',
+        REJECTED: 'rejected',
+    };
+    let state = states.PENDING;
+    let value = null;
+    let tasks = [];
+
+    this.then = function (onFulfilled, onRejected) {
+        tasks.push({ onFulfilled, onRejected });
+        return this;
+    };
+
+    function resolve(newValue) {
+        value = newValue;
+        state = states.FULFILLED;
+        setTimeout(() => {
+            tasks.forEach(({ onFulfilled, onRejected }) => {
+                try {
+                    value = onFulfilled(value);
+                } catch (e) {
+                    value = onRejected(e);
+                }
+            });
+        }, 0);
+    }
+
+    function reject(error) {
+        state = states.REJECTED;
+        setTimeout(() => {
+            const task = tasks.find(task => task.onRejected);
+            if (task) {
+                task.onRejected(error);
+            } else {
+                throw error;
+            }
+        }, 0);
+    }
+
+    fn(resolve, reject);
+}
+
+const promise = new FPromise((resolve, reject) => {
+    console.log('1');
+    // setTimeout(() => {
+    //     resolve(2);
+    // }, 2000);
+    reject(new Error('bbq'));
+}).then((res) => {
+    console.log(res);
+    return 4;
+}).then(res => {
+    console.log(res);
+}).then(res => {
+    console.log(res);
+}, err => {
+    console.log(err);
+});
+console.log(3);
+console.log(promise);
+</script>
+</body>
+</html>
