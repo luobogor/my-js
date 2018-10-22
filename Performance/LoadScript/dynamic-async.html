@@ -23,7 +23,7 @@
 </body>
 <script>
     //对于支持async属性的浏览器，动态插入的外链脚本, 相当于默认具有async=true,控制台可以看到underscore是最后执行；
-    //如果需要让动态插入的脚本按插入顺序执行，可以显式设置 async = false;(见dynamic2.html)
+    //如果需要让动态插入的脚本按插入顺序执行，可以显式设置 async = false;(见 dynamic-defer)
     var dynamic1 = document.createElement('script');
     dynamic1.src = "TestScript/script1.js";
 

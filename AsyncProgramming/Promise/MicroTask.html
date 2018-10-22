@@ -34,7 +34,7 @@
         //3 1 2
     }
 
-       q2();
+    // q2();
 
     function q3() {
         const button = document.querySelector('button');
@@ -123,6 +123,19 @@
 //                                              })
 //        所以会连续打印async1 start，async2
     }
+
+    function q6() {
+        new Promise(r=>{
+            r();
+        }).then(()=>{
+            Promise.resolve().then(()=> {console.log(2)});
+            return 3;
+        }).then(res=>{
+            console.log(res);
+        });
+        console.log(0);
+    }
+    // q6();// 0 2 3
 </script>
 </body>
 </html>
