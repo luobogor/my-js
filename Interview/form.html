@@ -5,20 +5,34 @@
     <title>提交表单验证</title>
 </head>
 <body>
+
+<!--method 默认为 GET-->
+<!--action 默认为当前url-->
 <form name="myform" onsubmit="javascript:return checkSubmit()">
     <input type="text" name="name">
     <button type="submit">提交</button>
 </form>
+
+<!--<form name="myform2">-->
+    <!--<input type="text" name="name">-->
+    <!--<button type="submit">提交</button>-->
+<!--</form>-->
 </body>
 <script>
-    function checkSubmit() {
-        if (document.myform.name.value === "") {
-            alert('姓名必须填写');
-            document.myform.name.focus();
-            return false;
-        }
-        return true;
+// DOM0 方案
+function checkSubmit() {
+    if (document.myform.name.value === "") {
+        alert('姓名必须填写');
+        document.myform.name.focus();
+        return false;
     }
+    return true;
+}
 
+// DOM2 方案
+// const myform2 = document.myform2;
+// myform2.addEventListener('submit', () => {
+//     myform2.submit();
+// });
 </script>
 </html>
