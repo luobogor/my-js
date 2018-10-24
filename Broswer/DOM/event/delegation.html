@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>delegation</title>
+    <style>
+        span {
+            height: 50px;
+            width: 50px;
+            background: lightcoral;
+            display: inline-block;
+            margin: 10px;
+            cursor:pointer;
+        }
+    </style>
+</head>
+<body>
+<ul id="list">
+    <li><span>1</span></li>
+    <li><span>2</span></li>
+    <li><span>3</span></li>
+    <li><span>4</span></li>
+</ul>
+</body>
+<script>
+var ul = document.querySelector('#list')
+list.addEventListener('click', function (e) {
+    let li = e.target
+    //从target（点击）元素向上找currentTarget（监听）元素，找到了想委托的元素就触发事件，没找到就返回null
+    while (li.nodeName !== 'LI') {
+        li = li.parentNode
+        if (li === ul) {
+            li = null
+            break;
+        }
+    }
+    if (li) {
+        console.log('你点击了ul里的li')
+    }
+
+    // 有 BUG ，但简便的方式
+    // if(e.target.nodeName === 'LI'){
+    //     console.log('当前元素事件触发成功')
+    // }
+});
+</script>
+</html>
