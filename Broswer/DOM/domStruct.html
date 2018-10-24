@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>DOM结构操作</title>
+    <title>DOM操作</title>
 </head>
 <body>
 <div id="test">Hello
@@ -14,6 +14,7 @@
 <script>
     //***新增节点,createElement,appendChild
     var div1 = document.getElementById('test');
+    debugger
     var p1 = document.createElement('p');
     p1.innerHTML = "hahahahaha";
     div1.appendChild(p1);
@@ -37,7 +38,7 @@
     //方法1 dom.removeChild
 //    div1.removeChild(childs[0]);
 
-    //方法2 dom.remove
+    //方法2 dom.remove DOM4新方法
     //    childs[0].remove();
 
     //outerHTML可以连同标签一起获取
@@ -48,7 +49,7 @@
 </script>
 
 
-<!--//用nextSibling模拟insertAfter-->
+<!--用nextSibling模拟insertAfter-->
 <!--<div id="parentElement">-->
     <!--<span id="childElement">foo bar</span>-->
 <!--</div>-->
@@ -68,4 +69,4 @@
     <!--// Insert the new element into the DOM before sp2-->
     <!--parentDiv.insertBefore(sp1, sp2.nextSibling);-->
 <!--</script>-->
-</html>
+<!--</html>-->
