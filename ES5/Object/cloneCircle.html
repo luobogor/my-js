@@ -2,30 +2,102 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>深克隆考虑环</title>
+    <title>cloneCircle</title>
 </head>
 <body>
 <script>
-function cloneDeep(obj) {
-    const newObj = {};
-    const srcQueue = [obj];
-    const copyQueue = [newObj];
-    const srcVisited = new Map();
-    const copyVisited = new Map();
+function isPlainObj(obj) {
+    return Object.prototype.toString.call(obj) === '[object Object]';
+}
 
-    while (srcQueue.length > 0) {
-        const currentSrcElement = srcQueue.shift();
-        const currentCopyElement = copyQueue.shift();
-        srcVisited.set(currentSrcElement, true);
-        copyVisited.set(currentCopyElement, true);
-
-        Object.keys(currentSrcElement).forEach(key => {
-            if (typeof currentCopyElement[key] !== 'object') {
-
-            }
-        });
+function getInitObj(obj) {
+    if (isPlainObj(obj)) {
+        return {};
+    } else if (Array.isArray(obj)) {
+        return [];
     }
 }
+
+function cloneDeep(obj) {
+    // 核心思想，对象提前初始化
+    const newObj = getInitObj(obj);
+    if (!newObj) {
+        return;
+    }
+    const srcValQueue = [obj];
+    const copyValQueue = [newObj];
+    const srcVisitedQueue = [];
+    const copyVisitedQueue = [];
+
+    while (srcValQueue.length) {
+        const currentSrcEle = srcValQueue.shift();
+        const currentCopyEle = copyValQueue.shift();
+        srcVisitedQueue.push(currentSrcEle);
+        copyVisitedQueue.push(currentCopyEle);
+
+        Object.keys(currentSrcEle).forEach(key => {
+            // 值情况
+            if (typeof currentSrcEle[key] !== 'object') {
+                currentCopyEle[key] = currentSrcEle[key];
+                return;
+            }
+            // 环的情况
+            const idx = srcVisitedQueue.indexOf(currentSrcEle[key]);
+            if (idx > -1) {
+                currentCopyEle[key] = copyVisitedQueue[idx];
+                return;
+            }
+            // 对象的情况
+            currentCopyEle[key] = getInitObj(currentSrcEle[key]);
+            srcValQueue.push(currentSrcEle[key]);
+            copyValQueue.push(currentCopyEle[key]);
+        });
+    }
+
+    return newObj;
+}
+
+
+console.log('non circle..............');
+const c1 = cloneDeep({
+    a: 1,
+    b: 2,
+    c: {
+        d: 3,
+        e: {
+            f: 4,
+            g: 5
+        }
+    },
+    h: {
+        i: 6,
+        j: 7
+    }
+});
+console.log(c1);
+
+
+console.log('circle..............');
+const a = {
+    a: 1,
+    b: 2,
+    c: {
+        d: 3,
+        e: {
+            f: 4,
+            g: 5
+        }
+    },
+};
+a.d = a;
+console.log(cloneDeep(a));
+
+console.log('出现数组的情况...........');
+console.log(cloneDeep({
+    a: [1, 2, 3],
+    b: 4,
+    c: { d: 11 },
+}));
 </script>
 </body>
 </html>
