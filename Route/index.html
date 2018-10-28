@@ -44,6 +44,7 @@
             }
         }
 
+        // 通过js pushstate，是不会触发 popstate 事件的
         window.onpopstate = function () {
             //判断当前路由
             let currentHash = window.location.hash.substr(1);
