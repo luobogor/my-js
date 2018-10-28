@@ -11,7 +11,11 @@
 
     {
         function bubbleSort(arr) {
-            for (let i = arr.length; i >= 0; i--) {
+            // 至少两个元素才会排序
+            if (!Array.isArray(arr) || arr.length < 2) {
+                return;
+            }
+            for (let i = arr.length; i >= 2; i--) {
                 for (let j = 1; j < i; j++) {
                     if (arr[j] < arr[j - 1]) {
                         [arr[j], arr[j - 1]] = [arr[j - 1], arr[j]];
@@ -26,10 +30,11 @@
     }
 
     {
-        console.log('selectSort')
+        console.log('selectSort');
         function selectionSort(arr) {
-            for (let i = 0; i < arr.length - 1; i++) {
-                for (let j = i + 1; j < arr.length; j++) {
+            const len = arr.length;
+            for (let i = 0; i < len - 1; i++) {
+                for (let j = i + 1; j < len; j++) {
                     if (arr[j] < arr[i]) {
                         [arr[j], arr[i]] = [arr[i], arr[j]];
                     }
@@ -46,11 +51,11 @@
         console.log('insertSort');
 
         function insertSort(arr) {
-            let j, el;
+            let el;
             for (let i = 1; i < arr.length; i++) {
                 //保存当前需要插入的元素
                 el = arr[i];
-                j = i;
+                let j = i;
 
                 //寻找合适的索引位置
                 //j-1 是 i 的前一位指针
@@ -66,7 +71,7 @@
         }
 
         const arr = [7, 5, 2, 4, 3, 9];
-        selectionSort(arr); //[2, 3, 4, 5, 7, 9]
+        insertSort(arr); //[2, 3, 4, 5, 7, 9]
         console.log(arr);
     }
 

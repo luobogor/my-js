@@ -6,13 +6,11 @@
 </head>
 <body>
 <script>
-    // 原理：实现共同的接口，比如下面的work接口
-
+    // 原理：装饰者对象和这所装饰的对象实现共同的接口，比如下面的work接口
     // 传统面向对象编程实现装饰器模式，主要使用“类”
     function traditionalOOPDecorator() {
         console.log('***traditionalOOPDecorator***');
-        var Developer = function () {
-        };
+        var Developer = function () {};
 
         Developer.prototype.work = function () {
             console.log('手撕代码');

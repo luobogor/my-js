@@ -5,26 +5,37 @@
     <title>defineProperties</title>
 </head>
 <body>
-value,writable,enumerable,configurable默认值全是false
+<p>value,writable,enumerable,configurable默认值全是false</p>
+<p>configurable 当且仅当该属性的 configurable 为 true 时，该属性描述符才能够被改变，同时该属性也能从对应的对象上被删除。默认为 false。</p>
 <script>
-    //    存取描述符
-    function getset() {
-        var vue = {}
-        Object.defineProperty(vue, "title", {
-            get: function () {
-                return 'helloworld'
-            },
-            set: function (value) {
-                console.log(value);
-            },
-            enumerable: false,
-            configurable: false
-        });
-        vue.title = 'BAT I AM COMING SOON';
-        console.log(vue.title);
-    }
+//  存取描述符
+function getset() {
+    const vue = {};
+    const ret = Object.defineProperty(vue, "title", {
+        get() {
+            return 'helloworld'
+        },
+        set(value) {
+            console.log(value);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    vue.title = 'BAT I AM COMING SOON';
+    console.log(vue.title);
+    console.log(ret === vue);
+}
 
-    getset();
+getset();
+
+// 属性描述符
+const obj = Object.defineProperty({}, "key", {
+    enumerable: false,
+    configurable: false,
+    writable: false,
+    value: "static"
+});
+console.log(obj);
 </script>
 </body>
 </html>
