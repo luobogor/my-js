@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+function getKey(key) {
+    return JSON.parse("{\"" + document.cookie.replace(/;\s+/gim, "\",\"").replace(/=/gim, "\":\"") + "\"}")[key];
+}
+
+//每隔1秒获取Cookie的内容
+setInterval(function () {
+    console.log(getKey("name"));
+}, 1000);
+</script>
+</body>
+</html>

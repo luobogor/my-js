@@ -182,35 +182,6 @@
 	    使阅读源代码的人对网站更容易将网站分块，便于阅读维护理解。
 
 
-
-- HTML5的离线储存怎么使用，工作原理能不能解释一下？
-
-		在用户没有与因特网连接时，可以正常访问站点或应用，在用户与因特网连接时，更新用户机器上的缓存文件。
-		原理：HTML5的离线存储是基于一个新建的.appcache文件的缓存机制(不是存储技术)，通过这个文件上的解析清单离线存储资源，这些资源就会像cookie一样被存储了下来。之后当网络在处于离线状态下时，浏览器会通过被离线存储的数据进行页面展示。
-
-
-		如何使用：
-		1、页面头部像下面一样加入一个manifest的属性；
-		2、在cache.manifest文件的编写离线存储的资源；
-			CACHE MANIFEST
-			#v0.11
-			CACHE:
-			js/app.js
-			css/style.css
-			NETWORK:
-			resourse/logo.png
-			FALLBACK:
-			/ /offline.html
-		3、在离线状态时，操作window.applicationCache进行需求实现。
-
-	详细的使用请参考：
-
-	[HTML5 离线缓存-manifest简介](http://yanhaijing.com/html/2014/12/28/html5-manifest/)
-
-	[有趣的HTML5：离线存储](http://segmentfault.com/a/1190000000732617)
-
-
-
 - 浏览器是怎么对HTML5的离线储存资源进行管理和加载的呢？
 
 		在线的情况下，浏览器发现html头部有manifest属性，它会请求manifest文件，如果是第一次访问app，那么浏览器就会根据manifest文件的内容下载相应的资源并且进行离线存储。如果已经访问过app并且资源已经离线存储了，那么浏览器就会使用离线的资源加载页面，然后浏览器会对比新的manifest文件与旧的manifest文件，如果文件没有发生改变，就不做任何操作，如果文件改变了，那么就会重新下载文件中的资源并进行离线存储。
@@ -232,15 +203,6 @@
         	sessionStorage  数据在当前浏览器窗口关闭后自动删除。
 			cookie          设置的cookie过期时间之前一直有效，即使窗口或浏览器关闭
 
-- iframe有那些缺点？
-
-		*iframe会阻塞主页面的Onload事件；
-		*搜索引擎的检索程序无法解读这种页面，不利于SEO;
-
-		*iframe和主页面共享连接池，而浏览器对相同域的连接有限制，所以会影响页面的并行加载。
-
-        使用iframe之前需要考虑这两个缺点。如果需要使用iframe，最好是通过javascript
-        动态给iframe添加src属性值，这样可以绕开以上两个问题。
 
 - Label的作用是什么？是怎么用的？
 

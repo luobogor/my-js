@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<input id="name"><input type="button" onclick="hello()" id="btnOK" value="发送">
+<script>
+function hello() {
+    var name = document.getElementById('name').value;
+    document.cookie = "name=" + name;
+}
+</script>
+</body>
+</html>
