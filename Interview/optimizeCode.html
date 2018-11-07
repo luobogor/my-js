@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>优化代码</title>
+</head>
+<body>
+<script>
+{
+    function F(){
+        var count = 0;
+        function g(){
+            var elem = document.querySelector("#elem");
+            elem.textContent = count++;
+            setTimeout(g, 1000);
+        }
+        g();
+    }
+    F()
+}
+
+{
+    // 闭包内定义变量，循环时重复创建，消耗大量内存（闭包内的变量常驻内存）。应该把变量提升到闭包外部
+    // 选择器querySelector可以换成getElementById，效率更高
+    function F(){
+        var elem;
+        var count = 0;
+        function g(){
+            elem = document.getElementById("elem");
+            elem.textContent = count++;
+            setTimeout(g, 1000);
+        }
+        g(count);
+    }
+    F()
+}
+</script>
+</body>
+</html>

@@ -8,7 +8,8 @@
 <button onclick="setStorage()">setStorage</button>
 <script>
 function setStorage() {
-    localStorage.setItem('hello', 123123);
+    localStorage.setItem('hello', Math.random());
+    sessionStorage.setItem('helloSSS', 124123);// sessionStorage 不能跨标签通讯
 }
 </script>
 </body>

@@ -2,7 +2,7 @@
  - 源
  > 协+域名(域名 = 子域名+ 主域名)+端口
 -  同源策略简单来说就是一个源跟另一个源通信会受到以下限制
-   - Cookie、LocalStrong、IndexDB无法读取 
+   - Cookie、localStorage、IndexDB无法读取 
    - DOM无法获得
    - AJAX请求不能发送
 
@@ -10,6 +10,8 @@
   - AJAX
   - WebSocket
   - CORS("跨域资源共享" Cross-origin resource sharing，可以看作是一个可跨域的AJAX,IE10+ support)
+ 
+ - localStorage/cookie在同一域名和端口下是不同页面是可以共享的，而不同页面无法共享sessionStorage的数据
  
 ### 跨域
 - 请求跨域

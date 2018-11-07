@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Test</title>
+</head>
+<body>
+<script>
+function split(separator) {
+    return function (str) {
+        return String.prototype.split.call(str, separator);
+    }
+}
+
+const word = split(' ');
+console.log(word('Hello World'));
+</script>
+</body>
+</html>

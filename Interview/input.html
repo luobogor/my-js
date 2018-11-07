@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Input 各种事件</title>
+</head>
+<body>
+<input type="text" id="input">
+</body>
+<script>
+const input = document.getElementById('input');
+// 输入时依次触发 keyup -> keypress -> input -> keydown
+input.addEventListener('keyup', (e) => {
+    console.log('keyup', e);
+});
+input.addEventListener('keypress', (e) => {
+    console.log('keypress', e);
+});
+input.addEventListener('input', (e) => {
+    console.log('input', e);
+});
+input.addEventListener('keydown', (e) => {
+    console.log('keydown', e);
+});
+
+// 焦点离开输入框时，如果内容发生变化先触发 change 后触发 blur
+input.addEventListener('blur', (e) => {
+    console.log('blur', e);
+});
+input.addEventListener('change', (e) => {
+    console.log('change', e);
+});
+</script>
+</html>
