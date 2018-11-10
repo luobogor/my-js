@@ -25,7 +25,7 @@ function http(options) {
 
     const typeHandler = {
         GET() {
-            xhr.open(opt.type, `${opt.url}?${mapObjToParams(opt.data)}`);
+            xhr.open(opt.type, `${opt.url}?${mapObjToParams(opt.data)}`, true);
             xhr.send()
         },
         POST() {

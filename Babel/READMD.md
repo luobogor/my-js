@@ -23,8 +23,6 @@ polyfill 即是在当前运行环境中用来复制（意指模拟性的复制�
 var _defineProperty2 = require('babel-runtime/helpers/defineProperty');
 ````
 
-
-
 ## babel-polyfill
 与babel-runtime作用一样，区别是，babel-polyfill需要引入到js文件，模拟ES6环境
 This polyfill is automatically loaded when using babel-node.
@@ -43,3 +41,11 @@ https://segmentfault.com/q/1010000005596587?from=singlemessage&isappinstalled=1
 ## presets env 2017年出的
 作用与babel-preset-latest(包含babel-preset-2015~2017)一样，但可以进行额外的环境配置，配置不同的环境，会针对环境输出不同的js语句 
 
+### babel-polyfill、babel-runtime、transform-runtime 的区别
+    - babel-polyfill 通过污染全局的方式新增 es6 新api
+    - babel-runtime 手动导入需要用到的模块，不污染全局，例如
+        ````
+        var _asyncToGenerator2 = require('babel-runtime/helpers/asyncToGenerator');
+        var _asyncToGenerator3 = _interopRequireDefault(_asyncToGenerator2);
+        ````
+    - transform-runtime ，babel 会使用 babel-runtime 转译代码，既能 polyfill 又不污染全局

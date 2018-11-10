@@ -39,5 +39,32 @@
         console.log(this);//{a:'hello'}
     }
     fn2.call({a: 'hello'});
+
+    const obj2 = {
+        fn1() {
+            console.log('obj2.fn',this);// obj2
+        },
+        fn2:()=> {
+            console.log('obj2.fn2', this);// window
+        }
+    };
+    obj2.fn1();
+    obj2.fn2();
+
+    class Foo{
+        constructor(x,y){
+            this.x = x;
+            this.y = y;
+        }
+        test(){
+            console.log('Foo.test', this); // foo
+            setTimeout(() => {
+                console.log('Foo.test.setTimeout', this);// foo
+            }, 0);
+        }
+    }
+
+    const foo = new Foo(1,4);
+    foo.test();
 </script>
 </html>

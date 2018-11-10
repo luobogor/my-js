@@ -6,3 +6,29 @@
 - a标签会自动预解析，但很多浏览器对于 HTTPS页面，a标签不会预解析，所以要加<meta http....>来强制开启预解析
 
 [缓存参考](https://yuchengkai.cn/docs/zh/frontend/performance.html#%E7%BD%91%E7%BB%9C%E7%9B%B8%E5%85%B3)
+
+
+### 分类
+- 网络相关
+    - DNS 预解析
+    - 浏览器缓存
+    - 资源预加载
+    - CDN
+    - 使用 HTTP2
+ 
+- 渲染过程
+    - 资源懒加载
+
+- 文件优化
+    - 资源压缩
+    - 图片使用雪碧图、webp
+    - 服务端开启文件压缩功能
+
+- webpack 打包优化
+    - 长缓存 
+    - 路由懒加载 
+    - treeShaking
+
+- 用户体验
+    - loading
+    - 感应热区
