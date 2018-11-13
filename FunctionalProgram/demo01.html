@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Curry</title>
+</head>
+<body>
+<script src="lodash.js"></script>
+<script>
+const curry = _.curry;
+
+const match = curry((what, s) => s.match(what));
+const filter = curry((f, arr) => arr.filter(f));
+const replace = curry((what, replacement, str) => str.replace(what, replacement));
+
+console.log(match(/lo/g, 'hello worlo')); //['lo','lo']
+
+const hasLetterR = match(/r/g); // x => x.match(/r/g)
+console.log(hasLetterR('hello world'));// ['r']
+
+console.log(filter(hasLetterR, ['rock and roll', 'smooth jazz']));
+
+const noVowels = replace(/[aeiou]/ig);
+const censored = noVowels('*');
+console.log(censored('Chocolate Rain'));
+
+const split = curry((separator, str) => str.split(separator));
+const words = split(' ');
+console.log(words('hello world'));//['hello','world']
+
+const filterQs = filter(x => x.match(/q/i));
+console.log(filterQs(['bbq', 'aaq', 'fbb'])); // ['bbq','aaq']
+
+const reduce = curry((fn, init, arr) => arr.reduce(fn, init));
+const keepHighest = (x, y) => (x >= y ? x : y);
+const max = reduce(keepHighest, -Infinity);
+console.log(max([4, 1, 100, 2, 6])); // 100
+
+const slice = curry((start, end, arr) => arr.slice(start, end));
+
+
+const from3to8 = slice(3, 8);
+console.log(from3to8([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]));
+
+const take = slice(0);
+const take3 = take(3);
+console.log(take3([1, 2, 3, 4, 5, 6, 7]));
+</script>
+</body>
+</html>
