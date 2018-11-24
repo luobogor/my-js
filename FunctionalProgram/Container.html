@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<script src="https://cdn.bootcss.com/ramda/0.25.0/ramda.min.js"></script>
+<script>
+class Maybe {
+    static of(x) {
+        return new Maybe(x);
+    }
+
+    constructor(x) {
+        this.$value = x;
+    }
+
+    get isNothing() {
+        return this.$value === null || this.$value === undefined;
+    }
+
+    map(fn) {
+        return this.isNothing ? this : Maybe.of(fn(this.$value));
+    }
+}
+
+const safeHead = xs => Maybe.of(xs[0]);
+// R.map 代理 Maybe.map
+const streetName = R.compose(R.map(R.prop('street')), safeHead, R.prop('address'));
+const res1 = streetName({
+    address: [{
+        street: 'Shady Ln.',
+        number: 4201,
+    }]
+});
+console.log(res1);
+
+/***************************/
+const withdraw = R.curry((amount, { balance }) =>
+    Maybe.of(balance > amount ? { balance: balance - amount } : null));
+
+const updateLedger = account => account;
+const remainingBalance = ({ balance }) => `Your balance is $${balance}`;
+const finishTransaction = R.compose(remainingBalance, updateLedger);
+
+const getTwenty = R.compose(R.map(finishTransaction), withdraw(20));
+
+const res2 = getTwenty({ balance: 200.00 });
+const res3 = getTwenty({ balance: 10.00 });
+console.log(res2);
+console.log(res3);
+
+/********释放容器里的值*******************/
+const maybe = R.curry((v, f, m) => {
+    if (m.isNothing) {
+        return v;
+    }
+    return f(m.$value);
+});
+const getTwenty2 = R.compose(maybe('You are broke!', finishTransaction), withdraw(20));
+const res4 = getTwenty2({ balance: 200.00 });
+const res5 = getTwenty2({ balance: 10.00 });
+console.log(res4);
+console.log(res5);
+</script>
+</body>
+</html>
