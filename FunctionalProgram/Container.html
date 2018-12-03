@@ -9,6 +9,7 @@
 </head>
 <body>
 <script src="https://cdn.bootcss.com/ramda/0.25.0/ramda.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
 <script>
 class Maybe {
     static of(x) {
@@ -66,6 +67,44 @@ const res4 = getTwenty2({ balance: 200.00 });
 const res5 = getTwenty2({ balance: 10.00 });
 console.log(res4);
 console.log(res5);
+/********错误处理*******************/
+class Either{
+    static of(x) {
+        return new Right(x);
+    }
+
+    constructor(x) {
+        this.$value = x;
+    }
+}
+
+class Left extends Either {
+    map(f) {
+        return this;
+    }
+}
+
+class Right extends Either {
+    map(f) {
+        return Either.of(f(this.$value));
+    }
+}
+
+const left = x => new Left(x);
+
+// getAge :: Date -> User -> Either(String, Number)
+const getAge = R.curry((now, user) => {
+    const birthDate = moment(user.birthDate, 'YYYY-MM-DD');
+    return birthDate.isValid()
+        ? Either.of(now.diff(birthDate, 'years'))
+        : left('Birth date could not be parsed');
+});
+
+console.log(getAge(moment(), { birthDate: '2005-12-12' }));
+// Right(12)
+
+console.log(getAge(moment(), { birthDate: 'July 4, 2001' }));
+// Left('Birth date could not be parsed')
 </script>
 </body>
 </html>
