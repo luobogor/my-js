@@ -11,8 +11,8 @@
 const dom = document.getElementById('testDiv');
 const dom2 = document.getElementById('testDiv2');
 const eve = new Event('test');
-dom.addEventListener('test', () => {
-    console.log('accept');
+dom.addEventListener('test', (e) => {
+    console.log('accept',e.type);// test
 });
 dom2.addEventListener('test', () => {
   // dom2 接收不到由 dom dispatch的event，因为他们是两个事件中心
