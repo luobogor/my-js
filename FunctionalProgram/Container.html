@@ -67,8 +67,9 @@ const res4 = getTwenty2({ balance: 200.00 });
 const res5 = getTwenty2({ balance: 10.00 });
 console.log(res4);
 console.log(res5);
+
 /********错误处理*******************/
-class Either{
+class Either {
     static of(x) {
         return new Right(x);
     }
@@ -104,7 +105,27 @@ console.log(getAge(moment(), { birthDate: '2005-12-12' }));
 // Right(12)
 
 console.log(getAge(moment(), { birthDate: 'July 4, 2001' }));
+
 // Left('Birth date could not be parsed')
+/********IO*******************/
+console.log('/******** IO *******************/');
+class IO {
+    static of(x) {
+        return new IO(() => x);
+    }
+
+    constructor(fn) {
+        this.$value = fn;
+    }
+
+    map(fn) {
+        return new IO(R.compose(fn, this.$value));
+    }
+}
+
+const ioWindow = new IO(() => window);
+console.log(ioWindow.map(win => win.innerWidth).$value());
+console.log(ioWindow.map(R.prop('location')).map(R.prop('href')).map(R.split('/')).$value());
 </script>
 </body>
 </html>

@@ -165,7 +165,7 @@
 
     function process(arr, left, right) {
         if (left < right) {
-            // 从 [left,right) 之间随机选一个数
+            // 从 [left,right] 之间随机选一个数
             const random = left + Math.floor(Math.random() * (right - left + 1));
             swap(arr, random, right);
             const mid = partition(arr, left, right);

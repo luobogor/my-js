@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>demo01</title>
+</head>
+<body>
+<template id="x-foo-from-template">
+    <style>
+        p {
+            color: orange;
+        }
+    </style>
+    <p>I'm in Shadow DOM.My markup was stamped from a &lt;template&gt;.</p>
+</template>
+
+<script>
+customElements.define('x-foo-from-template', class extends HTMLElement {
+    constructor() {
+        super(); // always call super() first in the constructor.
+        let shadowRoot = this.attachShadow({ mode: 'open' });
+        const t = document.querySelector('#x-foo-from-template');
+        const instance = t.content.cloneNode(true);
+        shadowRoot.appendChild(instance);
+    }
+});
+</script>
+</body>
+</html>
