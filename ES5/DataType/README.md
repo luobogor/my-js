@@ -62,8 +62,10 @@ null == undefined//true,因为js把null和undefined都转换成为false
 jquery源码中除了判断对象中某个属性是否存在时用==,其他所有地方都用===
 obj.a == null  =>  obj.a === null || ojb.a === undefined
 ````
+
 3. if语句
    - 0,NaN,'',"",null,undefined都是false
+
 4. 逻辑运算符
 
 ````
@@ -78,13 +80,13 @@ console.log(!!a);
 ## 问题
 1. JS中的内置构造函数(共9种)，Math，JSON是`内置对象`不是函数
    1. Object
-   2. Array
-   3. Boolean
-   4. Number
-   5. String 
-   6. Function
-   7. Date
-   8. RegExp
-   9. Error
+   1. Array
+   1. Boolean
+   1. Number
+   1. String 
+   1. Function
+   1. Date
+   1. RegExp
+   1. Error
 ![](https://ws4.sinaimg.cn/large/006tNc79gy1fmzt40h3ysj30hr051gm0.jpg)
 

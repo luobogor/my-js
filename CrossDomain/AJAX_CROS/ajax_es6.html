@@ -6,7 +6,7 @@
 </head>
 <body>
 <script>
-function mapObjToParams(obj) {
+function serialize(obj) {
     return Object.entries(obj).map(([key, val]) => `${key}=${val}`).join('&');
 }
 
@@ -25,13 +25,13 @@ function http(options) {
 
     const typeHandler = {
         GET() {
-            xhr.open(opt.type, `${opt.url}?${mapObjToParams(opt.data)}`, true);
-            xhr.send()
+            xhr.open(opt.type, `${opt.url}?${serialize(opt.data)}`, true);
+            xhr.send();
         },
         POST() {
             xhr.open(opt.type, opt.url, true);
             xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-            xhr.send(mapObjToParams(opt.data))
+            xhr.send(serialize(opt.data));
         }
     };
 
