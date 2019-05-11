@@ -10,7 +10,8 @@
 //    重要：快排、选择排序、希尔排序
 
 {
-    function bubbleSort(arr) {
+  console.log('bubbleSort,稳定');
+  function bubbleSort(arr) {
         // 至少两个元素才会排序
         if (!Array.isArray(arr) || arr.length < 2) {
             return;
@@ -30,7 +31,7 @@
 }
 
 {
-    console.log('selectSort');
+    console.log('selectSort,不稳定');
 
     function selectionSort(arr) {
         const len = arr.length;
@@ -140,7 +141,7 @@
 
 
 {
-    console.log('quickSort')
+    console.log('quickSort，不稳定')
 //     "快速排序"的思想很简单，整个排序过程只需要三步：
 //    （1）在数据集之中，选择一个元素作为"基准"（pivot）。
 //    （2）所有小于"基准"的元素，都移到"基准"的左边；所有大于"基准"的元素，都移到"基准"的右边。
@@ -155,7 +156,7 @@
         let pivotIdx = left - 1;
         let idx = left;
         while (idx <= right) {
-            if (arr[idx] <= arr[right]) {
+            if (arr[idx] < arr[right]) {
                 swap(arr, ++pivotIdx, idx);
             }
             idx++;
@@ -181,7 +182,7 @@
         process(arr, 0, arr.length - 1);
     }
 
-    const arr = [7, 5, 2, 4, 3, 9];
+    const arr = [7, 5, 2, 7, 4, 3, 9];
     quickSort(arr);
     console.log(arr);
 }

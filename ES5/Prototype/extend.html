@@ -136,7 +136,7 @@
 
         // 原型链
         Parent.prototype.sayName = function () {
-            console.log(this.name);
+            console.log('name:', this.name);
         };
 
         function Child(name, age) {
@@ -161,7 +161,7 @@
         inheritPrototype(Child, Parent);
 
         Child.prototype.sayAge = function () {
-            console.log(this.age);
+            console.log('age:', this.age);
         };
 
         var child = new Child("Mark", 20);
