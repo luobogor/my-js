@@ -34,6 +34,7 @@ list.addEventListener('click', function (e) {
     }
     li = li.parentNode
   }
+  // 或者使用 DOM4 的 ul.contains(li) 来判断包含关系
   if (li) {
     console.log('你点击了ul里的li', li);
   }
