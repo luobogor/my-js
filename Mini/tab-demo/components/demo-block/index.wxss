@@ -1,4 +1,4 @@
-@import '../../dist/common/index.wxss';
+@import '../../common/index.wxss';
 
 .demo-block__title {
   margin: 0;
