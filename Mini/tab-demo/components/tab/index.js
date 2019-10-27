@@ -1,15 +1,31 @@
+import behavior from "../../common/behavior";
+
 Component({
-  relation: {
-    name: 'tabs',
-    type: 'ancestor'
+  behaviors: [behavior],
+
+  relations: {
+    '../tabs/index' :{
+      type: 'ancestor'
+    },
   },
 
-  props: {
-    dot: Boolean,
-    info: null,
-    title: String,
-    disabled: Boolean,
-    titleStyle: String
+  properties: {
+    dot: {
+      type: Boolean,
+      value: false
+    },
+    title:  {
+      type: String,
+      value: ''
+    },
+    disabled: {
+      type: Boolean,
+      value: false
+    },
+    titleStyle: {
+      type: String,
+      value: ''
+    },
   },
 
 
@@ -30,7 +46,7 @@ Component({
   },
 
   observers: {
-    'title, disabled, dot, info, titleStyle'() {
+    'title, disabled, dot, titleStyle'() {
       this.update()
     }
   },

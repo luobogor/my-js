@@ -1,7 +1,7 @@
 {
   "navigationBarTitleText": "Tab 标签页",
   "usingComponents": {
-    "tab": "/components/tab/index",
-    "tabs": "/components/tabs/index"
+    "van-tab": "/components/tab/index",
+    "van-tabs": "/components/tabs/index"
   }
 }

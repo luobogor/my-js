@@ -1,5 +1,10 @@
 export default Behavior({
   methods: {
+    set(data) {
+      return new Promise((resolve) => {
+        this.setData(data, resolve)
+      })
+    },
     getRect(selector, all) {
       return new Promise(resolve => {
         wx.createSelectorQuery()
@@ -17,10 +22,10 @@ export default Behavior({
       });
     },
     nextTick(fn) {
-      return new Promise((r)=> {
+      return new Promise((r) => {
         setTimeout(() => {
           r()
-          if(fn){
+          if (fn) {
             fn()
           }
         }, 1000 / 30);

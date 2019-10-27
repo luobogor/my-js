@@ -1,18 +1,25 @@
-<!--<demo-block title="粘性布局">-->
-<!--  <van-tabs sticky>-->
-<!--    <van-tab-->
-<!--      wx:for="1234"-->
-<!--      wx:key="index"-->
-<!--      title="{{ '标签' + item }}"-->
-<!--    >-->
-<!--      <view class="content">-->
-<!--        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi aperiam at consequuntur et facilis fugit iure iusto magni nam nihil non obcaecati quo ratione sapiente sint sunt tempora tenetur, ut vel veritatis. Alias consequatur, debitis harum hic laboriosam maxime nam, omnis quaerat quod recusandae sed, sequi temporibus veniam! Accusamus inventore iste neque quae temporibus. Amet at, cupiditate deserunt dolores illum in iste, officiis perferendis, praesentium quo reiciendis veniam! Consectetur debitis dolores earum eos ipsam quod repellat similique! Aperiam blanditiis, consequatur cum doloremque eveniet expedita laboriosam odit possimus quos ullam! Amet aperiam beatae commodi corporis ea et, fuga libero modi nisi provident qui saepe similique voluptatum? Atque blanditiis, commodi consequatur cupiditate dolore error eum explicabo magni minus nam, obcaecati perspiciatis praesentium rem sed, sint sit tempore totam vel voluptas voluptate. Asperiores assumenda beatae delectus dolorum esse est harum natus quasi sed vitae! Id nam nobis perferendis quae repellendus sed suscipit voluptatibus! Ab consequuntur culpa, est expedita, harum mollitia quo ratione repudiandae sed soluta sunt veritatis, vero. A accusantium aliquam aliquid architecto cumque, deserunt dignissimos dolores dolorum enim esse eveniet facilis fuga illo minima molestiae nemo nisi obcaecati odio possimus qui quis rem repellendus rerum sequi, sunt voluptatem voluptates voluptatum. Enim, eum?-->
-<!--      </view>-->
-<!--    </van-tab>-->
-<!--  </van-tabs>
--->
-<!--</demo-block>-->
+<demo-block title="粘性布局">
+  <demo-block>
+    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Commodi debitis eligendi fugiat, ipsa necessitatibus quia reprehenderit sint. Accusamus adipisci commodi eligendi est explicabo incidunt minima odit pariatur, quod quos ratione reiciendis sint sit veritatis vitae. Accusamus accusantium animi atque cum deserunt, doloremque enim, eos illum magni officiis praesentium quasi quibusdam quo sed sint, unde velit veritatis. Adipisci at commodi cum dicta enim facilis fuga fugiat, harum id laborum, nam odit officiis porro quia quis veniam voluptate. Autem delectus deleniti deserunt dolorem dolores fuga, iure libero minus molestiae nulla optio quod reprehenderit repudiandae sint tempore vel vero. Dicta dolore hic totam.
+  </demo-block>
 
-<view>
-  1111
-</view>
+  <van-tabs sticky
+            offsetTop="{{ 50 }}">
+    <van-tab
+      wx:for="12345678"
+      wx:key="index"
+      title="{{ '标签' + item }}"
+    >
+      <view class="content">
+        {{ item }}
+        <view>
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit. A deserunt ea, ex fuga, inventore itaque magnam modi molestias nam neque optio placeat quam quas reprehenderit saepe tempora voluptatum. Illo non optio placeat veritatis. Aliquam atque beatae hic id illo iusto laudantium magni natus nemo perferendis quibusdam rerum vitae voluptate, voluptatibus.
+        </view>
+      </view>
+    </van-tab>
+  </van-tabs>
+
+  <demo-block>
+    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet cupiditate ex, facere id inventore maxime minus, qui quibusdam quidem quisquam recusandae repudiandae sed tempore veniam voluptatem? Atque deleniti distinctio ea facere impedit, inventore, ipsa minima nam nobis perspiciatis porro velit. Animi debitis dolore esse eum explicabo fugiat iste placeat quasi? Autem beatae blanditiis dignissimos dolores maiores molestiae, nam nostrum quidem! Accusamus adipisci animi aperiam dolore eligendi esse eveniet fuga harum impedit, iusto nesciunt nobis porro possimus quas recusandae sunt totam ullam. Ab accusamus aliquid aperiam at aut consequuntur corporis delectus deleniti eius esse expedita facilis illum inventore iure nam natus neque nisi numquam omnis possimus quae quia recusandae reiciendis repellat tempora unde veniam, veritatis vero vitae voluptatem. Autem cumque deleniti dolor esse ex, id labore molestiae, natus necessitatibus pariatur perspiciatis ratione. Accusantium, asperiores consequuntur deserunt eum expedita fuga hic id illo impedit in inventore labore molestias neque perferendis qui ratione reiciendis repudiandae, tempore voluptas voluptatibus. Consequuntur doloremque eligendi explicabo facilis fuga hic, inventore iure modi, nesciunt obcaecati omnis quibusdam quidem quod repellendus sequi suscipit ut! Adipisci dolore dolores eligendi fugit labore libero magni numquam odio possimus reprehenderit sequi, vel. Atque consectetur cupiditate dicta eaque fuga in maiores nesciunt repellat unde.
+  </demo-block>
+</demo-block>

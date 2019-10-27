@@ -5,11 +5,29 @@ Component({
 
   externalClasses: ['custom-class', 'nav-class', 'tab-class', 'tab-active-class', 'line-class'],
 
+  relations: {
+    '../tab/index': {
+      type: 'descendant',
+      linked(child) {
+        this.child.push(child);
+        // child.data 包含 props、data
+        this.updateTabs(this.data.tabs.concat(child.data));
+      },
+      unlinked(child) {
+        const index = this.child.indexOf(child);
+        const { tabs } = this.data;
+        tabs.splice(index, 1);
+        this.child.splice(index, 1);
+        this.updateTabs(tabs);
+      }
+    },
+  },
+
+
   properties: {
     color: String,
     sticky: Boolean,
     animated: Boolean,
-    swipeable: Boolean,
     lineWidth: {
       type: Number,
       value: -1
@@ -42,7 +60,7 @@ Component({
       type: Number,
       value: 4
     },
-    offsetTop: {
+    offsetTop: { // 当 offsetTop 大于某个值的时候布局会出现 BUG，这个属性 vant 暂时在文档中公开
       type: Number,
       value: 0
     }
@@ -320,6 +338,10 @@ Component({
         });
       }
     }
+  },
+
+  created() {
+    this.child = [];
   },
 
   attached() {
