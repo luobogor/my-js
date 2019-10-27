@@ -1,0 +1,13 @@
+<demo-block title="粘性布局">
+  <van-tabs sticky>
+    <van-tab
+      wx:for="1234"
+      wx:key="index"
+      title="{{ '标签' + item }}"
+    >
+      <view class="content">
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi aperiam at consequuntur et facilis fugit iure iusto magni nam nihil non obcaecati quo ratione sapiente sint sunt tempora tenetur, ut vel veritatis. Alias consequatur, debitis harum hic laboriosam maxime nam, omnis quaerat quod recusandae sed, sequi temporibus veniam! Accusamus inventore iste neque quae temporibus. Amet at, cupiditate deserunt dolores illum in iste, officiis perferendis, praesentium quo reiciendis veniam! Consectetur debitis dolores earum eos ipsam quod repellat similique! Aperiam blanditiis, consequatur cum doloremque eveniet expedita laboriosam odit possimus quos ullam! Amet aperiam beatae commodi corporis ea et, fuga libero modi nisi provident qui saepe similique voluptatum? Atque blanditiis, commodi consequatur cupiditate dolore error eum explicabo magni minus nam, obcaecati perspiciatis praesentium rem sed, sint sit tempore totam vel voluptas voluptate. Asperiores assumenda beatae delectus dolorum esse est harum natus quasi sed vitae! Id nam nobis perferendis quae repellendus sed suscipit voluptatibus! Ab consequuntur culpa, est expedita, harum mollitia quo ratione repudiandae sed soluta sunt veritatis, vero. A accusantium aliquam aliquid architecto cumque, deserunt dignissimos dolores dolorum enim esse eveniet facilis fuga illo minima molestiae nemo nisi obcaecati odio possimus qui quis rem repellendus rerum sequi, sunt voluptatem voluptates voluptatum. Enim, eum?
+      </view>
+    </van-tab>
+  </van-tabs>
+</demo-block>

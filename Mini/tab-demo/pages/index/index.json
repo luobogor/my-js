@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "Tab 标签页",
+  "usingComponents": {
+    "tab": "/components/tab/index",
+    "tabs": "/components/tabs/index"
+  }
+}

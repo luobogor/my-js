@@ -42,10 +42,15 @@ https://segmentfault.com/q/1010000005596587?from=singlemessage&isappinstalled=1
 作用与babel-preset-latest(包含babel-preset-2015~2017)一样，但可以进行额外的环境配置，配置不同的环境，会针对环境输出不同的js语句 
 
 ### babel-polyfill、babel-runtime、transform-runtime 的区别
-    - babel-polyfill 通过污染全局的方式新增 es6 新api
+    - babel-polyfill 通过污染全局的方式新增 es6 新api ，项目使用
     - babel-runtime 手动导入需要用到的模块，不污染全局，例如
         ````
         var _asyncToGenerator2 = require('babel-runtime/helpers/asyncToGenerator');
         var _asyncToGenerator3 = _interopRequireDefault(_asyncToGenerator2);
         ````
-    - transform-runtime ，babel 会使用 babel-runtime 转译代码，既能 polyfill 又不污染全局
+    - transform-runtime ，babel 会使用 babel-runtime 转译代码，既能 polyfill 又不污染全局，框架使用
+
+## 面试
+- babel-polyfill，仅作了解，重点区分 babel-polyfill 与 transform-runtime 的区别
+- presets env
+- 通过 target 字段  babel 可以配置输出浏览器要求
