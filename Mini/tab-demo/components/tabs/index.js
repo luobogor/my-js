@@ -1,4 +1,4 @@
-var behavior = require('../common/behavior')
+import behavior from '../../common/behavior'
 
 Component({
   behaviors: [behavior],

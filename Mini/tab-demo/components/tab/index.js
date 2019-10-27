@@ -30,7 +30,7 @@ Component({
   },
 
   observers: {
-    'title disabled dot info titleStyle'() {
+    'title, disabled, dot, info, titleStyle'() {
       this.update()
     }
   },
