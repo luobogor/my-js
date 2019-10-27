@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>web component</title>
+  <link rel="import" href="hello-world.html">
+  <style>
+  h1 {
+    color: lightseagreen;
+  }
+  </style>
+</head>
+<body>
+<h1>Web Component 演示</h1>
+<h2>全局样式与组件影响互不干扰</h2>
+<p>普通文本</p>
+<hello-world
+        id="hello"
+        data-color="red"
+        data-name="我是 hello"></hello-world>
+</body>
+<script>
+window.setTimeout(() => {
+  document.getElementById('hello').setAttribute('name','我是 world')
+}, 500)
+</script>
+</html>

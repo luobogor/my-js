@@ -1,0 +1,37 @@
+<script src="x-tag.js"></script>
+<template>
+  <style>
+    /*:host CSS伪类选择包含其内部使用的CSS的shadow DOM的根元素*/
+    :host {
+      font-weight: bold;
+    }
+    h2 {
+      color: lightcoral;
+    }
+  </style>
+  <h1>Hello World</h1>
+  <h2>Hello World2</h2>
+  <p>
+    加粗的 Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet architecto asperiores consectetur consequuntur earum explicabo non sint, sit. Animi delectus dolorem error est excepturi magnam numquam reiciendis repudiandae similique unde?
+  </p>
+</template>
+<script>
+(function (window, document) {
+  xtag.register('hello-world', {
+    lifecycle: {
+      created(){
+        console.log('hello world created')
+      },
+      attributeChanged() {
+        console.log('attributeChanged')
+        this.sayHello()
+      }
+    },
+    methods: {
+      sayHello() {
+        console.log()
+      }
+    }
+  })
+})(window, document)
+</script>
