@@ -2,22 +2,65 @@
   <div class="xr-editor">
     <!--按钮区-->
     <div class="nav">
-      <button @click="execCommand">加粗</button>
+      <button @click="execCommand('bold')">加粗</button>
+      <button @click="execCommand('insertUnorderedList')">无序列表</button>
+      <button @click="execCommand('insertHorizontalRule')">水平线</button>
+      <button @click="execCommand('formatBlock', '<p>')">段落</button>
+      <button @click="execCommand('undo')">后退</button>
+      <button @click="execCommand('redo')">前进</button>
+      <button @click="createLink">链接</button>
+      <button class="nav__img">插入图片
+        <!--这个 input 是隐藏的-->
+        <input type="file" accept="image/gif, image/jpeg, image/png" @change="insertImg">
+      </button>
+
     </div>
     <!--编辑区-->
-    <div class="editor" contenteditable="true"></div>
+    <div class="row">
+      <div class="editor" contenteditable="true" @input="print"></div>
+      <div class="content">{{ html }}</div>
+    </div>
   </div>
 </template>
 
 <script>
 export default {
   name: 'XrEditor',
+  data() {
+    return {
+      html: ''
+    };
+  },
   methods: {
-    execCommand() {
-      document.execCommand('bold', false, null);
-    }
+    execCommand(name, args = null) {
+      document.execCommand(name, false, args);
+    },
+    print() {
+      this.html = document.querySelector('.editor').innerHTML;
+    },
+    insertImg(e) {
+      let reader = new FileReader();
+      let file = e.target.files[0];
+      reader.onload = () => {
+        let base64Img = reader.result;
+        this.execCommand('insertImage', base64Img);
+        document.querySelector('.nav__img input').value = ''; // 解决同一张图片上传无效的问题
+      };
+      reader.readAsDataURL(file);
+    },
+    createLink() {
+      let url = window.prompt('请输入链接地址');
+      if (url) {
+        this.execCommand('createLink', url);
+      }
+    },
+  },
+  mounted() {
+    this.editor = document.querySelector('.editor');
+    this.editor.addEventListener('click', this.handleClick);
   }
-};
+}
+
 </script>
 <!--全部样式就这些，这里就都先给出来了-->
 <style lang="scss">
