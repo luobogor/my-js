@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>移动端 touch 事件</title>
+</head>
+
+<canvas id="canvas" width="960" height="1200" style="background: lightcoral;">
+  你的浏览器不支持 canvas 元素。
+</canvas>
+<script>
+const flag = {
+  direction: '', // 'horizontal' || 'vertical'
+  deltaX: 0, // 两个点 x 方向的差值
+  deltaY: 0,
+  offsetX: 0, // 两个点 x 方向的差值的绝对值
+  offsetY: 0,
+  startX: 0, // 记录 touchstart x 值
+  startY: 0,
+}
+const el = document.getElementsByTagName("canvas")[0];
+
+el.addEventListener("touchstart", (event) => {
+  // console.log('touchstart...', event)
+  const touch = event.touches[0]
+  flag.direction = ''
+  flag.deltaX = 0
+  flag.deltaY = 0
+  flag.offsetX = 0
+  flag.offsetY = 0
+  flag.startX = touch.clientX
+  flag.startY = touch.clientY
+});
+
+el.addEventListener("touchmove", (event) => {
+  // console.log('touchmove...', event)
+  const touch = event.touches[0]
+  flag.deltaX = touch.clientX - flag.startX
+  flag.deltaY = touch.clientY - flag.startY
+  flag.offsetX = Math.abs(flag.deltaX)
+  flag.offsetY = Math.abs(flag.deltaY)
+  flag.direction =
+    flag.offsetX > flag.offsetY ?
+      'horizontal' :
+      flag.offsetX < flag.offsetY ?
+        'vertical' :
+        ''
+});
+
+el.addEventListener("touchend", (event) => {
+  // console.log('touchend...', event)
+
+  const { direction, deltaX, offsetX } = flag
+  const minSwipeDistance = 50
+
+  if (direction === 'horizontal' && offsetX >= minSwipeDistance) {
+    if (deltaX > 0) {
+      console.log('手指右滑....')
+    } else if (deltaX < 0) {
+      console.log('手指左滑....')
+    }
+  }
+
+  if (direction === 'vertical') {
+    console.log('垂直方向上移动...')
+  }
+});
+</script>
+</html>
