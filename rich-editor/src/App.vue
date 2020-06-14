@@ -23,6 +23,8 @@
   </div>
 </template>
 
+<!--参考 https://juejin.im/post/5cfe4e8a6fb9a07ec63b09a4#heading-0-->
+
 <script>
 export default {
   name: 'XrEditor',
