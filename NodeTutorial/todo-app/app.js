@@ -20,18 +20,31 @@ app.use(express.static('./public'));
 
 const SESS_NAME = 'sid'
 
+// session-cookie 中文文档 https://juejin.im/post/5ca7c191f265da30ac21adae#heading-40
 app.use(session({
+  name: SESS_NAME,
+  // store: session 的存储方式，默认存放在内存中，也可以使用 redis，mongodb 等。express 生态中都有相应模块的支持。
+  // secret: 用计算 hash 值并放在 cookie 中，使产生的 signedCookie 防篡改。
   secret: `quiet, pal! it's a secret!`,
+  // resave saveUninitialized 解释 https://cnodejs.org/topic/55e1cb5a07b4d1cf3a80d6de
   resave: false,
   saveUninitialized: false,
-  name: SESS_NAME,
   cookie: {
-    // 1 小时过期
+    // 过期时间：1 小时过期
     maxAge: 60 * 60 * 1000,
-    sameSite: true,
+    // 浏览器无法通过 document.cookie 获取该 cookie，防止 XXS 攻击
+    httpOnly: true,
+    // https://www.ruanyifeng.com/blog/2019/09/cookie-samesite.html
+    sameSite: 'lax',
+    // sameSite: 'strict',
+    // sameSite: 'none',
+    // cookie 只通过https协议传输
     // secure: true
   }
 }))
+
+// 响应 cookie
+// Set-Cookie: sid=s%3A8glG0_zyZtqrCNG4b6NhahV7RFcp3dhh.C1VrlnVzbKcSYnrxQeqmEmgPgTJXteyfQ2g5AEFzXoQ; Path=/; Expires=Sun, 21 Jun 2020 05:14:57 GMT; HttpOnly; SameSite=Strict
 
 const users = [
   { id: 1, name: 'yejz', email: 'yejz@gmail.com', password: '123456' },
@@ -65,11 +78,21 @@ const redirectHome = (req, res, next) => {
   }
 }
 
+app.get('/img', (req, res) => {
+  if(req.session.userId) {
+    res.sendFile(`${__dirname}/cookie.png`)
+    return
+  }
+
+  // res.sendStatus(403);
+  res.sendStatus(500);
+  res.end();
+})
+
 app.get('/', redirectHome, (req, res) => {
   // console.log(req.session)
   const { userId } = req.session
   // console.log(req.session.id)
-
 
   res.send(`
   <div>
@@ -105,12 +128,12 @@ app.get('/login', redirectHome, (req, res) => {
       <input type="email" name="email" placeholder="Email" required />
       <input type="password" name="password" placeholder="Password" required />
       <input type="submit"/>
-    </form>  
+    </form>
   `)
 })
 
 app.post('/login', redirectHome, (req, res) => {
-  const { email, password } = req.body
+  const { email, password, redirect } = req.body
   if (email && password) {
     const user = users.find((user) => {
       return user.email === email && user.password === password;
@@ -118,7 +141,11 @@ app.post('/login', redirectHome, (req, res) => {
 
     if (user) {
       req.session.userId = user.id
-      return res.redirect('/home')
+
+      if(redirect !== '0') {
+        return res.redirect('/home')
+      }
+      res.send("ok")
     }
   }
 })

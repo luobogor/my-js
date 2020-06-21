@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Cross Cookie</title>
+</head>
+<body>
+<div>
+  跨站点 cookie
+</div>
+<a href="http://192.168.0.100:3900/login">test link</a>
+<img src='http://192.168.0.100:3900/img'>
+
+<button id='btn'>testLogin</button>
+</body>
+<script src="https://cdn.bootcdn.net/ajax/libs/js-cookie/2.2.1/js.cookie.min.js"></script>
+<script>
+// 相当于 document.cookie 转成对象
+const allCookie = Cookies.get()
+console.log('allCookie', allCookie)
+
+function sendSimpleXHR() {
+  const xhr = new XMLHttpRequest()
+  // 请求头带上 cookie
+  xhr.withCredentials = true;
+  xhr.open('GET', 'http://192.168.0.100:3900/profile')
+  xhr.send();
+  xhr.onload = function () {
+    const { status, responseText } = xhr
+  };
+}
+
+// sendSimpleXHR()
+
+const btn = document.getElementById("btn");
+btn.addEventListener("click", e => {
+  fetch("http://192.168.0.100:3900/login", {
+    method: "POST",
+    body: 'email=yejz%40gmail.com&password=123456&redirect=0',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    mode: 'no-cors',
+  })
+    .then(a => {
+      return a.text()
+    })
+    .then(()=> {
+      console.log('login success')
+    })
+    .catch((e)=> {
+      console.error('fetch error:', e)
+    })
+})
+
+
+
+
+// 可以设置
+// Cookies.set('name', 'value', {
+//   path: '/hello'
+// })
+// // 不可设置非本域的 cookie
+// Cookies.set('namebaba', '哈只融合哈1', { domain: '127.0.0.1' })
+
+
+// 如果想在客户端即网页中通过 js 去设置secure类型的 cookie，必须保证网页是https协议的。在http协议的网页中是无法设置secure类型cookie的。
+
+// TODO iframe 获取 cookie
+</script>
+</html>
