@@ -1,3 +1,21 @@
+## 同源策略
+限制不同源资源的交互，平衡可用性与安全性
+
+![](https://gitee.com/yejinzhan/images/raw/master/20210914232056.png)
+
+- 安全性
+  - 一个域名通过通过对另一个域名发起请求不能获得 cookie
+  - 一个域名通过 iframe 嵌套另一个域名，这个域名不能通过 DOM 的方式获取获取到 iframe 域名的的 cookie、localStorage、indexDB
+
+### 攻击方法
+- 通过标签发送 get 请求
+- 写一个很真的「假」网站骗用户提交表单
+
+### 预防方法
+- Referer
+- CSRF Token
+- 不要在 get 请求做写操作
+
 CORS (Cross-Origin Resource Sharing)
 
 CORS规范中请求头的Origin字段都是浏览器自动添加的，不需要人为设置。
@@ -23,8 +41,8 @@ public class CrossDomainFilter extends OncePerRequestFilter {
        //该字段可选，用来指定本次预检请求的有效期，单位为秒。上面结果中，有效期是20天（1728000秒）
        //即允许缓存该条回应1728000秒（即20天），在此期间，不用发出另一条预检请求。
        //response.addHeader("Access-Control-Max-Age", "60");
-       
-       
+
+
       /**
        * 处理 Preflight 情况下的额外返回数据:
        * Preflighted_requests 需要确认 Preflight 是有效的请求，而不是直接进行的OPTIONS操作.
@@ -32,10 +50,10 @@ public class CrossDomainFilter extends OncePerRequestFilter {
       //Access-Control-Allow-Methods字段必需，它的值是逗号分隔的一个字符串，表明服务器支持的所有跨域请求的方法。
       //注意,返回的是所有支持的方法，而不单是浏览器请求的那个方法。这是为了避免多次"预检"请求。
       response.addHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
-      
+
       //该字段是一个逗号分隔的字符串，指定浏览器CORS请求会额外发送的头信息字段
 	  response.addHeader("Access-Control-Allow-Headers", "X-Access-Token, Cookie,");
-    
+
     }
     if(request.getMethod().equals("OPTIONS")){
     	return ;
@@ -72,7 +90,7 @@ Access-Control-Request-Method: PUT<br>另外请求头第一行的方法是OPTION
 Access-Control-Request-Headers: X-Custom-Header | Access-Control-Allow-Headers: X-Custom-Header
 首次请求60内之内浏览器再发送请求就不需要预检 | Access-Control-Max-Age:60
 1. 预检:发送options请求向服务器端询问，当前**网页所在的域名**是否在服务器的许可名单之中，以及可以使用哪些**HTTP动词(GET,POST,PUT,DELETE等等)**和头信息字段(自定义头字段)
-> 
+>
 ````
 OPTIONS /cors HTTP/1.1
 Origin: http://www.example.com
