@@ -4,8 +4,8 @@
 
 - timers：执行 setTimeout、setInterval
 - I/O callbacks：执行除了 close 事件、定时器、setImmediate 外所有回调，比如 readFileAsync
-- idle, prepare: 内部使用？
-- poll 等待新的 I/O 事件
+- idle, prepare：仅系统内部使用。
+- poll 等待新的 I/O 事件，适当条件下 node 将阻塞在这里
 - check: 执行 setImmediate 回调
 - close：执行 socket.on('close') 这件事件回调
 

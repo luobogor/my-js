@@ -11,7 +11,6 @@ var james = new Person('james');
 var mary = new Person('mary');
 var nack = new Person('nack');
 
-
 [james, mary, nack].forEach(function (person) {
     person.on('say', function (msg) {
         console.log(person.name + ' say:' + msg);

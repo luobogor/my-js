@@ -1,4 +1,5 @@
 - node自定义事件
+
 ````
 //nodeJS内置模块events
 var events = require('events');
