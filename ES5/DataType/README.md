@@ -1,11 +1,12 @@
 ##数据类型
 - 引用类型：对象，数组，函数
 - 基本类型(值类型)：string、number、boolean、undefined、null(虽然undefined、null表现怪异但规范说明这两个是基本类型)、symbol
-###注意
+
+### 注意
 - 特殊的类型：undefined
 - 引用类型可以直接用.赋值，而值类型不可以。例如funA.fieldA = 'abc',arrA.fieldA='abc'
 
-## typeof运算符
+## typeof 运算符
 - 记住，一共有7种情况
 
 ````
@@ -45,13 +46,14 @@ toString -> valueOf -> 报错
 
 
 ### 隐式类型转换
-1. 字符串拼接
+1. 四则运算
 
 ````
 var a = 100 + 10;//10010
 var b = 100 + '10';//'10010'
 ````
-2. ==(双目)运算符
+
+2. 判断语句
 
 ````
 100 == '100'//true，因为js把第一个100转换成为'100'
@@ -62,9 +64,6 @@ null == undefined//true,因为js把null和undefined都转换成为false
 jquery源码中除了判断对象中某个属性是否存在时用==,其他所有地方都用===
 obj.a == null  =>  obj.a === null || ojb.a === undefined
 ````
-
-3. if语句
-   - 0,NaN,'',"",null,undefined都是false
 
 4. 逻辑运算符
 
@@ -83,7 +82,7 @@ console.log(!!a);
    1. Array
    1. Boolean
    1. Number
-   1. String 
+   1. String
    1. Function
    1. Date
    1. RegExp

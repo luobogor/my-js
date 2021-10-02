@@ -1,175 +1,178 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>JS各种继承方式</title>
+  <meta charset="UTF-8">
+  <title>JS各种继承方式</title>
 </head>
 <body>
 <script>
 
 
-    {
-        console.log('原型链');
+{
+  console.log('原型链');
 
-        //缺点：1.构造子类实例时，不能给基类构造函数传参
-        //     2.没有获取父类实例对象属性的副本
-        function Parent() {
-            this.name = "Mark";
-        }
+  //缺点：1.构造子类实例时，不能给基类构造函数传参
+  //     2.没有获取父类实例对象属性的副本
+  function Parent() {
+    this.name = "Mark";
+  }
 
-        Parent.prototype.sayName = function () {
-            console.log('name:', this.name);
-        };
+  Parent.prototype.sayName = function () {
+    console.log('name:', this.name);
+  };
 
-        function Child() {
-            this.age = 23;
-        }
+  function Child() {
+    this.age = 23;
+  }
 
-        Child.prototype = new Parent();
+  Child.prototype = new Parent();
 
-        Child.prototype.sayAge = function () {
-            console.log('age:', this.age);
-        };
+  Child.prototype.sayAge = function () {
+    console.log('age:', this.age);
+  };
 
-        var ins = new Child();
-        ins.sayAge();
-        ins.sayName();
-        console.log(ins instanceof Child)//true
-        console.log(ins instanceof Parent)//true
-    }
+  var ins = new Child();
+  ins.sayAge();
+  ins.sayName();
+  console.log(ins instanceof Child)//true
+  console.log(ins instanceof Parent)//true
+}
 
-    {
-        console.log('借用构造函数，缺点是父类数据不能共享，每个子类实例都有一个父类实例副本，而且不能继承父类链上的方法');
+{
+  console.log('借用构造函数，缺点是父类数据不能共享，每个子类实例都有一个父类实例副本，而且不能继承父类链上的方法');
 
-        function Parent() {
-            this.name = 'Mark';
-            this.colors = ["red", "blue", "yellow"];
-        }
-        Parent.prototype.getColors = function () {
-            return this.colors;
-        }
+  function Parent() {
+    this.name = 'Mark';
+    this.colors = ["red", "blue", "yellow"];
+  }
 
-        function Child(tall) {
-            Parent.call(this);
-            this.tall = tall;
-        }
+  Parent.prototype.getColors = function () {
+    return this.colors;
+  }
 
-        var ins = new Child(187);
-        console.log(ins.name);//'Mark'
-        console.log(ins instanceof Child)//true
-        console.log(ins instanceof Parent)//false
-        // console.log(ins.getColors())// ins.getColors is not a function
-    }
+  function Child(tall) {
+    Parent.call(this);
+    this.tall = tall;
+  }
 
-
-    {
-        console.log('组合继承，是指将原型链和借用构造函数的技术组合使用');
-
-        //组合继承避免了原型链和借用构造函数的缺陷，融合了它们的优点，成为了JS中最常用的继承模式
-        function Parent(name) {
-            this.name = name;
-            this.colors = ["red", "blue", "yellow"];
-        }
-
-        Parent.prototype.sayName = function () {
-            console.log('name:', this.name);
-        };
-
-        function Child(name, age) {
-            Parent.call(this, name);//继承属性
-            this.age = age;
-        }
-
-        Child.prototype = new Parent();//继承方法，但实例里name与colors两个多余属性浪费了内存空间
-        Child.prototype.constructor = Child;
-        Child.prototype.sayAge = function () {
-            console.log('age:', this.age);
-        };
-
-        var ins1 = new Child('helloGit', 12);
-        ins1.colors.push("black");
-        console.log(ins1.colors);
-        ins1.sayName();
-        ins1.sayAge();
-
-        var ins2 = new Child('helloWorld', 13);
-        ins2.colors.push("pink");//不会覆盖ins1的数据
-        console.log(ins1 instanceof Child)
-        console.log(ins1 instanceof Parent)
-    }
-
-    {
-        console.log('原型式继承，实质是上对传入的对象进行一次浅复制');
-
-        //Object.create的原理
-        function object(o) {
-            function F() {}
-            F.prototype = o;
-            return new F();
-        }
-
-        function Parent(name) {
-            this.name = name;
-            this.colors = ["red", "blue", "yellow"];
-        }
-
-        var parent = new Parent('Mark')
-        var child1 = object(parent);
-        child1.name = 'helloWorld';
-        child1.colors.push("black");
-        var child2 = object(parent);
-        child2.name = 'helloGit';
-        child2.colors.push("pink");
-
-        console.log(child1.colors === child2.colors)//true
-        console.log(child1 instanceof Parent)
-    }
+  var ins = new Child(187);
+  console.log(ins.name);//'Mark'
+  console.log(ins instanceof Child)//true
+  console.log(ins instanceof Parent)//false
+  // console.log(ins.getColors())// ins.getColors is not a function
+}
 
 
-    {
-        console.log('寄生组合式继承 = 寄生式继承 + 组合式继承 = 寄生式继承 + 原型链 + 借用构造函数');
+{
+  console.log('组合继承，是指将原型链和借用构造函数的技术组合使用');
 
-        function Parent(name) {
-            this.name = name;
-            this.colors = ["red", "blue", "yellow"];
-        }
+  //组合继承避免了原型链和借用构造函数的缺陷，融合了它们的优点，成为了JS中最常用的继承模式
+  function Parent(name) {
+    this.name = name;
+    this.colors = ["red", "blue", "yellow"];
+  }
 
-        // 原型链
-        Parent.prototype.sayName = function () {
-            console.log('name:', this.name);
-        };
+  Parent.prototype.sayName = function () {
+    console.log('name:', this.name);
+  };
 
-        function Child(name, age) {
-            // 借用构造函数
-            Parent.call(this, name);
-            this.age = age;
-        }
+  function Child(name, age) {
+    Parent.call(this, name);//继承属性
+    this.age = age;
+  }
 
-        function object(o) {
-            function F() {}
-            F.prototype = o;
-            return new F();
-        }
+  Child.prototype = new Parent();//继承方法，但实例里name与colors两个多余属性浪费了内存空间
+  Child.prototype.constructor = Child;
+  Child.prototype.sayAge = function () {
+    console.log('age:', this.age);
+  };
 
-        // 寄生式继承
-        function inheritPrototype(child, parent) {
-            var prototype = object(parent.prototype);//创建对象
-            prototype.constructor = child;//增强对象
-            child.prototype = prototype;//指定对象
-        }
+  var ins1 = new Child('helloGit', 12);
+  ins1.colors.push("black");
+  console.log(ins1.colors);
+  ins1.sayName();
+  ins1.sayAge();
 
-        inheritPrototype(Child, Parent);
+  var ins2 = new Child('helloWorld', 13);
+  ins2.colors.push("pink");//不会覆盖ins1的数据
+  console.log(ins1 instanceof Child)
+  console.log(ins1 instanceof Parent)
+}
 
-        Child.prototype.sayAge = function () {
-            console.log('age:', this.age);
-        };
+{
+  console.log('原型式继承，实质是上对传入的对象进行一次浅复制');
 
-        var child = new Child("Mark", 20);
-        console.log(child);
-        console.log(child.colors);
-        console.log(child.sayName());
-        console.log(child.sayAge());
-    }
+  //Object.create的原理
+  function object(o) {
+    function F() {}
+
+    F.prototype = o;
+    return new F();
+  }
+
+  function Parent(name) {
+    this.name = name;
+    this.colors = ["red", "blue", "yellow"];
+  }
+
+  var parent = new Parent('Mark')
+  var child1 = object(parent);
+  child1.name = 'helloWorld';
+  child1.colors.push("black");
+  var child2 = object(parent);
+  child2.name = 'helloGit';
+  child2.colors.push("pink");
+
+  console.log(child1.colors === child2.colors)//true
+  console.log(child1 instanceof Parent)
+}
+
+
+{
+  console.log('寄生组合式继承 = 寄生式继承 + 组合式继承 = 寄生式继承 + 原型链 + 借用构造函数');
+
+  function Parent(name) {
+    this.name = name;
+    this.colors = ["red", "blue", "yellow"];
+  }
+
+  // 原型链
+  Parent.prototype.sayName = function () {
+    console.log('name:', this.name);
+  };
+
+  function Child(name, age) {
+    // 借用构造函数
+    Parent.call(this, name);
+    this.age = age;
+  }
+
+  function object(o) {
+    function F() {}
+
+    F.prototype = o;
+    return new F();
+  }
+
+  // 寄生式继承
+  function inheritPrototype(child, parent) {
+    var prototype = object(parent.prototype);//创建对象
+    prototype.constructor = child;//增强对象
+    child.prototype = prototype;//指定对象
+  }
+
+  inheritPrototype(Child, Parent);
+
+  Child.prototype.sayAge = function () {
+    console.log('age:', this.age);
+  };
+
+  var child = new Child("Mark", 20);
+  console.log(child);
+  console.log(child.colors);
+  console.log(child.sayName());
+  console.log(child.sayAge());
+}
 </script>
 </body>
 </html>

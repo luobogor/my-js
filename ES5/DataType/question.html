@@ -1,32 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>显式类型转换考察</title>
+  <meta charset="UTF-8">
+  <title>显式类型转换考察</title>
 </head>
 <body>
 <script>
-    //String优先
+//String优先
 
-    //String([]) + String([])
-    console.log('[] + [] = ', [] + [])//空串
-    //String([]) + String({})
-    console.log('[] + {} = ', [] + {})
+//String([]) + String([])
+console.log('[] + [] = ', [] + [])//空串
+//String([]) + String({})
+console.log('[] + {} = ', [] + {})
 
-//   下面这两句要直接在控制台输入才能看到真实效果，console.log打印会受语法影响
-//    {} + []  //{}表示一个块会被忽略，最终执行 +[] => Number([]) => 0
-//    {} + {}  //chrome结果[object Object][object Object]   firefox结果NaN
+// 下面这两句要直接在控制台输入才能看到真实效果，console.log打印会受语法影响
+//  {} + []  //{}表示一个块会被忽略，最终执行 +[] => Number([]) => 0
+//  {} + {}  //chrome结果[object Object][object Object]   firefox结果NaN
 
-    //Number(true) + Number(true)
-    console.log('true + true = ', true + true)
-    //String('2') + String({a:1})
-    console.log('1 + {a:1} = ', 1 + {a: 1})
-    //Number('2')
-    console.log('+ \'2\' = ', +'2')
-    //Number('-2')
-    console.log('- \'2\' = ', -'2')
-    //String(1) + String('2')
-    console.log('1 + \'2\' = ', 1 + '2')
+//Number(true) + Number(true)
+console.log('true + true = ', true + true)
+//String('2') + String({a:1})
+console.log('1 + {a:1} = ', 1 + { a: 1 })
+//Number('2')
+console.log('+ \'2\' = ', +'2')
+//Number('-2')
+console.log('- \'2\' = ', -'2')
+//String(1) + String('2')
+console.log('1 + \'2\' = ', 1 + '2')
+
+// Number 转换
+// 原理：转换时如果目标是对象，则先调用目标的 valueOf 方法，如果 valueOf 方法返回不是基本类型，再调用它的 toString 方法
+console.log(Number(undefined)) // NaN
+console.log(Number(null)) // 0
+console.log(+[2]) // 2，过程：先尝试 [2].valueOf() 返回 [2]，不是基本类型，所以再尝试 [2].toString() 返回 '2' 是基本类型，所以调用 Number('2') 返回 2
+console.log(+[]) // 0
+console.log(+[1, 2]) // NaN
+
+// 加法运算优先使用 toString() 方法
+console.log(1 + { a: 1 }) // 1[object Object]
+console.log([]+[]) // ''
 </script>
 </body>
 </html>

@@ -1,49 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+  <meta charset="UTF-8">
+  <title>变量提升</title>
 </head>
 <body>
 </body>
 <script>
-    //"use strict";
-    function fn() {
-        var a = 60;
-        //非严格模式下直接使用没有用var声明的变量会默认为全局变量.在严格模式下全报错
-        b = a;
-        console.log('innerB:', b);
-    }
+//"use strict";
+function fn() {
+  var a = 60;
+  //非严格模式下直接使用没有用var声明的变量会默认为全局变量.在严格模式下全报错
+  b = a;
+  console.log('innerB:', b);
+}
 
-    fn();
-    console.log('outerB:', b);
+fn();
+console.log('outerB:', b);
 
-    //b为不使用var声明的变量，他的configurable值为true，可以用delete运算符删除
-    //而用var声明的变量configurable值为false，不可以用delete运算符删除
-    var testDelete = 'hello';
-    delete testDelete;
-    console.log(testDelete);//变量没有被删除，打印hello
+//b为不使用var声明的变量，他的configurable值为true，可以用delete运算符删除
+//而用var声明的变量configurable值为false，不可以用delete运算符删除
+var testDelete = 'hello';
+delete testDelete;
+console.log(testDelete);//变量没有被删除，打印hello
 
-    delete b;
-//    console.log(b);//error:b is not define
+delete b;
+// console.log(b);//error:b is not define
 
 
-
-    var foo = {n: 1};
-    (function (foo) {
+var foo = { n: 1 };
+(function (foo) {
 // 变量声明（var，VariableDeclaration） —— 变量对象的一个属性，其属性名即为变量名，其值为undefined;
 // 如果变量名和已经声明的函数名或者函数的参数名相同，则不会影响已经存在的属性。
 //    AO = {
 //        foo: {n:1},
 //    };
-        //一直到foo赋值对象时才会影响到AO.foo
+  //一直到foo赋值对象时才会影响到AO.foo
 //        var foo
 //        console.log(foo.n);
 //        foo.n = 3;
 //        foo = {n: 2};
 //        console.log(foo.n);
-    })(foo);
-    console.log(foo.n);
-    //输出1,2,3
+})(foo);
+console.log(foo.n);
+//输出1,2,3
+
+
+// -----------
+console.log(v1)
+var v1 = 100
+
+console.log(v1)
+function testHost() {
+  console.log(v1) // undefined，因为下面有 var v1，相当于在这个函数作用域内声明了一个 v1 变量
+  var v1 = 200
+  console.log(v1)
+}
+testHost()
+console.log(v1)
 </script>
 </html>
