@@ -10,7 +10,7 @@ https://blog.csdn.net/sd19871122/article/details/106908140
   - ...（次要字段这里不记）
 
 ## 头部压缩 HPACK 算法
-因为 HTTP 1.1 无状态的特点，所以每次都要发送很多重复和头部，比如 cookie，使得 HTTP 1.1 效率低下
+因为 HTTP 1.1 无状态的特点，所以每次都要发送很多重复和头部，比如 cookie，使得 HTTP 1.1 效率低下。
 
 - 静态字典：使用数字代替常用的头部字段，但这种方式对于取值很广的头部 value 不适用，需要使用哈夫曼编码代替
   ![](https://gitee.com/yejinzhan/images/raw/master/20211002184328.png)
@@ -18,3 +18,9 @@ https://blog.csdn.net/sd19871122/article/details/106908140
 - 哈夫曼编码原理：出现概率较大的符号采用较短的编码，出现概率较小的符号采用较长的编码
 
 ## 服务端推送
+
+## TODO
+为什么 HTTP 1.1 会有队头阻塞问题，看完 TCP 协议再思考
+
+## 参考
+[HTTP/2 简介](https://developers.google.com/web/fundamentals/performance/http2?hl=zh-cn#hpack_%E7%9A%84%E5%AE%89%E5%85%A8%E6%80%A7%E5%92%8C%E6%80%A7%E8%83%BD)
