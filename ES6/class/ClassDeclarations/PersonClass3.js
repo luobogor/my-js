@@ -1,5 +1,6 @@
 //ES6 不用Class关键字模仿Class
 //direct equivalent of PersonClass
+
 let PersonType2 = (function () {
 
     "use strict";

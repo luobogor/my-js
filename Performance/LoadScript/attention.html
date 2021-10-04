@@ -1,41 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>注意事项</title>
-    <script src="TestScript/script1.js"></script>
-    <script src="TestScript/script2.js"></script>
-    <script src="TestScript/script3.js"></script>
-    <script src="TestScript/underscore.js"></script>
-    <script src="TestScript/script4.js"></script>
-    <script src="TestScript/script5.js"></script>
-    <script>
-//        在控制可以看到页面没有渲染之前是拿不到DOM对象的
-        console.log(document.getElementById('test'));
-    </script>
-    <!--chrome下，为了减少等待时间，脚本会并行加载，但是执行时则会先script1后script2；并不是script1加载，script1执行，script2加载，script2执行的顺序。-->
-    <!--简单来说就是默认情况先加载所有脚本，然后按顺序执行脚本,然后再按顺序加载下面的-->
+  <meta charset="UTF-8">
+  <title>注意事项</title>
+  <script src="TestScript/script1.js"></script>
+  <script src="TestScript/script2.js"></script>
+  <script src="TestScript/script3.js"></script>
+  <script src="TestScript/underscore.js"></script>
+  <script src="TestScript/script4.js"></script>
+  <script src="TestScript/script5.js"></script>
+  <script>
+  //        在控制可以看到页面没有渲染之前是拿不到DOM对象的
+  console.log(document.getElementById('test'));
+  </script>
+  <!--chrome下，为了减少等待时间，脚本会并行加载，但是执行时则会先script1后script2；并不是script1加载，script1执行，script2加载，script2执行的顺序。-->
+  <!--简单来说就是默认情况先加载所有脚本，然后按顺序执行脚本,然后再按顺序加载下面的-->
 </head>
 <body>
 <div>
-    I am 注意事项 page <br>
-    <div id="test"></div>
-    <script>
-        var data = 'I am body inner script';
-        console.log(data);
-        document.write(data);
-    </script>
-    <script>
-        for (var i = 0; i < 200000; i++) {
-            if (i % 20000 === 0) {
-                console.log(i);
-            }
-        }
-    </script>
+  I am 注意事项 page <br>
+  <div id="test"></div>
+  <script>
+  var data = 'I am body inner script';
+  console.log(data);
+  document.write(data);
+  </script>
+  <script>
+  for (var i = 0; i < 200000; i++) {
+    if (i % 20000 === 0) {
+      console.log(i);
+    }
+  }
+  </script>
 </div>
 </body>
 <script>
-    //页面渲染之后可以拿到DOM对象的
-    console.log(document.getElementById('test'));
+//页面渲染之后可以拿到DOM对象的
+console.log(document.getElementById('test'));
 </script>
 </html>

@@ -21,6 +21,6 @@ Observer.prototype.defineReactive.val(闭包私有属性)
 
 ## 总结
 
-Observer利用Object.defienProperty方法对data进行监听，当data发生变化时，触发set方法。set方法通知观察者列表里面的观察者回调update方法进行视图更新，watcher负责把观察者加入到观察者列表。
+Observer利用Object.defineProperty方法对data进行监听，当data发生变化时，触发set方法。set方法通知观察者列表里面的观察者回调update方法进行视图更新，watcher负责把观察者加入到观察者列表。
 
 ![](https://ws3.sinaimg.cn/large/006tNc79gy1fp7slv97x6j30ez06m0tx.jpg)

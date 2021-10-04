@@ -1,35 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>defer</title>
-    <script src="TestScript/script1.js" defer></script>
-    <script>
-
-    </script>
-    <script src="TestScript/script2.js" defer></script>
-    <script src="TestScript/script3.js" defer></script>
-    <script src="TestScript/underscore.js" defer></script>
-    <script src="TestScript/script4.js" defer></script>
-    <script src="TestScript/script5.js" defer></script>
-    <script src="TestScript/script6.js" defer></script>
-    <!--加上defer后脚本会在页面加载完成之后按声名顺序执行,控制台看到脚本是按顺序打印-->
+  <meta charset="UTF-8">
+  <title>defer</title>
+  <script src="TestScript/script1.js" defer></script>
+  <script src="TestScript/script2.js" defer></script>
+  <script src="TestScript/script3.js" defer></script>
+  <script src="TestScript/underscore.js" defer></script>
+  <script src="TestScript/script4.js" defer></script>
+  <script src="TestScript/script5.js" defer></script>
+  <script src="TestScript/script6.js" defer></script>
+  <!--加上defer后脚本会在页面加载完成之后按声名顺序执行,控制台看到脚本是按顺序打印-->
 </head>
 <body>
-    <div>
-        I am defer page <br>
-        <script>
-            var data = 'I am body inner script';
-            console.log(data);
-            document.write(data);
-        </script>
-        <script>
-            for (var i = 0; i < 200000; i++) {
-                if (i % 20000 === 0) {
-                    console.log(i);
-                }
-            }
-        </script>
-    </div>
+<div>
+  I am defer page <br>
+  <script>
+  var data = 'I am body inner script';
+  console.log(data);
+  document.write(data);
+  </script>
+  <script>
+  for (var i = 0; i < 200000; i++) {
+    if (i % 20000 === 0) {
+      console.log(i);
+    }
+  }
+  </script>
+</div>
 </body>
 </html>
