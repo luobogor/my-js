@@ -1,59 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Router</title>
-    <style>
-        #view {
+  <meta charset="UTF-8">
+  <title>Router</title>
+  <style>
+  #view {
 
-        }
-    </style>
-    <script>
-    window.onload = function () {
-        let Router = function (name, routes) {
-            return {
-                name,
-                routes
-            };
-        };
-
-        let myFirstRouter = new Router('myFirstRouter', [
-            {
-                path: '',
-                name: 'Root'
-            },
-            {
-                path: 'contact',
-                name: 'Contact'
-            },
-            {
-                path: 'about',
-                name: 'About'
-            },
-        ]);
-        console.log(myFirstRouter);
-
-        //路由改变化进行替换DOM操作
-        function changePage(currentHash) {
-            let view = document.getElementById('view');
-            let route = myFirstRouter.routes.filter(r => r.path === currentHash)[0];
-            if (route) {
-                view.innerHTML = 'You are in the ' + route.name + ' path';
-            } else {
-                view.innerHTML = '404!';
-            }
-        }
-
-        // 通过js pushstate，是不会触发 popstate 事件的
-        window.onpopstate = function () {
-            //判断当前路由
-            let currentHash = window.location.hash.substr(1);
-            changePage(currentHash);
-        };
-        window.history.replaceState(null, '', '#');
-        changePage('');
-    }
-    </script>
+  }
+  </style>
 </head>
 <body>
 <h3>Simple router</h3>
@@ -62,4 +16,58 @@
 <a href="/#about">About</a>
 <a href="/#contact">Contact</a>
 </body>
+<script>
+window.onload = function () {
+  console.log('onllllllll')
+  const Router = function (name, routes) {
+    return {
+      name,
+      routes
+    };
+  };
+
+  let myFirstRouter = new Router('myFirstRouter', [
+    {
+      path: '',
+      name: 'Root'
+    },
+    {
+      path: 'contact',
+      name: 'Contact'
+    },
+    {
+      path: 'about',
+      name: 'About'
+    },
+  ]);
+
+  //路由改变化进行替换DOM操作
+  function changePage(currentHash) {
+    const view = document.getElementById('view');
+    const route = myFirstRouter.routes.filter(r => r.path === currentHash)[0];
+    if (route) {
+      view.innerHTML = 'You are in the ' + route.name + ' path';
+    } else {
+      view.innerHTML = '404!';
+    }
+  }
+
+  // https://www.zhihu.com/question/27806318 有 onpopstate 就用 onpopstate，没有就降级用 hashchange
+  // 通过js pushstate，是不会触发 popstate 事件的
+  window.onpopstate = function () {
+    //判断当前路由
+    const currentHash = window.location.hash.substr(1);
+    changePage(currentHash);
+  };
+
+  // 效果与 pushstate 一样
+  window.addEventListener('hashchange', function () {
+    const currentHash = window.location.hash.substr(1);
+    console.log('window.hashchange')
+  })
+
+  window.history.replaceState(null, '', '#');
+  changePage('');
+}
+</script>
 </html>
