@@ -1,5 +1,9 @@
 const fs = require('fs')
 
+setImmediate(() => {
+  console.log('setImmediate')
+})
+
 setTimeout(() => {
   console.log('setTimeout')
 }, 0)
@@ -8,9 +12,6 @@ setTimeout(() => {
   console.log('setTimeout1')
 },1)
 
-setImmediate(() => {
-  console.log('setImmediate')
-})
 
 fs.readFile('./test', () => {
   console.log('readFile callback')
@@ -21,6 +22,10 @@ fs.readFile('./test', () => {
 
   setImmediate(() => {
     console.log('次轮循环 readFile callback setImmediate')
+  })
+
+  process.nextTick(() => {
+    console.log('process.nextTick file')
   })
 })
 
