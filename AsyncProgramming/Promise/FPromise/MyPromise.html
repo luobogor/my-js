@@ -1,77 +1,86 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>DIY Promise</title>
+  <meta charset="UTF-8">
+  <title>DIY Promise</title>
 </head>
 <body>
 </body>
 <script>
-    //Promise类 静态变量
-    Promise.STATE = {PENDING: 'pending', FULFILLED: 'fulfilled'}
+//Promise类 静态变量
+Promise.STATE = { PENDING: 'pending', FULFILLED: 'fulfilled', REJECTED: 'rejected' }
 
-    function Promise(func) {
-        const promise = this;
-        //初始化状态
-        let state = Promise.STATE.PENDING;
-        //then()方法注册的回调函数队列
-        promise._successCallbacks = [];
+function Promise(func) {
+  const promise = this;
+  //初始化状态
+  let state = Promise.STATE.PENDING;
+  //then()方法注册的回调函数队列
+  promise._successCallbacks = [];
 
-        function handler(i, previousResult) {
-            if (i === promise._successCallbacks.length) {
-                return;
-            }
-
-            //回调then传入的函数，然后将回调函数返回值作为参数传递给下一个回调函数
-            const nextResult = promise._successCallbacks[i](previousResult);
-            //如果回调函数返回的是Promise对象，则立即调用返回Promise对象的then方法
-            if (nextResult instanceof Promise) {
-                nextResult.then(function (data) {
-                    //Promise回调继续执行之前的递归，完成两个Promise对接
-                    handler(i + 1, data);
-                });
-                //结束当前Promise递归，让回调函数返回的Promise接力递归
-                return;
-            }
-            //如果回调函数返回非Promise对象
-            handler(i + 1, nextResult);
-        }
-
-        function resolver(resolveData) {
-            //调用resolve则状态改变为已完成
-            state = Promise.STATE.FULFILLED;
-            //将resolve结果丢到浏览器异步队列，让开发者有时机调用then()方法注册回调方法以获取结果
-            setTimeout(handler.bind(promise, 0, resolveData), 0);
-        }
-
-        //new Promise时执行开发者传入的回调函数
-        func(resolver);
+  function handler(i, previousResult) {
+    if (i === promise._successCallbacks.length) {
+      return;
     }
 
-    Promise.prototype.then = function (onFulfilled, onRejected) {
-        //将开发者传入的函数加入到回调函数队列
-        this._successCallbacks.push(onFulfilled);
-        //返回当前Promise以便链式调用
-        return this;
-    };
-
-    function getUserId() {
-        return new Promise(function (resolve) {
-            //resolve将返回结果丢到浏览器异步队列
-            resolve('KD121');
-        });
+    //回调then传入的函数，然后将回调函数返回值作为参数传递给下一个回调函数
+    const nextResult = promise._successCallbacks[i](previousResult);
+    //如果回调函数返回的是Promise对象，则立即调用返回Promise对象的then方法
+    if (nextResult instanceof Promise) {
+      nextResult.then(function (data) {
+        //Promise回调继续执行之前的递归，完成两个Promise对接
+        handler(i + 1, data);
+      });
+      //结束当前Promise递归，让回调函数返回的Promise接力递归
+      return;
     }
+    //如果回调函数返回非Promise对象
+    handler(i + 1, nextResult);
+  }
 
-    function getUserMobileById(id) {
-        return new Promise(function (resolve) {
-            console.log('start to get user mobile by id:', id);
+  function resolver(resolveData) {
+    //调用resolve则状态改变为已完成
+    state = Promise.STATE.FULFILLED;
+    //将resolve结果丢到浏览器异步队列，让开发者有时机调用then()方法注册回调方法以获取结果
+    setTimeout(handler.bind(promise, 0, resolveData), 0);
+  }
+
+  function rejecter(rejectReason) {
+    //调用resolve则状态改变为已完成
+    state = Promise.STATE.REJECTED;
+    //将 reject 结果丢到浏览器异步队列，递归寻找第一个 catch 方法，然后调用
+    // setTimeout(handler.bind(promise, 0, rejectReason), 0);
+  }
+
+
+
+  //new Promise时执行开发者传入的回调函数
+  func(resolver, rejecter);
+}
+
+Promise.prototype.then = function (onFulfilled, onRejected) {
+  //将开发者传入的函数加入到回调函数队列
+  this._successCallbacks.push(onFulfilled);
+  //返回当前Promise以便链式调用
+  return this;
+};
+
+function getUserId() {
+  return new Promise(function (resolve) {
+    //resolve将返回结果丢到浏览器异步队列
+    resolve('KD121');
+  });
+}
+
+function getUserMobileById(id) {
+  return new Promise(function (resolve) {
+    console.log('start to get user mobile by id:', id);
 //            resolve('13121231231');
-            setTimeout(function () {
-                console.log("I have come in getUserMobileById paramFun");
-                resolve('13121231231');
-            }, 1000);
-        });
-    }
+    setTimeout(function () {
+      console.log("I have come in getUserMobileById paramFun");
+      resolve('13121231231');
+    }, 1000);
+  });
+}
 
 //    getUserId().then(function (id) {
 //        console.log('the mobile is:', id);
@@ -81,16 +90,16 @@
 //            console.log(mobile);
 //        });
 
-    new Promise(resolve => {
-        resolve(1)
-        new Promise(function (resolveInner) {
-            resolveInner(2)
-        }).then(function (data) {
-            console.log(data)
-        })
-    }).then(function (data) {
-        console.log(data)
-    })
-    console.log(3)
+new Promise(resolve => {
+  resolve(1)
+  new Promise(function (resolveInner) {
+    resolveInner(2)
+  }).then(function (data) {
+    console.log(data)
+  })
+}).then(function (data) {
+  console.log(data)
+})
+console.log(3)
 </script>
 </html>

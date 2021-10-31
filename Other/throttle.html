@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>throttle</title>
+  <meta charset="UTF-8">
+  <title>throttle</title>
 </head>
 <body>
 <script>
 function _now() {
-    return +new Date();
+  return +new Date();
 }
 
 /**
@@ -18,38 +18,38 @@ function _now() {
  * @return {function}             返回客户调用函数
  */
 function throttle(func, wait = 50) {
-    let context, args, result;
-    let timer = null;
-    let previous = 0;
-    const later = function later() {
-        previous = _now();
-        timer = null;
-        result = func.apply(context, args);
-    };
-    return function () {
-        const now = _now();
-        if (!previous) {
-            previous = now;
-        }
-        const remaining = wait - (now - previous);
-        context = this;
-        args = arguments;
-        if (remaining <= 0) {
-            if (timer) {
-                clearTimeout(timer);
-                timer = null;
-            }
-            previous = now;
-            result = func.apply(context, args);
-        } else if (!timer) {
-            timer = setTimeout(later, remaining);
-        }
-        return result;
+  let context, args, result;
+  let timer = null;
+  let previous = 0;
+  const later = function later() {
+    previous = _now();
+    timer = null;
+    result = func.apply(context, args);
+  };
+  return function () {
+    const now = _now();
+    if (!previous) {
+      previous = now;
     }
+    const remaining = wait - (now - previous);
+    context = this;
+    args = arguments;
+    if (remaining <= 0) {
+      if (timer) {
+        clearTimeout(timer);
+        timer = null;
+      }
+      previous = now;
+      result = func.apply(context, args);
+    } else if (!timer) {
+      timer = setTimeout(later, remaining);
+    }
+    return result;
+  }
 }
 
 window.onresize = throttle(() => {
-    console.log('resize...');
+  console.log('resize...');
 }, 2000);
 
 </script>
