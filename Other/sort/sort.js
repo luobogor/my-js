@@ -41,7 +41,7 @@
         }
       }
 
-      arr[i, minIndex] = arr[minIndex, i]
+      [arr[i], arr[minIndex]] = [arr[minIndex], arr[i]]
     }
 
     return arr
