@@ -1,110 +1,110 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>面试题</title>
+  <meta charset="UTF-8">
+  <title>面试题</title>
 </head>
 <body>
 <button>click to test</button>
 <a href="https://www.baidu.com" target="_blank">click to test</a>
 <script>
-    //切记，只有当Promise已经resolve并且调用过then()方法，then()里的函数才会被加入到Microtasks列队
-    function q1() {
-        new Promise(resolve => {
-            resolve(1);//因为外部未调用then()，所以外部Promise回调不会先加入Microtasks
-            Promise.resolve().then(() => console.log(2));//内部Promise回调先加入Microtasks
-            console.log(4);
-        }).then(t => console.log(t));//已经执行了resolve，状态为onFuilled，外部Promise回调加入Microtasks
-        console.log(3);
-        //4 3 2 1
-    }
+//切记，只有当Promise已经resolve并且调用过then()方法，then()里的函数才会被加入到Microtasks列队
+function q1() {
+  new Promise(resolve => {
+    resolve(1);//因为外部未调用then()，所以外部Promise回调不会先加入Microtasks
+    Promise.resolve().then(() => console.log(2));//内部Promise回调先加入Microtasks
+    console.log(4);
+  }).then(t => console.log(t));//已经执行了resolve，状态为onFuilled，外部Promise回调加入Microtasks
+  console.log(3);
+  //4 3 2 1
+}
 
-    //    q1()
-
-
-    function q2() {
-        new Promise(resolve => {
-            Promise.resolve().then(() => {
-                resolve(1);//因为外部已经调用了then()，所以外部Promise回调先加入Microtasks
-                Promise.resolve().then(() => console.log(2));//内部Promise回调第二加入Microtasks
-                // resolve(1); 如果放这个地方则打印 3 2 1，resolve、then都调用了Promise回调才会加入Microtasks
-            });
-        }).then(t => console.log(t));
-        console.log(3);
-        //3 1 2
-    }
-
-    // q2();
-
-    function q3() {
-        const button = document.querySelector('button');
-        button.addEventListener('click', () => {
-            Promise.resolve().then(() => console.log('Microtask 1'));
-            console.log('Listener 1');
-        });
-
-        button.addEventListener('click', () => {
-            Promise.resolve().then(() => console.log('Microtask 2'));
-            console.log('Listener 2');
-        });
-
-        button.click();
-        //button.click()是同步执行的，输出Listener 1后因为button.click()还在函数栈，所以不会调用Microtask，继续触发第二个回调函数，输出Listener 2，然后button.click()退栈，js函数栈为空，再检查Microtask，输出Microtask 1、Microtask 2
-        // 结果 Listener 1、Listener 2、Microtask 1、Microtask 2
-
-        //如果用户点击按钮触是通过异步回调函数
-        //结果 Listener 1、Microtask 1、Listener 2、Microtask 2
-    }
-
-    // q3();
-
-    function q4() {
-        const link = document.querySelector('a');
-        const nextClick = new Promise(resolve => {
-            link.addEventListener('click', resolve, {once: true});
-        });
-
-        nextClick.then(event => {
-            console.log('prevent');
-            event.preventDefault();
-        });
-
-        link.click();
-        // 页面会发生跳转
-        // link.click()是同步执行的，会完成事件（跳转）后再检查Microtask执行event.preventDefault()，已经错过了阻止默认行为的时机
-        // 如果是用户点击则不会发生跳转
-    }
-
-    // q4();
+// q1()
 
 
-    function q5() {
-        async function async1() {
-            console.log('async1 start');
-            await async2();
-            console.log('async1 end');
-        }
+function q2() {
+  new Promise(resolve => {
+    Promise.resolve().then(() => {
+      resolve(1);//因为外部已经调用了then()，所以外部Promise回调先加入Microtasks
+      Promise.resolve().then(() => console.log(2));//内部Promise回调第二加入Microtasks
+      // resolve(1); 如果放这个地方则打印 3 2 1，resolve、then都调用了Promise回调才会加入Microtasks
+    });
+  }).then(t => console.log(t));
+  console.log(3);
+  //3 1 2
+}
 
-        async function async2() {
-            console.log('async2');
-        }
+// q2();
 
-        console.log('script start');
+function q3() {
+  const button = document.querySelector('button');
+  button.addEventListener('click', () => {
+    Promise.resolve().then(() => console.log('Microtask 1'));
+    console.log('Listener 1');
+  });
 
-        setTimeout(function () {
-            console.log('setTimeout');
-        }, 0);
+  button.addEventListener('click', () => {
+    Promise.resolve().then(() => console.log('Microtask 2'));
+    console.log('Listener 2');
+  });
+
+  button.click();
+  //button.click()是同步执行的，输出Listener 1后因为button.click()还在函数栈，所以不会调用Microtask，继续触发第二个回调函数，输出Listener 2，然后button.click()退栈，js函数栈为空，再检查Microtask，输出Microtask 1、Microtask 2
+  // 结果 Listener 1、Listener 2、Microtask 1、Microtask 2
+
+  //如果用户点击按钮触是通过异步回调函数
+  //结果 Listener 1、Microtask 1、Listener 2、Microtask 2
+}
+
+// q3();
+
+function q4() {
+  const link = document.querySelector('a');
+  const nextClick = new Promise(resolve => {
+    link.addEventListener('click', resolve, { once: true });
+  });
+
+  nextClick.then(event => {
+    console.log('prevent');
+    event.preventDefault();
+  });
+
+  link.click();
+  // 页面会发生跳转
+  // link.click()是同步执行的，会完成事件（跳转）后再检查Microtask执行event.preventDefault()，已经错过了阻止默认行为的时机
+  // 如果是用户点击则不会发生跳转
+}
+
+// q4();
 
 
-        async1();
+function q5() {
+  async function async1() {
+    console.log('async1 start');
+    await async2();
+    console.log('async1 end');
+  }
 
-        new Promise(function (resolve) {
-            console.log('promise 1');
-            resolve();
-        }).then(function () {
-            console.log('promise 2');
-        })
-        console.log('script end');
+  async function async2() {
+    console.log('async2');
+  }
+
+  console.log('script start');
+
+  setTimeout(function () {
+    console.log('setTimeout');
+  }, 0);
+
+
+  async1();
+
+  new Promise(function (resolve) {
+    console.log('promise 1');
+    resolve();
+  }).then(function () {
+    console.log('promise 2');
+  })
+  console.log('script end');
 //        script start
 //        async1 start
 //        async2
@@ -122,20 +122,21 @@
 //                                                  resolve();
 //                                              })
 //        所以会连续打印async1 start，async2
-    }
+}
 
-    function q6() {
-        new Promise(r=>{
-            r();
-        }).then(()=>{
-            Promise.resolve().then(()=> {console.log(2)});
-            return 3;
-        }).then(res=>{
-            console.log(res);
-        });
-        console.log(0);
-    }
-    // q6();// 0 2 3
+function q6() {
+  new Promise(r => {
+    r();
+  }).then(() => {
+    Promise.resolve().then(() => {console.log(2)});
+    return 3;
+  }).then(res => {
+    console.log(res);
+  });
+  console.log(0);
+}
+
+// q6();// 0 2 3
 </script>
 </body>
 </html>

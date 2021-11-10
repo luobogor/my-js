@@ -51,8 +51,6 @@ function Promise(func) {
     // setTimeout(handler.bind(promise, 0, rejectReason), 0);
   }
 
-
-
   //new Promise时执行开发者传入的回调函数
   func(resolver, rejecter);
 }

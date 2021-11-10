@@ -33,21 +33,23 @@
   function selectionSort(arr) {
     const len = arr.length;
     for (let i = 0; i < len - 1; i++) {
-      let temp = arr[i]
+      let minIndex = i
 
       for (let j = i + 1; j < len; j++) {
-        if (arr[j] < temp) {
-          temp = arr[j]
+        if (arr[j] < arr[minIndex]) {
+          minIndex = j
         }
       }
 
-      arr[i] = temp
+      arr[i, minIndex] = arr[minIndex, i]
     }
+
+    return arr
   }
 
   const arr = [7, 5, 2, 4, 3, 9];
-  selectionSort(arr); //[2, 3, 4, 5, 7, 9]
-  console.log(arr);
+  const result = selectionSort(arr); //[2, 3, 4, 5, 7, 9]
+  console.log(result);
 }
 
 {
