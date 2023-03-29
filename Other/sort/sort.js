@@ -1,7 +1,7 @@
 //    重要：快排、选择排序、希尔排序
 
 {
-  console.log('bubbleSort,稳定');
+  console.log('bubbleSort 冒泡排序,稳定');
 
   function bubbleSort(arr) {
     // 至少两个元素才会排序
