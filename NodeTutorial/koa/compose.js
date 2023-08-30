@@ -1,5 +1,7 @@
 function compose(middleware) {
   return function (context, next) {
+    let index
+
     function dispatch(i) {
       index = i
       let fn = middleware[i]
@@ -16,8 +18,6 @@ function compose(middleware) {
         return dispatch(i + 1)
       }))
     }
-
-    let index = -1
 
     return dispatch(0)
   }
